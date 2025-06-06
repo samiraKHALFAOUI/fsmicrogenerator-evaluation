@@ -1,0 +1,188 @@
+<p-table #dt
+[value]="data"
+dataKey="_id"
+editMode="row"
+[tableStyle]="{'min-width': '50rem'}"
+[styleClass]="'p-datatable-gridlines'"
+[globalFilterFields]="globalFilterFields "
+[columns]="selectedColumns"
+[rows]="rows"
+responsiveLayout="scroll"
+[paginator]="true"
+[showCurrentPageReport]="true"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+[rowsPerPageOptions]="[
+      rows,
+      rows * 2,
+      rows * 3,
+      rows * 4,
+      rows * 5
+    ]"
+
+[scrollable]="true"
+[scrollHeight]="'700px'"
+    >
+
+    <ng-template pTemplate="caption"
+      >
+      <div class="d-flex position-relative">
+
+        <button type="button"  style="height: fit-content; margin-block: auto" pButton
+          [label]="'code_4148' | translate | titlecase" class="p-button-outlined ms-auto" icon="pi pi-filter-slash"
+          (click)="clear(dt)"></button>
+
+        <span  class="p-input-icon-left ms-2"
+          style="height: fit-content; margin-block: auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt.filterGlobal($any($event).target.value, 'contains')"
+            [placeholder]="'code_4149' | translate | titlecase" />
+        </span>
+
+        <p-multiSelect [appendTo]="'body'"  [options]="globalCols"
+          [(ngModel)]="selectedColumns" [ngStyle]="{ marginBlock: 'auto' }" optionLabel="header"
+          [selectedItemsLabel]=" 'code_4226' | translate | titlecase" [style]="{ minWidth: '200px' }"
+          [placeholder]="'code_4222' | translate | titlecase" (onChange)="test($event)" >
+
+          <ng-template let-code pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ code.header | translate | titlecase }}</div>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+
+
+      </div>
+    </ng-template>
+
+
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <ng-container *ngFor="let col of columns">
+          <th [pSortableColumn]="col.field" class="text-center">
+            <i [class]="col.flag"> </i><span class="ml-1">{{col.header | titlecase}}</span>
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+
+
+          </th>
+        </ng-container>
+
+        <th class="text-center" >
+          {{ "action" | translate | titlecase }}
+        </th>
+      </tr>
+      <tr>
+        <ng-container *ngFor="let col of columns">
+          <th >
+              <p-columnFilter type="text" [field]="col.field" [showClearButton]="true" />
+          </th>
+        </ng-container>
+        <th></th>
+
+      </tr>
+    </ng-template>
+
+
+<ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-ri="rowIndex">
+  <tr  #editableRow  [pEditableRow]="rowData">
+    <td *ngFor="let col of columns" class="text-center" [pEditableColumn]="rowData[col.field]" [pEditableColumnField]="col.field" >
+      <p-cellEditor>
+        <ng-template pTemplate="input">
+          <div class="form dynamic-form px-3 py-2" >
+            <div class="form-grid-container">
+              <div class="form-grid grid-cols-1">
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <input
+                      type="text"
+                      style="width: 100%"
+                      [ngClass]="(rowData.invalid && valeur?.invalid  ) || (valeur?.invalid && (valeur?.touched || valeur?.dirty)) ? 'ng-dirty ng-invalid' : ''"
+                      id="id-2605"
+                      [(ngModel)]="rowData.translate[col.code].valeur"
+                      #valeur="ngModel"
+                      required
+                      pInputText
+                    />
+
+                    <label
+                      [ngClass]="(rowData.invalid && valeur?.invalid  ) || (valeur?.invalid && (valeur?.touched || valeur?.dirty)) ? 'text-danger' : ''"
+                    >
+                      {{ "code_564" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+                    <ng-container
+                      *ngIf="(rowData.invalid && valeur?.invalid  ) || (valeur?.invalid && (valeur?.touched || valeur?.dirty))"
+                    >
+                      <span
+                        class="error-span"
+                        *ngIf="valeur?.errors?.['required'] "
+                      >
+                        {{ "code_29" | translate | titlecase }}
+                      </span>
+                    </ng-container>
+                  </span>
+                </div>
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label" >
+                    <textarea
+                      style="max-width: 100%; width: 100%"
+                      inputId="id-418"
+                      [rows]="5"
+                      [cols]="30"
+                      [(ngModel)]="rowData.translate[col.code].commentaire"
+                      pInputTextarea
+                    ></textarea>
+
+                    <label>
+                      {{ "code_775" |translate | titlecase}}
+                    </label>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="output">
+          {{rowData| readDataTable: col.field  }}
+        </ng-template>
+      </p-cellEditor>
+
+
+    </td>
+
+
+
+    <td>
+      <div class="flex align-items-center justify-content-center gap-2">
+        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+          (click)="onRowEditInit(rowData)" class="p-button-rounded p-button-text">
+        </button>
+        <button *ngIf="editing" pButton pRipple type="button"  icon="pi pi-check"
+          (click)="onRowEditSave(rowData,ri ,editableRow)" class="p-button-rounded p-button-text p-button-success mr-2">
+        </button>
+        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+          (click)="onRowEditCancel(rowData, ri)" class="p-button-rounded p-button-text p-button-danger">
+        </button>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+  <tr>
+    <td [colSpan]="selectedColumns.length ">
+      {{ "code_4225" | translate | titlecase }}
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template pTemplate="summary" >
+  <div class="flex align-items-center justify-content-between">
+
+      {{ 'code_4223' | translate | genericPipe:[{name:'replace',arguments :{pattern : "{{"+" data.length "+"}}",regex:false,replaceValue: data.length} }]}}
+
+
+
+
+
+
+  </div>
+</ng-template>
+</p-table>

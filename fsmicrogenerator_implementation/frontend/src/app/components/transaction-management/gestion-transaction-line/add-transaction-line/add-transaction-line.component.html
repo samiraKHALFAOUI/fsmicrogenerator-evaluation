@@ -1,0 +1,235 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"TransactionManagement"'
+    [component]='"transactionLine"'
+    [operation]="'add/edit'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <div class="form-grid-container">
+    <div class="form-grid grid-cols-2">
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-dropdown
+            [style]="{width:'100%'}"
+            [appendTo]="'body'"
+            inputId="id-9423"
+            [optionDisabled]="'disabled'"
+            [scrollHeight]="'200px'"
+            [filterMatchMode]="'contains'"
+            [emptyMessage]="'No records found.'"
+            [emptyFilterMessage]="'No results found.'"
+            [maxlength]="100000"
+            [dropdownIcon]="'pi pi-chevron-down'"
+            [overlayOptions]="{autoZIndex:true}"
+            [tooltipPosition]="'top'"
+            [ngClass]="form.get('product')?.invalid && (form.get('product')?.touched || form.get('product')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+            [autoDisplayFirst]="false"
+            formControlName="product"
+            [options]="optionsProduct"
+          ><ng-template pTemplate="selectedItem">
+            <div class="d-flex" *ngIf="form.get('product')?.value">
+              <img
+                  [lazyLoad]="form.get('product')?.value.image | genericPipe : [{name:'file',serviceName :'productManagement'}]"
+                  [defaultImage]="form.get('product')?.value.image| genericPipe : [{name:'file',serviceName :'productManagement' }]"
+                  style="width: 18px"
+                  class="me-2"/>
+              <div>{{form.get('product')?.value |readDataTable : 'translations.name'}}</div>
+            </div>
+          </ng-template>
+          <ng-template let-item pTemplate="item">
+            <div class="d-flex">
+              <img
+                  [lazyLoad]="item?.image | genericPipe : [{name:'file',serviceName :'productManagement'}]"
+                  [defaultImage]="item?.image| genericPipe : [{name:'file',serviceName :'productManagement' }]"
+                  style="width: 18px"
+                  class="me-2"/>
+              <div>{{item |readDataTable : 'translations.name' }}</div>
+            </div>
+          </ng-template></p-dropdown>
+
+          <label
+            [ngClass]="form.get('product')?.invalid && (form.get('product')?.touched || form.get('product')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_18393" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('product')?.invalid && (form.get('product')?.touched || form.get('product')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('product')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-inputNumber
+            [ngStyle]="{width:'100%'}"
+            inputId="id-3355"
+            [showButtons]="true"
+            [buttonLayout]="'stacked'"
+            [incrementButtonIcon]="'pi pi-chevron-up'"
+            [decrementButtonIcon]="'pi pi-chevron-down'"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="0"
+            [min]="1"
+            [max]="quantityMax"
+            [step]="1"
+            [allowEmpty]="true"
+            [inputStyleClass]="
+  form.get('quantity')?.invalid && (form.get('quantity')?.touched || form.get('quantity')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+  "
+            [size]="10"
+            [maxlength]="100"
+            formControlName="quantity"
+          ></p-inputNumber>
+
+          <label
+            [ngClass]=" form.get('quantity')?.invalid && (form.get('quantity')?.touched || form.get('quantity')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_18418" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('quantity')?.invalid && (form.get('quantity')?.touched || form.get('quantity')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('quantity')?.errors?.['required'] ;else quantityMin"
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+            <ng-template #quantityMin>
+              <span
+                class="error-span"
+                *ngIf="form.get('quantity')?.errors?.['min'] "
+              >
+                {{ "code_200" | translate | titlecase }} {{form.get('quantity')?.errors?.['min'].min }}
+              </span>
+            </ng-template>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-inputNumber
+            [ngStyle]="{width:'100%'}"
+            inputId="id-4253"
+            [showButtons]="true"
+            [buttonLayout]="'stacked'"
+            [incrementButtonIcon]="'pi pi-chevron-up'"
+            [decrementButtonIcon]="'pi pi-chevron-down'"
+
+            [minFractionDigits]="1"
+            [maxFractionDigits]="2"
+            [step]="1"
+            [allowEmpty]="true"
+            [inputStyleClass]="
+  form.get('price')?.invalid && (form.get('price')?.touched || form.get('price')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+  "
+            [size]="10"
+            [maxlength]="100"
+            formControlName="price"
+          ></p-inputNumber>
+
+          <label
+            [ngClass]=" form.get('price')?.invalid && (form.get('price')?.touched || form.get('price')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_18445" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('price')?.invalid && (form.get('price')?.touched || form.get('price')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('price')?.errors?.['required'] ;else priceMin"
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+            <ng-template #priceMin>
+              <span
+                class="error-span"
+                *ngIf="form.get('price')?.errors?.['min'] "
+              >
+                {{ "code_200" | translate | titlecase }} {{form.get('price')?.errors?.['min'].min }}
+              </span>
+            </ng-template>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-dropdown
+            [style]="{width:'100%'}"
+            [appendTo]="'body'"
+            inputId="id-7085"
+            [optionDisabled]="'disabled'"
+            [scrollHeight]="'200px'"
+            [filterMatchMode]="'contains'"
+            [emptyMessage]="'No records found.'"
+            [emptyFilterMessage]="'No results found.'"
+            [maxlength]="100000"
+            [dropdownIcon]="'pi pi-chevron-down'"
+            [overlayOptions]="{autoZIndex:true}"
+            [tooltipPosition]="'top'"
+            [ngClass]="form.get('currency')?.invalid && (form.get('currency')?.touched || form.get('currency')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+            [autoDisplayFirst]="false"
+            formControlName="currency"
+            [options]="optionsCurrency"
+            [optionLabel]="'currency'"
+            [optionValue]="'_id'"
+          ></p-dropdown>
+
+          <label
+            [ngClass]="form.get('currency')?.invalid && (form.get('currency')?.touched || form.get('currency')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_18395" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('currency')?.invalid && (form.get('currency')?.touched || form.get('currency')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('currency')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="button"
+      [label]="'code_4145' | translate | titlecase"
+      (click)="addData()"
+    ></button>
+    <button
+      *ngIf="!this.independentComponent"
+      pButton
+      class="p-button-sm p-button-success next-tab-button"
+      iconPos="right"
+      type="button"
+      [label]="'code_547' | translate | titlecase"
+      (click)="finish()"
+    ></button>
+  </div>
+</form>

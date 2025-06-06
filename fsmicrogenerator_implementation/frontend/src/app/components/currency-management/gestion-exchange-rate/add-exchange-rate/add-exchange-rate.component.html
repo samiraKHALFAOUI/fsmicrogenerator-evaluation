@@ -1,0 +1,266 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"CurrencyManagement"'
+    [component]='"exchangeRate"'
+    [operation]="'add/edit'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-calendar
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-6439"
+                [defaultDate]="defaultDateDate"
+                [selectionMode]="'single'"
+                [inputStyleClass]="
+      form.get('date')?.invalid && (form.get('date')?.touched || form.get('date')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+      "
+                [dateFormat]="'dd/mm/yy'"
+                [showOtherMonths]="true"
+                [showOnFocus]="true"
+                [icon]="'pi pi-calendar'"
+                [shortYearCutoff]="'+10'"
+                [hourFormat]="'24'"
+                [showTime]="true"
+                [timeSeparator]="':'"
+                [dataType]="'date'"
+                [stepHour]="1"
+                [stepMinute]="1"
+                [stepSecond]="1"
+                [maxDateCount]="1000"
+                [autoZIndex]="true"
+                [hideOnDateTimeSelect]="true"
+                [numberOfMonths]="1"
+                [view]="'date'"
+                [multipleSeparator]="','"
+                [rangeSeparator]="'-'"
+                formControlName="date"
+              ></p-calendar>
+
+              <label
+                [ngClass]=" form.get('date')?.invalid && (form.get('date')?.touched || form.get('date')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_1307" |translate | titlecase}}
+              </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngStyle]="{width:'100%'}"
+                inputId="id-9555"
+                [showButtons]="true"
+                [buttonLayout]="'stacked'"
+                [incrementButtonIcon]="'pi pi-chevron-up'"
+                [decrementButtonIcon]="'pi pi-chevron-down'"
+                [locale]="'en-US'"
+                [currency]="'MAD'"
+                [minFractionDigits]="1"
+                [maxFractionDigits]="2"
+                [max]="100000000000000000000"
+                [step]="1"
+                [allowEmpty]="true"
+                [inputStyleClass]="
+      form.get('valeurAchat')?.invalid && (form.get('valeurAchat')?.touched || form.get('valeurAchat')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+      "
+                [size]="10"
+                [maxlength]="100"
+                formControlName="valeurAchat"
+              ></p-inputNumber>
+
+              <label
+                [ngClass]=" form.get('valeurAchat')?.invalid && (form.get('valeurAchat')?.touched || form.get('valeurAchat')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_13162" |translate | titlecase}}
+              </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngStyle]="{width:'100%'}"
+                inputId="id-3136"
+                [showButtons]="true"
+                [buttonLayout]="'stacked'"
+                [incrementButtonIcon]="'pi pi-chevron-up'"
+                [decrementButtonIcon]="'pi pi-chevron-down'"
+                [locale]="'en-US'"
+                [currency]="'MAD'"
+                [minFractionDigits]="1"
+                [maxFractionDigits]="2"
+                [max]="100000000000000000000"
+                [step]="1"
+                [allowEmpty]="true"
+                [inputStyleClass]="
+      form.get('valeurVente')?.invalid && (form.get('valeurVente')?.touched || form.get('valeurVente')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+      "
+                [size]="10"
+                [maxlength]="100"
+                formControlName="valeurVente"
+              ></p-inputNumber>
+
+              <label
+                [ngClass]=" form.get('valeurVente')?.invalid && (form.get('valeurVente')?.touched || form.get('valeurVente')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_13163" |translate | titlecase}}
+              </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <div class="input-switch-container">
+              <label
+                [ngClass]=" form.get('actif')?.invalid && (form.get('actif')?.touched || form.get('actif')?.dirty) ? 'text-danger' : ''"
+                style="cursor: pointer"
+                for="actif"
+              >
+                {{ "code_4316" |translate | titlecase}}
+              </label>
+
+              <p-inputSwitch
+                inputId="actif"
+                formControlName="actif"
+              ></p-inputSwitch>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-7986"
+                [options]="optionsRefCurrencyBase"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [autoZIndex]="true"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('refCurrencyBase')?.invalid && (form.get('refCurrencyBase')?.touched || form.get('refCurrencyBase')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="refCurrencyBase"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('refCurrencyBase')?.invalid && (form.get('refCurrencyBase')?.touched || form.get('refCurrencyBase')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_13160" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+              <ng-container
+                *ngIf="form.get('refCurrencyBase')?.invalid && (form.get('refCurrencyBase')?.touched || form.get('refCurrencyBase')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('refCurrencyBase')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-7986"
+                [options]="optionsRefCurrencyEtrangere"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [autoZIndex]="true"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('refCurrencyEtrangere')?.invalid && (form.get('refCurrencyEtrangere')?.touched || form.get('refCurrencyEtrangere')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="refCurrencyEtrangere"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('refCurrencyEtrangere')?.invalid && (form.get('refCurrencyEtrangere')?.touched || form.get('refCurrencyEtrangere')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_13161" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+              <ng-container
+                *ngIf="form.get('refCurrencyEtrangere')?.invalid && (form.get('refCurrencyEtrangere')?.touched || form.get('refCurrencyEtrangere')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('refCurrencyEtrangere')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_4145' | translate | titlecase"
+        (click)="addData()"
+      ></button>
+
+      <button
+        *ngIf="!this.independentComponent && !relation?.includes('ToOne')"
+        pButton
+        class="next-tab-button"
+        iconPos="right"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+class="termine"
+        (click)="finish()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        [label]="'code_2994' | translate | titlecase"
+        (click)="nextTab()"
+      ></button>
+    </div>
+  </p-tabView>
+</form>

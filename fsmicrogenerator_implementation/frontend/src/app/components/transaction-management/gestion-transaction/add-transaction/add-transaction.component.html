@@ -1,0 +1,425 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"TransactionManagement"'
+    [component]='"transaction"'
+    [operation]="'add/edit'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-3">
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                [ngClass]="form.get('reference')?.invalid && (form.get('reference')?.touched || form.get('reference')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                id="id-6745"
+                formControlName="reference"
+                pInputText
+              />
+
+              <label
+                [ngClass]=" form.get('reference')?.invalid && (form.get('reference')?.touched || form.get('reference')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_4545" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('reference')?.invalid && (form.get('reference')?.touched || form.get('reference')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('reference')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-8756"
+                [options]="optionsType"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [overlayOptions]="{autoZIndex:true}"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('type')?.invalid && (form.get('type')?.touched || form.get('type')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="type"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('type')?.invalid && (form.get('type')?.touched || form.get('type')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_135" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('type')?.invalid && (form.get('type')?.touched || form.get('type')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('type')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+          <ng-container *ngIf="independentComponent">
+            <ng-container *ngIf="form.get('type')?.value =='code_18441' ; else customer">
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-dropdown
+                      [style]="{width:'100%'}"
+                      [appendTo]="'body'"
+                      [options]="options"
+                      [dataKey]="'_id'"
+                      inputId="id-5471"
+                      [optionDisabled]="'disabled'"
+                      [scrollHeight]="'200px'"
+                      [filterMatchMode]="'contains'"
+                      [emptyMessage]="'No records found.'"
+                      [emptyFilterMessage]="'No results found.'"
+                      [maxlength]="100000"
+                      [dropdownIcon]="'pi pi-chevron-down'"
+                      [overlayOptions]="{autoZIndex:true}"
+                      [tooltipPosition]="'top'"
+                      [ngClass]="form.get('supplier')?.invalid && (form.get('supplier')?.touched || form.get('supplier')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                      [autoDisplayFirst]="false"
+                      formControlName="supplier"
+                    >
+                    <ng-template pTemplate="selectedItem">
+                      <div class="d-flex" *ngIf="form.get('supplier')?.value">
+                        <img
+                            [lazyLoad]="form.get('supplier')?.value.logo | genericPipe : [{name:'file',serviceName :'supplierManagement'}]"
+                            [defaultImage]="form.get('supplier')?.value.logo| genericPipe : [{name:'file',serviceName :'supplierManagement' }]"
+                            style="width: 18px"
+                            class="me-2"/>
+                        <div>{{form.get('supplier')?.value |readDataTable : 'translations.name'}}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                      <div class="d-flex">
+                        <img
+                            [lazyLoad]="item?.logo | genericPipe : [{name:'file',serviceName :'supplierManagement'}]"
+                            [defaultImage]="item?.logo| genericPipe : [{name:'file',serviceName :'supplierManagement' }]"
+                            style="width: 18px"
+                            class="me-2"/>
+                        <div>{{item |readDataTable : 'translations.name' }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+
+                  <label
+                    [ngClass]="form.get('supplier')?.invalid && (form.get('supplier')?.touched || form.get('supplier')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_18401" |translate | titlecase}}
+                  </label>
+
+                  <ng-container
+                    *ngIf="form.get('supplier')?.invalid && (form.get('supplier')?.touched || form.get('supplier')?.dirty)"
+                  >
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('supplier')?.errors?.['required'] "
+                    >
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+            </ng-container>
+            <ng-template #customer>
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-dropdown
+                      [style]="{width:'100%'}"
+                      [appendTo]="'body'"
+                      [options]="options"
+                      [dataKey]="'_id'"
+                      inputId="id-5471"
+                      [optionDisabled]="'disabled'"
+                      [scrollHeight]="'200px'"
+                      [filterMatchMode]="'contains'"
+                      [emptyMessage]="'No records found.'"
+                      [emptyFilterMessage]="'No results found.'"
+                      [maxlength]="100000"
+                      [dropdownIcon]="'pi pi-chevron-down'"
+                      [overlayOptions]="{autoZIndex:true}"
+                      [tooltipPosition]="'top'"
+                      [ngClass]="form.get('customer')?.invalid && (form.get('customer')?.touched || form.get('customer')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                      [autoDisplayFirst]="false"
+                      formControlName="customer"
+                    >
+                    <ng-template pTemplate="selectedItem">
+                      <div class="d-flex" *ngIf="form.get('customer')?.value">
+                        <img
+                            [lazyLoad]="form.get('customer')?.value.logo | genericPipe : [{name:'file',serviceName :'customerManagement'}]"
+                            [defaultImage]="form.get('customer')?.value.logo| genericPipe : [{name:'file',serviceName :'customerManagement' }]"
+                            style="width: 18px"
+                            class="me-2"/>
+                        <div>{{form.get('customer')?.value |readDataTable : 'translations.name'}}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                      <div class="d-flex">
+                        <img
+                            [lazyLoad]="item?.logo | genericPipe : [{name:'file',serviceName :'customerManagement'}]"
+                            [defaultImage]="item?.logo| genericPipe : [{name:'file',serviceName :'customerManagement' }]"
+                            style="width: 18px"
+                            class="me-2"/>
+                        <div>{{item |readDataTable : 'translations.name' }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+
+                  <label
+                    [ngClass]="form.get('customer')?.invalid && (form.get('customer')?.touched || form.get('customer')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_18401" |translate | titlecase}}
+                  </label>
+
+                  <ng-container
+                    *ngIf="form.get('customer')?.invalid && (form.get('customer')?.touched || form.get('customer')?.dirty)"
+                  >
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('customer')?.errors?.['required'] "
+                    >
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+            </ng-template>
+
+          </ng-container>
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-1684"
+                [options]="optionsStatus"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [overlayOptions]="{autoZIndex:true}"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('status')?.invalid && (form.get('status')?.touched || form.get('status')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="status"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('status')?.invalid && (form.get('status')?.touched || form.get('status')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_8706" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('status')?.invalid && (form.get('status')?.touched || form.get('status')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('status')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                [options]="optionsSavedBy"
+                [dataKey]="'_id'"
+                inputId="id-9423"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [overlayOptions]="{autoZIndex:true}"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('savedBy')?.invalid && (form.get('savedBy')?.touched || form.get('savedBy')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="savedBy"
+              ><ng-template pTemplate="selectedItem">
+                <div class="d-flex" *ngIf="form.get('savedBy')?.value">
+                  <img
+                      [lazyLoad]="form.get('savedBy')?.value.photo | genericPipe : [{name:'file',serviceName :'accountManagement'}]"
+                      [defaultImage]="form.get('savedBy')?.value.photo| genericPipe : [{name:'file',serviceName :'accountManagement' }]"
+                      style="width: 18px"
+                      class="me-2"/>
+                  <div>{{form.get('savedBy')?.value |readDataTable : 'translations.nom $concat translations.prenom'}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="d-flex">
+                  <img
+                      [lazyLoad]="item?.photo | genericPipe : [{name:'file',serviceName :'accountManagement'}]"
+                      [defaultImage]="item?.photo| genericPipe : [{name:'file',serviceName :'accountManagement' }]"
+                      style="width: 18px"
+                      class="me-2"/>
+                  <div>{{item |readDataTable : 'translations.nom $concat translations.prenom' }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+
+              <label
+                [ngClass]="form.get('savedBy')?.invalid && (form.get('savedBy')?.touched || form.get('savedBy')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_18443" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('savedBy')?.invalid && (form.get('savedBy')?.touched || form.get('savedBy')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('savedBy')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-calendar
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-9983"
+                [selectionMode]="'single'"
+                [inputStyleClass]="
+      form.get('registrationDate')?.invalid && (form.get('registrationDate')?.touched || form.get('registrationDate')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+      "
+                [dateFormat]="'dd/mm/yy'"
+                [showOtherMonths]="true"
+                [showIcon]="true"
+                [icon]="'pi pi-calendar'"
+                [shortYearCutoff]="'+10'"
+                [maxDate]="maxDateRegistrationDate"
+                [showTime]="true"
+                [hourFormat]="'24'"
+                [timeSeparator]="':'"
+                [dataType]="'date'"
+                [stepHour]="1"
+                [stepMinute]="1"
+                [stepSecond]="1"
+                [maxDateCount]="1000"
+                [autoZIndex]="true"
+                [hideOnDateTimeSelect]="true"
+                [numberOfMonths]="1"
+                [view]="'date'"
+                [multipleSeparator]="','"
+                [rangeSeparator]="'-'"
+                formControlName="registrationDate"
+              ></p-calendar>
+
+              <label
+                [ngClass]=" form.get('registrationDate')?.invalid && (form.get('registrationDate')?.touched || form.get('registrationDate')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_18442" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('registrationDate')?.invalid && (form.get('registrationDate')?.touched || form.get('registrationDate')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('registrationDate')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngModel]="totalAmount"
+                [ngModelOptions]="{standalone: true}"
+                [readonly]="true"
+                inputId="currency-us"
+                [suffix]=" currencyService.nationalCurrency | readDataTable :'symbolCurrency'"
+                [maxFractionDigits]="2"
+                [minFractionDigits]="0"
+                [ngStyle]="{width:'100%'}" />
+
+
+              <label>
+                {{ "code_18479" |translate | titlecase}} {{nationalCurrency | readDataTable :'symbolCurrency'}}
+              </label>
+            </span>
+          </div>
+
+
+          <div class="input-container column-span-3 row-span-5" *ngIf="id">
+            <p-divider layout="horizontal" align="center" class="p-divider-solid">
+              <b>{{'code_18444' | translate | titlecase}}</b>
+            </p-divider>
+            <app-sub-transaction-line
+              [destination]="'transaction'"
+              [relation]="'OneToMany'"
+              [transactionType]="transactionType"
+              [products]="transactionType=='sales'? [] : products"
+              [currencies]="currencies"
+              [data]="form.get('transactionLines')?.value"
+              [form]="$any(form).get('transactionLines')"
+              [transactionId]="id"
+              [independentComponent]="false"
+              [mode]="'add/edit'"
+            >
+            </app-sub-transaction-line>
+          </div>
+        </div>
+      </div>
+    <div class="form-footer">
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_4145' | translate | titlecase"
+        (click)="addData()"
+      ></button>
+
+      <button
+        *ngIf="!this.independentComponent && !relation?.includes('ToOne')"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+        (click)="finish()"
+      ></button>
+    </div>
+</form>

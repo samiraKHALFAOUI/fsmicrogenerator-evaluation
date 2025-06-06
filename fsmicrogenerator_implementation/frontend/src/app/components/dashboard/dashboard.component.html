@@ -1,0 +1,31 @@
+<p-tabView styleClass="tabview-custom" [(activeIndex)]="activeIndex" [scrollable]="true">
+  <p-tabPanel *ngFor="let tab of tabs">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <p-avatar
+          [icon]="tab.icon"
+          styleClass="mr-2"
+          size="large"
+          shape="circle" />
+        <span class="font-bold white-space-nowrap m-0">
+          {{tab.title|translate|titlecase }}
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <ng-container [ngSwitch]="tab.id"  >
+        <ng-container *ngSwitchCase="'customerManagement'" >   <app-comming-soon></app-comming-soon>      </ng-container>
+        <ng-container *ngSwitchCase="'inventoryManagement'" >  <app-comming-soon></app-comming-soon>       </ng-container>
+        <ng-container *ngSwitchCase="'productManagement'" > <app-comming-soon></app-comming-soon>   </ng-container>
+        <ng-container *ngSwitchCase="'supplierManagement'" > <app-comming-soon></app-comming-soon> </ng-container>
+        <ng-container *ngSwitchCase="'transactionManagement'" > <app-comming-soon></app-comming-soon> </ng-container>
+      </ng-container>
+
+
+    </ng-template>
+  </p-tabPanel>
+
+
+
+
+</p-tabView>

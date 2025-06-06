@@ -1,0 +1,153 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"TechnicalConfiguration"'
+    [component]='"enumeration"'
+    [operation]="'add/edit'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <div class="form-grid-container">
+    <div class="form-grid grid-cols-4">
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('code')?.invalid && (form.get('code')?.touched || form.get('code')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-1780"
+            formControlName="code"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('code')?.invalid && (form.get('code')?.touched || form.get('code')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_559" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+          <ng-container
+            *ngIf="form.get('code')?.invalid && (form.get('code')?.touched || form.get('code')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('code')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label" formGroupName="translations">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('translations.valeur')?.invalid && (form.get('translations.valeur')?.touched || form.get('translations.valeur')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-2605"
+            formControlName="valeur"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('translations.valeur')?.invalid && (form.get('translations.valeur')?.touched || form.get('translations.valeur')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_564" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+          <ng-container
+            *ngIf="form.get('translations.valeur')?.invalid && (form.get('translations.valeur')?.touched || form.get('translations.valeur')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('translations.valeur')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label" formGroupName="translations">
+          <textarea
+            style="max-width: 100%; width: 100%"
+            inputId="id-418"
+            [rows]="5"
+            [cols]="30"
+            [ngClass]=" form.get('translations.commentaire')?.invalid && (form.get('translations.commentaire')?.touched || form.get('translations.commentaire')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            formControlName="commentaire"
+            pInputTextarea
+          ></textarea>
+
+          <label
+            [ngClass]=" form.get('translations.commentaire')?.invalid && (form.get('translations.commentaire')?.touched || form.get('translations.commentaire')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_775" |translate | titlecase}}
+          </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-dropdown
+            [style]="{width:'100%'}"
+            [appendTo]="'body'"
+            inputId="id-6493"
+            [options]="optionsEtatValidation"
+            [optionDisabled]="'disabled'"
+            [scrollHeight]="'200px'"
+            [filterMatchMode]="'contains'"
+            [emptyMessage]="'No records found.'"
+            [emptyFilterMessage]="'No results found.'"
+            [maxlength]="100000"
+            [dropdownIcon]="'pi pi-chevron-down'"
+            [overlayOptions]="{autoZIndex:true}"
+            [tooltipPosition]="'top'"
+            [ngClass]="form.get('etatValidation')?.invalid && (form.get('etatValidation')?.touched || form.get('etatValidation')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+            [autoDisplayFirst]="false"
+            formControlName="etatValidation"
+          ></p-dropdown>
+
+          <label
+            [ngClass]="form.get('etatValidation')?.invalid && (form.get('etatValidation')?.touched || form.get('etatValidation')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_25" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+          <ng-container
+            *ngIf="form.get('etatValidation')?.invalid && (form.get('etatValidation')?.touched || form.get('etatValidation')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('etatValidation')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="button"
+      [label]="'code_4145' | translate | titlecase"
+      (click)="addData()"
+    ></button>
+
+    <button
+      *ngIf="!this.independentComponent && !relation?.includes('ToOne')"
+      pButton
+      class="next-tab-button"
+      iconPos="right"
+      type="button"
+      [label]="'code_547' | translate | titlecase"
+class="termine"
+      (click)="finish()"
+    ></button>
+  </div>
+</form>

@@ -1,0 +1,79 @@
+
+.iconItem {
+  cursor: pointer ;
+  /* Default styles */
+  transition: all 0.3s ease;
+
+  &:hover {
+    /* Hover effect */
+    border-radius: 50px;
+    transform: scale(1.1); /* Example: increase size on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Example: add shadow on hover */
+    filter: brightness(0.5); /* Example: reduce brightness on hover */
+
+
+   * {
+      /* Icon styles */
+      color: blue !important; /* Example: default icon color */
+    }
+  }
+
+  &.selected {
+    /* Selected effect */
+    border-radius: 50px;
+    background-color: #28a0f14f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+   * {
+      /* Icon styles */
+      color: blue !important /* Example: default icon color */
+    }
+
+
+  }
+
+
+
+
+}
+
+.tooltip {
+  position: absolute;
+  display: inline-block;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.left {
+  transform: translateX(-50%);
+  top: -25px;
+}
+
+.right {
+  transform: translateX(-50%);
+  top: -25px;
+}
+
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.full-width-input {
+  flex-grow: 1; /* Allow input to take remaining space */
+  width: 100%; /* Ensure input takes full width */
+}
+
+
+
+
+

@@ -1,0 +1,98 @@
+<div class="d-flex justify-content-center my-4">
+  <button type="button" class="btn btn-outline-success btn-lg shadow-sm" (click)="openCategoryModal()">
+    <i class="fas fa-plus-circle me-2"></i> Add Category
+  </button>
+</div>
+<form [formGroup]="form">
+    <div class="container mt-4">
+        <h2 class="mb-4">Add New Product</h2>
+        <div class="card">
+            <div class="card-body">
+                <div  class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Product Name</label>
+                        <input id="name" type="text" class="form-control" formControlName="name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" class="form-control" formControlName="description" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="image" class="form-label">Product Image</label>
+                        <input id="image" (change)="onFileSelect($event)" type="file" class="form-control" formControlName="image">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="salePrice" class="form-label">Sale Price</label>
+                        <input id="salePrice" type="number" class="form-control" formControlName="salePrice">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="currency" class="form-label">Currency</label>
+                        <select id="currency" class="form-select" formControlName="currency">
+                            <option value="usd">USD</option>
+                            <option value="eur">EUR</option>
+                            <option value="gbp">GBP</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="stockQuantity" class="form-label">Stock Quantity</label>
+                        <input id="stockQuantity" type="number" class="form-control" formControlName="stockQuantity">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="unit" class="form-label">Unit</label>
+                        <select id="unit" class="form-select" formControlName="unit">
+                            <option value="piece">Piece</option>
+                            <option value="kg">Kilogram</option>
+                            <option value="liter">Liter</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Status</label>
+                        <select id="status" class="form-select" formControlName="status">
+                            <option value="available">Available</option>
+                            <option value="out_of_stock">Out of Stock</option>
+                            <option value="discontinued">Discontinued</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label for="category" class="form-label">Category</label>
+                        <select id="category" class="form-select" formControlName="category">
+                            <option value="">Select Category</option>
+                            <!-- Dynamic categories -->
+                            <option *ngFor="let category of categories" [value]="category._id">
+                                {{ category.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="supplier" class="form-label">Supplier</label>
+                        <select id="supplier" class="form-select" formControlName="supplier">
+                            <option value="">Select Supplier</option>
+                            <!-- Dynamic suppliers -->
+                            <option *ngFor="let supplier of suppliers" [value]="supplier._id">
+                                {{ supplier.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                    <button type="button" [routerLink]="['/products']" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-x-circle me-2"></i>Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4" (click)="addProduct()">
+                        <i class="bi bi-check-circle me-2"></i>Save Product
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

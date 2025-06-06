@@ -1,0 +1,87 @@
+<button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain"
+  (click)="menu.toggle($event)"></button>
+<p-menu #menu [model]="items" [popup]="true" appendTo="body">
+  <ng-template pTemplate="item" let-item>
+    <ng-container [ngSwitch]="item.type">
+      <ng-container *ngSwitchCase="'calendar'">
+        <div class="calendar-section p-2" (click)="$event.stopPropagation()">
+          <div class="calendar-container">
+            <div class="p-field">
+              <span class="p-float-label">
+                <p-calendar
+                  [style]="{width:'100%'}"
+                  [(ngModel)]="fromDate"
+                  inputId="fromDate"
+                  appentTo="menu"
+                  dateFormat="mm/dd/yy"
+                  [maxDate]="today">
+                </p-calendar>
+                <label for="fromDate">
+                  {{ "code_4312" |translate | titlecase}}
+                </label>
+              </span>
+            </div>
+            <div class="p-field mt-3">
+              <span class="p-float-label">
+                <p-calendar
+                  [style]="{width:'100%'}"
+                  [(ngModel)]="toDate"
+                  inputId="toDate"
+                  appentTo="menu"
+                  dateFormat="mm/dd/yy"
+                  [minDate]="fromDate"
+                  [maxDate]="today">
+                </p-calendar>
+                <label for="toDate">
+                  {{ "code_4311" |translate | titlecase}}
+                </label>
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'count'">
+        <div class="p-field p-2 mt-3">
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="N"
+              [showButtons]="true"
+              inputId="stacked"
+              [min]="1"
+              (click)="$event.stopPropagation()"
+               />
+            <label>
+              {{ item.label |translate }}
+            </label>
+          </span>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'clear'">
+        <div class="p-2 calendar-container" >
+          <button
+          pButton
+          [label]="'code_17771'|translate"
+          class="mt-2 "
+          [raised]="true"
+          severity="success"
+          (click)="applyPersonalize() ;menu.hide()">
+        </button>
+          <button
+            pButton
+            (click)="item.command($event)"
+            [label]="'code_4148' | translate | titlecase"
+            [raised]="true"
+            severity="secondary"
+            icon="pi pi-filter-slash">
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <a pRipple class="flex align-items-center p-menuitem-link" (click)="item.command && item.command($event)">
+          <span [class]="item.icon"></span>
+          <span class="ml-2">{{ item.label | translate }}</span>
+        </a>
+      </ng-container>
+    </ng-container>
+  </ng-template>
+</p-menu>

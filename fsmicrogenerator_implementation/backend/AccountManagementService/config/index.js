@@ -1,0 +1,3 @@
+module.exports = {
+  TAXONOMY_RPC: "TAXONOMY_TAXONOMYMANAGEMENT_RPC"
+};

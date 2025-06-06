@@ -1,0 +1,284 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]="'ElementProjet'"
+    [component]="'menu'"
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-2974"
+                [disabled]="true"
+                [ngModel]="data?.translations?.titre"
+                pInputText
+              />
+
+              <label> {{ "code_33" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-4916"
+                [disabled]="true"
+                [ngModel]="data?.planPrincipale"
+                pInputText
+              />
+
+              <label> {{ "code_13881" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-939"
+                [disabled]="true"
+                [ngModel]="data?.megaMenu"
+                pInputText
+              />
+
+              <label> {{ "code_13882" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-9050"
+                [disabled]="true"
+                [ngModel]="data?.icon"
+                pInputText
+              />
+
+              <label> {{ "code_2605" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngStyle]="{ width: '100%' }"
+                inputId="id-3704"
+                [disabled]="true"
+                [ngModel]="data?.ordre"
+              ></p-inputNumber>
+
+              <label> {{ "code_570" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngStyle]="{ width: '100%' }"
+                inputId="id-7563"
+                [disabled]="true"
+                [ngModel]="data?.priorite"
+              ></p-inputNumber>
+
+              <label> {{ "code_11514" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div
+            class="input-container column-span-1 row-span-1"
+            *ngIf="data?.path"
+          >
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-5118"
+                [disabled]="true"
+                [ngModel]="data?.path"
+                pInputText
+              />
+
+              <label> {{ "code_12036" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-5572"
+                [disabled]="true"
+                [ngModel]="data?.typeAffichage || '' | translate | titlecase"
+                pInputText
+              />
+
+              <label> {{ "code_10945" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-294"
+                [disabled]="true"
+                [ngModel]="data?.typeActivation || '' | translate | titlecase"
+                pInputText
+              />
+
+              <label> {{ "code_13886" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div>
+            <div
+              *ngFor="
+                let periodeActivationItem of data?.periodeActivation;
+                index as periodeActivationIndex
+              "
+            >
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-calendar
+                    [style]="{ width: '100%' }"
+                    inputId="id-4688"
+                    [dateFormat]="'dd/mm/yy'"
+                    [autoZIndex]="true"
+                    [view]="'date'"
+                    [disabled]="true"
+                    [ngModel]="periodeActivationItem?.dateDebut"
+                  ></p-calendar>
+
+                  <label> {{ "code_87" | translate | titlecase }} </label>
+                </span>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-calendar
+                    [style]="{ width: '100%' }"
+                    inputId="id-6458"
+                    [dateFormat]="'dd/mm/yy'"
+                    [autoZIndex]="true"
+                    [view]="'date'"
+                    [disabled]="true"
+                    [ngModel]="periodeActivationItem?.dateFin"
+                  ></p-calendar>
+
+                  <label> {{ "code_88" | translate | titlecase }} </label>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="input-container column-span-1 row-span-1"
+            *ngIf="data?.periodiciteActivation"
+          >
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-6796"
+                [disabled]="true"
+                [ngModel]="data?.periodiciteActivation"
+                pInputText
+              />
+
+              <label> {{ "code_13889" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div
+            class="input-container column-span-1 row-span-1"
+            *ngIf="data?.elementAffiche && data?.elementAffiche?.length"
+          >
+            <span class="p-float-label">
+              <p-chips
+                [style]="{ width: '100%' }"
+                separator=","
+                inputId="id-4988"
+                [disabled]="true"
+                [ngModel]="data?.elementAffiche"
+              ></p-chips>
+
+              <label> {{ "code_13890" | translate | titlecase }} </label>
+            </span>
+          </div>
+          <div class="input-container column-span-1 row-span-1">
+            <div class="position-relative">
+              <label> {{ "code_13932" | translate | titlecase }} </label>
+
+              <p-inputSwitch
+                inputId="id-8832"
+                [disabled]="true"
+                [ngModel]="data?.menuPrincipal"
+              ></p-inputSwitch>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <div class="position-relative">
+              <label> {{ "code_4316" | translate | titlecase }} </label>
+
+              <p-inputSwitch
+                inputId="id-267"
+                [disabled]="true"
+                [ngModel]="data?.actif"
+              ></p-inputSwitch>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-8575"
+                [disabled]="true"
+                [ngModel]="data?.type || '' | translate | titlecase"
+                pInputText
+              />
+
+              <label> {{ "code_135" | translate | titlecase }} </label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+
+
+    <div class="form-footer">
+
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="submit"
+        [label]="'code_547' | translate | titlecase"
+class="termine"
+        (click)="goBack()"
+      ></button>
+
+
+    </div>
+  </p-tabView>
+</div>

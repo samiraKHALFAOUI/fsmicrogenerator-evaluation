@@ -1,0 +1,15 @@
+<div class="dynamicChart">
+  <ng-container *ngIf="chartOptions && chartOptions?.series">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
+      [colors]="chartOptions.colors"
+      [stroke]="chartOptions.stroke"
+      [dataLabels]="chartOptions.dataLabels"
+      [legend]="chartOptions.legend"
+      [grid]="chartOptions.grid"
+      [plotOptions]="chartOptions.plotOptions">
+    </apx-chart>
+  </ng-container>
+</div>

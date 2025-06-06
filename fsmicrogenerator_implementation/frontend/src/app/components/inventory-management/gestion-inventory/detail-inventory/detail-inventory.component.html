@@ -1,0 +1,65 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"InventoryManagement"'
+    [component]='"inventory"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+
+
+<div class="form dynamic-form px-3 py-2">
+    <div class="inventory-card" *ngIf="data">
+      <div class="product-image">
+        <img
+            [lazyLoad]="data.product.image | genericPipe : [{name:'file',serviceName :'productManagement'}]"
+            [defaultImage]="data.product.image| genericPipe : [{name:'file',serviceName :'productManagement' }]"
+            id="image"
+            alt="product"
+            title=""
+        />
+      </div>
+      <div class="inventory-details">
+        <h2>{{data | readDataTable : 'product.translations.name'}}</h2>
+        <div class="inventory-field">
+          <div class="label">{{ "code_505" |translate | titlecase}} :</div>
+          <div class="value">{{data | readDataTable : 'product.reference'}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_8400" |translate | titlecase}} :</div>
+          <div class="value">{{data.transactionLine| readDataTable : 'transaction.reference'}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_18418" |translate | titlecase}} :</div>
+          <div class="value">{{data.quantity }} {{ data.product | readDataTable : 'unit.translations.designation'}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_18419" |translate | titlecase}} :</div>
+          <div class="value">{{data.price }} {{data.transactionLine | readDataTable : 'currency.symbolCurrency'}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_135" |translate | titlecase}}</div>
+          <div class="value">{{data.type | translate}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_1949" |translate | titlecase}} :</div>
+          <div class="value">{{data.raison | translate}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_1307" |translate | titlecase}} :</div>
+          <div class="value">{{data.date | date : 'dd/MM/yyyy HH:mm'}}</div>
+        </div>
+      </div>
+    </div>
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="button"
+      [label]="'code_547' | translate | titlecase"
+      (click)="goBack()"
+    ></button>
+  </div>
+</div>

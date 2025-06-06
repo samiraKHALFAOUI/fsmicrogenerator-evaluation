@@ -1,0 +1,32 @@
+<div class="container bg-light p-5 rounded shadow-sm text-center">
+    <h1 class="display-4 mb-4">{{"code_18493" | translate}}</h1>
+    <p class="lead mb-4">{{"code_18494" | translate}}</p>
+
+    <div class="mb-4">
+      <h2 class="h5 font-weight-bold mb-3">{{"code_18495" | translate}}</h2>
+      <div class="d-flex justify-content-center">
+        <div *ngIf="timeLeft.days !== undefined" class="mx-2 text-center">
+          <div class="h3 font-weight-bold">{{ timeLeft.days }}</div>
+          <div class="small text-uppercase">{{'code_1731' |translate}}</div>
+        </div>
+        <div *ngIf="timeLeft.hours !== undefined" class="mx-2 text-center">
+          <div class="h3 font-weight-bold">{{ timeLeft.hours }}</div>
+          <div class="small text-uppercase">{{"code_18496" | translate}}</div>
+        </div>
+        <div *ngIf="timeLeft.minutes !== undefined" class="mx-2 text-center">
+          <div class="h3 font-weight-bold">{{ timeLeft.minutes }}</div>
+          <div class="small text-uppercase">{{"code_18497" | translate}}</div>
+        </div>
+        <div *ngIf="timeLeft.seconds !== undefined" class="mx-2 text-center">
+          <div class="h3 font-weight-bold">{{ timeLeft.seconds }}</div>
+          <div class="small text-uppercase">{{"code_18498" | translate}}</div>
+        </div>
+        <span *ngIf="!timeLeft.days" class="h5">{{"code_18499" | translate}}</span>
+      </div>
+    </div>
+
+
+
+
+  </div>
+

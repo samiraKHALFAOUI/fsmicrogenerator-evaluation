@@ -1,0 +1,153 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - customer_management_service
+      - supplier_service
+      - product_management
+      - inventory
+      - transactions
+      - mongodb
+    restart: always
+    volumes:
+      - ./gateway:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+    networks:
+      - microservices_network
+
+  customer_management_service:
+    build:
+      context: ./backend/CustomerManagementService
+    ports:
+      - "8003:8003"
+    restart: always
+    volumes:
+      - ./backend/CustomerManagementService:/app
+      - /app/node_modules
+    environment:
+      - PORT=8003
+      - MONGODB_URI=mongodb://mongodb:27017/CustomerManagementService
+      - NODE_ENV=production
+      - AMQ=amqp://rabbitmq
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - microservices_network
+
+  supplier_service:
+    build:
+      context: ./backend/supplierService
+    ports:
+      - "8006:8006"
+    restart: always
+    volumes:
+      - ./backend/supplierService:/app
+      - /app/node_modules
+    environment:
+      - PORT=8006
+      - MONGODB_URI=mongodb://mongodb:27017/supplier-management
+      - NODE_ENV=production
+      - AMQ=amqp://rabbitmq
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - microservices_network
+
+  product_management:
+    build:
+      context: ./backend/productManagement
+    ports:
+      - "8005:8005"
+    restart: always
+    volumes:
+      - ./backend/productManagement:/app
+      - /app/node_modules
+    environment:
+      - PORT=8005
+      - URL=mongodb://mongodb:27017/ProductManagement
+      - NODE_ENV=production
+      - AMQ=amqp://rabbitmq
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - microservices_network
+
+  inventory:
+    build:
+      context: ./backend/inventory
+    ports:
+      - "8004:8004"
+    restart: always
+    volumes:
+      - ./backend/inventory:/app
+      - /app/node_modules
+    environment:
+      - DB_STRING=mongodb://mongodb:27017/inventory
+      - NODE_ENV=production
+      - AMQ=amqp://rabbitmq
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - microservices_network
+
+  transactions:
+    build:
+      context: ./backend/transactions
+    ports:
+      - "8008:8008"
+    restart: always
+    volumes:
+      - ./backend/transactions:/app
+      - /app/node_modules
+    environment:
+      - PORT=8008
+      - URL=mongodb://mongodb:27017/transactions
+      - AMQ=amqp://rabbitmq
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - microservices_network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "4500:80"
+    restart: always
+    environment:
+      - NODE_ENV=prod
+    networks:
+      - microservices_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - microservices_network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+    driver: bridge

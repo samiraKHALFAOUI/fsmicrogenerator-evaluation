@@ -1,0 +1,197 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"ProductManagement"'
+    [component]='"category"'
+    [operation]="'translate'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container" formArrayName="translations">
+        <ng-container *ngFor="let item of translations.controls;let i = index">
+          <div class="translation-container">
+            <button
+              pButton
+              [pTooltip]="'delete this input' | translate | titlecase"
+              tooltipPosition="top"
+              class="p-button-sm p-button-danger delete-translation-button"
+              icon="pi pi-times"
+              (click)="removeTranslation(i)"
+              type="button"
+            ></button>
+            <div
+              class="form-grid grid-cols-2 mb-3 formArray"
+              [formGroupName]="i"
+            >
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-dropdown
+                    [style]="{width:'100%'}"
+                    [appendTo]="'body'"
+                    inputId="id-5726"
+                    [options]="optionLanguage[i]"
+                    [optionDisabled]="'disabled'"
+                    [scrollHeight]="'200px'"
+                    [filter]="true"
+                    [filterMatchMode]="'contains'"
+                    filterBy="name"
+                    [emptyMessage]="'No records found.'"
+                    [emptyFilterMessage]="'No results found.'"
+                    [maxlength]="100000"
+                    [dropdownIcon]="'pi pi-chevron-down'"
+                    [overlayOptions]="{autoZIndex :true}"
+                    [tooltipPosition]="'top'"
+                    [ngClass]="item.get('language')?.invalid && (item.get('language')?.touched || item.get('language')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                    [autoDisplayFirst]="false"
+                    dataKey="code"
+                    formControlName="language"
+                    (onChange)="onLanguageChange($event,i)"
+                  >
+                    <ng-template pTemplate="selectedItem">
+                      <div class="d-flex" *ngIf="item.get('language')?.value">
+                        <i
+                          [class]="item.get('language')?.value.flag"
+                          class="me-2"
+                        ></i>
+                        <div>{{item.get('language')?.value |readDataTable : 'translations.value' }}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-language pTemplate="item">
+                      <div class="d-flex">
+                        <i [class]="language.flag" class="me-2"></i>
+                        <div>{{language |readDataTable : 'translations.value' }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                  <label
+                    [ngClass]=" item.get('language')?.invalid && (item.get('language')?.touched || item.get('language')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_181" |translate | titlecase}}
+                  </label>
+
+                  <ng-container
+                    *ngIf="item.get('language')?.invalid && (item.get('language')?.touched || item.get('language')?.dirty)"
+                  >
+                    <span
+                      class="error-span"
+                      *ngIf="item.get('language')?.errors?.['required'] "
+                    >
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <input
+                    type="text"
+                    style="width: 100%"
+                    [ngClass]="item.get('name')?.invalid && (item.get('name')?.touched || item.get('name')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                    id="id-8011"
+                    formControlName="name"
+                    pInputText
+                  />
+
+                  <label
+                    [ngClass]=" item.get('name')?.invalid && (item.get('name')?.touched || item.get('name')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_18391" |translate | titlecase}}
+                  </label>
+
+                  <ng-container
+                    *ngIf="item.get('name')?.invalid && (item.get('name')?.touched || item.get('name')?.dirty)"
+                  >
+                    <span
+                      class="error-span"
+                      *ngIf="item.get('name')?.errors?.['required'] "
+                    >
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div>
+          <button
+            *ngIf="translations.length && optionLanguage[translations.length-1].length>1"
+            [disabled]="!translations.at(translations.length-1).get('language')?.value"
+            pButton
+            class="p-button-sm p-button-success prev-tab-button"
+            iconPos="left"
+            icon="pi pi-plus"
+            type="button"
+            (click)="addTranslation()"
+            [label]="'code_4660' | translate | titlecase"
+          ></button>
+        </div>
+      </div>
+    </p-tabPanel>
+
+
+    <p-tabPanel
+      [header]="'code_18407' | translate | titlecase"
+      [disabled]="!id"
+    >
+      <app-sub-category
+        *ngIf="id"
+        [destination]="'category'"
+        [relation]="'OneToMany'"
+        [data]="current?.subCategories|| []"
+        [independentComponent]="false"
+        [mode]="'translate'"
+      >
+      </app-sub-category>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_4145' | translate | titlecase"
+        (click)="addData()"
+      ></button>
+
+      <button
+        *ngIf="!this.independentComponent && !relation?.includes('ToOne')"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+        (click)="finish()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        [label]="'code_2994' | translate | titlecase"
+        (click)="nextTab()"
+      ></button>
+    </div>
+  </p-tabView>
+</form>

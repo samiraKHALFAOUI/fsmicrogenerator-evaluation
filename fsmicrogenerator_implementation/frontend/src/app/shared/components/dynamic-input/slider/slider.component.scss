@@ -1,0 +1,58 @@
+$markerBackColor: #efefef;
+
+::ng-deep {
+  p-slider {
+    .ui-slider {
+      .ui-slider-handle {
+        background-color: #337ab7;
+        cursor: pointer;
+
+        &:before {
+          top: -30px;
+          position: absolute;
+          color: black;
+          font-size: 0.7rem;
+          background-color: $markerBackColor;
+          border-radius: 2px;
+          padding: 0.5em;
+        }
+
+        &:nth-child(2) {
+          &:before {
+            content: attr(data-left);
+            left: -30px;
+          }
+        }
+
+        &:nth-child(3) {
+          &:before {
+            content: attr(data-right);
+            right: -30px;
+          }
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          border: 0.75em solid transparent;
+          border-top-color: $markerBackColor;
+          top: -10px;
+        }
+
+        &:nth-child(2) {
+          &:after {
+            left: -5px;
+            border-right: 0;
+          }
+        }
+
+        &:nth-child(3) {
+          &:after {
+            right: -5px;
+            border-left: 0;
+          }
+        }
+      }
+    }
+  }
+}

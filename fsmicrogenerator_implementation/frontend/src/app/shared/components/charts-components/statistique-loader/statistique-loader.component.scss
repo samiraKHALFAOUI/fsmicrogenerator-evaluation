@@ -1,0 +1,57 @@
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    overflow: hidden;
+    /* Clip the text content */
+}
+
+.spinner {
+    margin: 200px auto;
+    margin-bottom: 40px;
+    border: 10px solid rgba(255, 255, 255, 0.3);
+    border-top: 10px solid #0b2672;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.marquee {
+    /* Marquee animation */
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 5s linear infinite;
+    /* Adjust the duration as needed */
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+
+    /* Start from the right edge */
+    100% {
+        transform: translateX(-100%);
+    }
+
+    /* End at the left edge */
+}

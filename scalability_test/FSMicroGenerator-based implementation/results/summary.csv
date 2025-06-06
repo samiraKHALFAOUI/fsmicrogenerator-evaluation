@@ -1,0 +1,2 @@
+test,avg_latency_ms,min_latency_ms,max_latency_ms,http_429_errors,error_rate_pct,throughput_req_per_sec
+test_result,1828.38,11,5219,0,0.00,21.75

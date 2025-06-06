@@ -1,0 +1,501 @@
+# ----------------------------------------------
+# 🔐 DEVSECOPS TEMPLATES (GITLAB NATIVE)
+# ----------------------------------------------
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml
+
+
+
+# ----------------------------------------------
+# STAGES DEFINITION
+# ----------------------------------------------
+stages:
+  - install
+  - test
+  - build
+  - security
+  - deploy
+  - notify
+  - cleanup
+
+# ----------------------------------------------
+# 🌍 GLOBAL VARIABLES
+# ----------------------------------------------
+variables:
+  NODE_ENV: "test"
+  URL: "mongodb://mongo:27017/"
+  DBNAME: testDB
+  MSG_QUEUE_URL: "amqp://rabbitmq"
+  REDIS_URL: "redis://redis:6379"
+  REDIS_TTL: 3600
+  ALLOWED_SOURCES: "localhost"
+  EXCHANGE_NAME: "INVENTORYMANAGEMENTSYSTEM"
+  TOKEN_KEY: "[Rdk,](M7VKc>:XLA[=i"
+  TOKEN_FIELD_NAME: "jwt"
+  TOKEN_EXPIRATION_DURATION_IN_MILLISECOND: 14400000
+  LANGUAGE_FIELD_NAME: lang
+  UPLOAD_DESTINATION: "."
+  DELAY: 1000
+  RETRIES: 3
+  TZ: UTC
+
+# ----------------------------------------------
+# SERVICES (Database, Cache, Queue)
+# ----------------------------------------------
+services:
+  - name: mongo:latest
+    alias: mongo
+  - name: redis:latest
+    alias: redis
+  - name: rabbitmq:management
+    alias: rabbitmq
+    entrypoint: ["docker-entrypoint.sh", "rabbitmq-server"]
+
+# ----------------------------------------------
+# SHARED TEMPLATES
+# ----------------------------------------------
+.default_template:
+  image: node:20-alpine
+  tags: [docker, node, test]
+
+.test_job_template:
+  extends: .default_template
+  before_script:
+    - echo "⏳ Waiting for MongoDB, Redis, and RabbitMQ to be ready..."
+    - until nc -z mongo 27017; do echo "❗ Waiting for MongoDB..."; sleep 1; done
+    - until nc -z redis 6379; do echo "❗ Waiting for Redis..."; sleep 1; done
+    - until nc -z rabbitmq 5672; do echo "❗ Waiting for RabbitMQ..."; sleep 1; done
+
+.install_template:
+  extends: .default_template
+  script:
+    - echo "📦 Installing dependencies in $TARGET_DIR..."
+    - cd "$TARGET_DIR" && npm ci
+
+.test_template:
+  extends: .test_job_template
+  script:
+    - echo "🧪 Running tests in $TARGET_DIR..."
+    - cd "$TARGET_DIR"
+    - npm ci
+    - npx jest --ci --detectOpenHandles
+
+# ----------------------------------------------
+# INSTALL JOBS
+# ----------------------------------------------
+install_apigateway_dependencies:
+  stage: install
+  variables:
+    TARGET_DIR: APIGateway
+  extends: .install_template
+
+install_microservices_dependencies:
+  stage: install
+  extends: .default_template
+  script:
+    - echo "📦 Installing dependencies in backend microservices..."
+    - |
+      for dir in backend/*; do
+        if [ -f "$dir/package.json" ]; then
+          echo "➡️ Installing in $dir"
+          cd "$dir" && npm ci && cd - || exit 1
+        fi
+      done
+
+# ----------------------------------------------
+# TEST JOBS (for all branches)
+# ----------------------------------------------
+test_apigateway:
+  stage: test
+  variables:
+    TARGET_DIR: APIGateway
+  extends: .test_template
+  artifacts:
+    when: always
+    reports:
+      junit: APIGateway/jest-junit.xml
+    paths:
+      - APIGateway/coverage/
+      - APIGateway/jest-junit.xml
+
+test_microservices:
+  stage: test
+  extends: .test_job_template
+  script:
+    - echo "🧪 Running backend tests..."
+    - |
+      for dir in backend/*; do
+        if [ -f "$dir/package.json" ]; then
+          echo "🔍 Testing $(basename $dir)"
+          cd "$dir"
+          if [[ "$dir" == *"TechnicalConfigurationService"* ]]; then
+            echo "⚗️ Using vm modules for TechnicalConfigurationService"
+            npm ci && node --experimental-vm-modules ./node_modules/.bin/jest --ci --detectOpenHandles
+          else
+            npm ci && npx jest --ci --detectOpenHandles
+          fi
+          cd - || exit 1
+        fi
+      done
+  artifacts:
+    when: always
+    reports:
+      junit: backend/*/jest-junit.xml
+    paths:
+      - backend/*/coverage/
+      - backend/*/jest-junit.xml
+
+
+# ----------------------------------------------
+# 🛡️ CUSTOM DEVSECOPS SECURITY JOBS
+# ----------------------------------------------
+# ✅ Checkov IaC security scanning on YAML configuration files
+iac_security_scan:
+  stage: security
+  image: bridgecrew/checkov:latest
+  tags: [docker]
+  script:
+    - echo "🔍 Running Checkov to scan YAML and IaC files..."
+    - echo "Running  checkov -d . -o json > checkov-report.json || true"
+    - checkov -d . -o json > checkov-report.json || true
+    - echo "Checkov finished with exit code $?"
+  artifacts:
+    paths:
+      - checkov-report.json
+    when: always
+  allow_failure: true
+
+container_scanning:
+  stage: security
+  tags: [dind]
+  script:
+    - echo "🔍 Running container scanning on the built images..."
+    - trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format json -o gl-container-scanning-report.json $CI_REGISTRY_IMAGE/inventorymanagementsystem-apigateway-image:$CI_COMMIT_SHA || true
+  needs:
+    - docker_build
+  image: registry.gitlab.com/security-products/container-scanning:5
+  variables:
+    CS_IMAGE_NAME: "$CI_REGISTRY_IMAGE/inventorymanagementsystem-apigateway-image:$CI_COMMIT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+
+# ----------------------------------------------
+# 🚧 BUILD JOB
+# ----------------------------------------------
+# [Build images only on main branch]
+# [Docker-in-Docker to allow container builds]
+# [All services + init-db + frontend + API gateway]
+# [Images are tagged with the Git commit SHA]
+# [Pushed to GitLab Container Registry]
+
+.dind:
+  image: docker:24.0.0
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - echo "📡 Checking Docker connectivity"
+    - docker info
+  tags: [dind]
+
+docker_build:
+  extends: .dind
+  stage: build
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - echo "🔐 Login to GitLab Container Registry"
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+
+    # Build, tag and push the API Gateway
+    - echo "📦 Building inventorymanagementsystem-apigateway-image"
+    - docker build -t inventorymanagementsystem-apigateway-image ./APIGateway
+    - docker tag inventorymanagementsystem-apigateway-image $CI_REGISTRY_IMAGE/inventorymanagementsystem-apigateway-image:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/inventorymanagementsystem-apigateway-image:$CI_COMMIT_SHA
+
+    # Build, tag, and push the frontend
+    - echo "📦 Building inventorymanagementsystem-frontend-image"
+    - docker build -t inventorymanagementsystem-frontend-image ./frontend
+    - docker tag inventorymanagementsystem-frontend-image $CI_REGISTRY_IMAGE/inventorymanagementsystem-frontend-image:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/inventorymanagementsystem-frontend-image:$CI_COMMIT_SHA
+
+    # Build, tag, and push the the init db
+    - echo "📦 Building init-db-inventorymanagementsystem-image"
+    - docker build -t init-db-inventorymanagementsystem-image ./utils/database
+    - docker tag init-db-inventorymanagementsystem-image $CI_REGISTRY_IMAGE/init-db-inventorymanagementsystem-image:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/init-db-inventorymanagementsystem-image:$CI_COMMIT_SHA
+
+    # Build, tag, and push backend Services
+    - |
+      for dir in backend/*; do
+        if [ -f "$dir/Dockerfile" ]; then
+          service=$(basename "$dir" | tr '[:upper:]' '[:lower:]')
+          imageName="inventorymanagementsystem-${service}-image"
+          echo "📦 Building $imageName from $dir"
+          docker build -t "$imageName" "$dir"
+          registryTag="$CI_REGISTRY_IMAGE/inventorymanagementsystem-${service}-image:$CI_COMMIT_SHA"
+          echo "🚀 Tagging and pushing $registryTag"
+          docker tag "$imageName" "$registryTag"
+          docker push "$registryTag"
+        fi
+      done
+
+# ----------------------------------------------
+# 🚀 DEPLOY & CLEANUP STAGES (Remote SSH)
+# ----------------------------------------------
+
+# ------------------------
+# SHARED SSH TEMPLATE
+# ------------------------
+
+.remote_ssh_template:
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh git docker-cli
+    - echo "$SSH_PRIVATE_KEY_B64" | base64 -d > private_key
+    - chmod 600 private_key
+    - ls -l private_key
+    - echo "🔐 Test SSH vers ${REMOTE_USER}@${REMOTE_HOST}"
+    - |
+      ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i private_key "${REMOTE_USER}@${REMOTE_HOST}" '
+        echo "🟢 SSH Connection Successful"
+      ' || {
+        echo "❌ SSH connection failed."
+        exit 1
+      }
+    - echo "📤 Copying private key to remote"
+    - scp -o StrictHostKeyChecking=no -i private_key private_key "${REMOTE_USER}@${REMOTE_HOST}":~/private_key
+
+# ------------------------
+# DEPLOYMENT JOB
+# ------------------------
+
+deploy_production:
+  stage: deploy
+  extends: .remote_ssh_template
+  tags: [docker]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - |
+      set -eo pipefail
+      echo "🛰️ Starting remote deployment..."
+
+      STATUS="success"
+      {
+        ssh -o StrictHostKeyChecking=no -i private_key "${REMOTE_USER}@${REMOTE_HOST}" '
+          set -e
+          PROJECT_NAME=$(basename "'"${CI_PROJECT_PATH}"'")
+          PROJECT_DIR=~/deployment/$PROJECT_NAME
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+
+          echo "📁 Project: $PROJECT_NAME"
+          echo "📂 folder: $PROJECT_DIR"
+
+          mkdir -p "$PROJECT_DIR"
+          cd "$PROJECT_DIR"
+
+          if [ ! -d ".git" ]; then
+            echo "📥 Cloning repository..."
+            git clone git@'"${CI_SERVER_HOST}:${CI_PROJECT_PATH}"' . ;
+          fi
+
+          git fetch origin
+          git reset --hard origin/main
+
+          cp .env .env.backup_$TIMESTAMP || true
+          cp docker-compose.prod.yml docker-compose.prod.yml.backup_$TIMESTAMP || true
+
+          echo "⛔ docker-compose down"
+          docker compose -f docker-compose.prod.yml down || true
+
+          echo '🧾 injecting variables into .env'
+          echo "CI_REGISTRY_IMAGE='"${CI_REGISTRY_IMAGE}"'" > .env
+          echo "IMAGE_TAG='"${CI_COMMIT_SHA}"'" >> .env
+          cat .env
+
+          echo "📦 docker-compose pull"
+          echo '"${CI_REGISTRY_PASSWORD}"' | docker login -u '"${CI_REGISTRY_USER}"' --password-stdin '"${CI_REGISTRY}"'
+          if ! docker compose -f docker-compose.prod.yml pull; then
+            echo "❌ Pull failed. Attempting rollback..."
+            git reset --hard HEAD@{1}
+            cp docker-compose.prod.yml.backup_* docker-compose.prod.yml
+            cp .env.backup_* .env
+            docker compose -f docker-compose.prod.yml up -d || echo "⚠️ Rollback failed."
+            exit 1
+          fi
+
+          echo "🚀 docker-compose up"
+          docker compose -f docker-compose.prod.yml up -d --remove-orphans --force-recreate
+          echo "✅ Deployment complete at $(date)" | tee -a deploy.log
+        '
+      } || STATUS="failed"
+
+      echo "$STATUS" > deploy_status.txt
+
+    - echo "🧹 deleting private_key"
+    - ssh -o StrictHostKeyChecking=no -i private_key "${REMOTE_USER}@${REMOTE_HOST}" 'rm -f ~/private_key'
+
+  artifacts:
+    paths:
+      - deploy_status.txt
+    when: always
+
+# ------------------------
+# CLEANUP JOB
+# ------------------------
+
+remote_cleanup:
+  stage: cleanup
+  extends: .remote_ssh_template
+  tags: [docker]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - echo "📡 Connecting to remote host to clean resources..."
+    - |
+      set -eo pipefail
+      STATUS="success"
+      {
+        ssh -o StrictHostKeyChecking=no -i private_key "${REMOTE_USER}@${REMOTE_HOST}" '
+          set -e
+          PROJECT_NAME=$(basename "'"${CI_PROJECT_PATH}"'")
+          PROJECT_DIR=~/deployment/$PROJECT_NAME
+
+          if [ ! -d "$PROJECT_DIR" ]; then
+            echo "⚠️ No deployment found to clean."
+            exit 0
+          fi
+
+          cd "$PROJECT_DIR"
+
+          echo "🧽 Cleaning containers (status=exited) matching $PROJECT_NAME-"
+          docker ps -a --filter "status=exited" --format "{{.ID}} {{.Names}}" | grep "$PROJECT_NAME" | while read -r line; do
+            container_id=$(echo $line | awk "{print \$1}")
+            echo "🔻 Removing container $container_id"
+            docker rm "$container_id"
+          done || echo "✅ No exited containers"
+
+          echo "🧽 Cleaning images matching $PROJECT_NAME-"
+          docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "$PROJECT_NAME" | while read -r line; do
+            image_id=$(echo $line | awk "{print \$2}")
+            echo "🔻 Removing image $image_id"
+            docker rmi -f "$image_id"
+          done || echo "✅ No images"
+
+          docker volume prune -f
+          echo "✅ Cleanup finished at $(date)"
+        '
+      } || STATUS="failed"
+
+      echo "$STATUS" > cleanup_status.txt
+
+    - echo "🧹 deleting private_key"
+    - ssh -o StrictHostKeyChecking=no -i private_key "${REMOTE_USER}@${REMOTE_HOST}" 'rm -f ~/private_key'
+
+  artifacts:
+    paths:
+      - cleanup_status.txt
+    when: always
+
+# ------------------------
+# SLACK NOTIFICATIONS
+# ------------------------
+
+.slack_notify:
+  image: curlimages/curl:latest
+  script:
+    - |
+      curl -X POST -H 'Content-type: application/json' --data "$(cat slack-message.json)" "$SLACK_WEBHOOK_URL"
+
+# 📢 Slack Alert if any security issue is found in audit/trivy/checkov reports
+security_alert_slack:
+  extends: .slack_notify
+  stage: notify
+  tags:
+    - docker
+  needs:
+    #- sast
+    #- dependency_scanning
+    - container_scanning
+    - iac_security_scan
+  when: always
+  script:
+    - echo "Starting security reports check..."
+    - |
+      ALERT_FOUND=0
+      MESSAGE="*🔐 Security Alert Report*\n"
+      REPORTS=$(find . -type f \( -name 'gl-sast-report.json' -o -name 'gl-dependency-scanning-report.json' -o -name 'gl-container-scanning-report.json' -o -name 'checkov-report.json' \))
+      if [ -z "$REPORTS" ]; then
+        echo "No security reports found!"
+      fi
+      for report in $REPORTS; do
+        echo "Checking $report"
+        if grep -iq '"severity": *"\(critical\|high\)"' "$report"; then
+          ALERT_FOUND=1
+          MESSAGE+=":warning: Vulnerabilities found in $report\n"
+        fi
+      done 
+
+      # Final notification
+      if [ "$ALERT_FOUND" = "1" ]; then
+        echo "🚨 Vulnerabilities found, sending Slack alert..."
+        PAYLOAD="{\"text\": \"$MESSAGE\\nView Pipeline: <$CI_PIPELINE_URL>\"}"
+        curl -X POST -H "Content-type: application/json" --data "$PAYLOAD" "$SLACK_WEBHOOK_URL"
+      else
+        echo "✅ No critical vulnerabilities found."
+      fi
+      
+# 📢 Slack Notification for deployment status
+notify_deploy_status:
+  extends: .slack_notify
+  stage: notify
+  tags:
+    - docker
+  when: always
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - |
+      set -e
+      STATUS="✅ SUCCESS"
+      COLOR="#36a64f"
+
+      if [ -f deploy_status.txt ]; then
+        DEPLOY_STATUS=$(cat deploy_status.txt)
+        if [ "$DEPLOY_STATUS" != "success" ]; then
+          STATUS="❌ FAILED"
+          COLOR="#ff0000"
+        fi
+      else
+        STATUS="❓ UNKNOWN"
+        COLOR="#ffa500"
+      fi
+
+      echo "🔔 Sending Slack notification with status: $STATUS"
+
+      echo '{
+        "attachments": [
+          {
+            "fallback": "Deployment '"$STATUS"': '"$CI_PROJECT_NAME"'",
+            "color": "'"$COLOR"'",
+            "title": "🚀 Deployment '"$STATUS"'",
+            "fields": [
+              { "title": "Project", "value": "'"$CI_PROJECT_NAME"'", "short": true },
+              { "title": "Branch", "value": "'"$CI_COMMIT_BRANCH"'", "short": true },
+              { "title": "Pipeline", "value": "'"$CI_PIPELINE_URL"'", "short": false }
+            ],
+            "footer": "GitLab CI/CD",
+            "ts": '"$(date +%s)"'
+          }
+        ]
+      }' > slack-message.json
+
+      curl -X POST -H "Content-type: application/json" \
+           --data "@slack-message.json" \
+           "$SLACK_WEBHOOK_URL"
+
+

@@ -1,0 +1,229 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"TaxonomyManagement"'
+    [component]='"taxonomies"'
+    [operation]="'add/edit'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <label class="dropzone-label">
+              {{ "code_49" |translate | titlecase}}
+            </label>
+            <div class="upload-container">
+              <div class="card-body dropzone-custom p-0 mx-auto">
+                <div
+                  class="dropzone dropzone-primary d-flex"
+                  [dropzone]="logoDropZoneConfig"
+                  [ngStyle]="{
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundImage: selectedLogo ? '' : 'url('+(form.get('logo')?.value | genericPipe :[{name:'file',serviceName:'taxonomyManagement'}])+')' }"
+                  (error)="onUploadLogoError($event)"
+                  (success)="onUploadLogoSuccess($event)"
+                  (removedFile)="onDeleteLogoSuccess($event)"
+                >
+                  <div
+                    class="dz-message needsclick m-auto text-danger"
+                    *ngIf="form.get('logo')?.value"
+                    style="max-height: 200px"
+                    (click)="form.get('logo')?.setValue(null)"
+                  >
+                    <i class="bi bi-trash-fill" style="font-size: 40px"></i>
+                    <h4 class="mb-0 f-w-600">
+                      {{ "code_1508" | translate | titlecase }}
+                    </h4>
+                  </div>
+                  <div
+                    class="dz-message needsclick m-auto"
+                    style="max-height: 200px"
+                  >
+                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                    <h4 class="mb-0 f-w-600">
+                      {{ "code_54" | translate | titlecase }}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label" formGroupName="translations">
+              <input
+                type="text"
+                style="width: 100%"
+                [ngClass]="form.get('translations.designation')?.invalid && (form.get('translations.designation')?.touched || form.get('translations.designation')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                id="id-150"
+                formControlName="designation"
+                pInputText
+              />
+
+              <label
+                [ngClass]=" form.get('translations.designation')?.invalid && (form.get('translations.designation')?.touched || form.get('translations.designation')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_4544" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('translations.designation')?.invalid && (form.get('translations.designation')?.touched || form.get('translations.designation')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('translations.designation')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label" formGroupName="translations">
+              <textarea
+                style="max-width: 100%; width: 100%"
+                inputId="id-4523"
+                [rows]="5"
+                [cols]="30"
+                [ngClass]=" form.get('translations.description')?.invalid && (form.get('translations.description')?.touched || form.get('translations.description')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                formControlName="description"
+                pInputTextarea
+              ></textarea>
+
+              <label
+                [ngClass]=" form.get('translations.description')?.invalid && (form.get('translations.description')?.touched || form.get('translations.description')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_3691" |translate | titlecase}}
+              </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-3191"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [overlayOptions]="{autoZIndex:true}"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('domain')?.invalid && (form.get('domain')?.touched || form.get('domain')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="domain"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('domain')?.invalid && (form.get('domain')?.touched || form.get('domain')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_18456" |translate | titlecase}}
+              </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-1988"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [overlayOptions]="{autoZIndex:true}"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('parent')?.invalid && (form.get('parent')?.touched || form.get('parent')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="parent"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('parent')?.invalid && (form.get('parent')?.touched || form.get('parent')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_18461" |translate | titlecase}}
+              </label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <p-tabPanel
+      [header]="'code_18462' | translate | titlecase"
+      [disabled]="!id"
+    >
+      <app-sub-taxonomy
+        *ngIf="id"
+        [destination]="'taxonomies'"
+        [relation]="'OneToMany'"
+        [data]="form.get('children')?.value"
+        [form]="$any(form).get('children')"
+        [parentId]="id"
+        [independentComponent]="false"
+        [mode]="'add/edit'"
+      >
+      </app-sub-taxonomy>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_4145' | translate | titlecase"
+        (click)="addData()"
+      ></button>
+
+      <button
+        *ngIf="!this.independentComponent && !relation?.includes('ToOne')"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+        (click)="finish()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        [label]="'code_2994' | translate | titlecase"
+        (click)="nextTab()"
+      ></button>
+    </div>
+  </p-tabView>
+</form>

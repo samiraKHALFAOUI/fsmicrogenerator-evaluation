@@ -1,0 +1,155 @@
+<form
+  [formGroup]="customerForm"
+  (ngSubmit)="onSubmit()"
+  class="p-fluid d-flexs flex-column justify-content-center align-items-center"
+>
+   <!-- Photo upload section -->
+  <div class="field d-flex flex-column align-items-center justify-content-center">
+    <div class="flex align-items-center gap-4 justify-content-center">
+      <!-- Photo preview -->
+      <div *ngIf="previewPhotoUrl" class="photo-preview relative w-8rem h-8rem border-circle overflow-hidden">
+        <img 
+          [src]="previewPhotoUrl" 
+          alt="Customer photo" 
+          class="w-full h-full object-cover border-circle" />
+        
+        <button 
+          type="button" 
+          pButton 
+          icon="pi pi-times" 
+          class="p-button-rounded p-button-danger p-button-text remove-photo absolute top-0 right-0" 
+          (click)="removePhoto()" 
+          pTooltip="Remove photo">
+        </button>
+      </div>
+
+      <!-- Default avatar if no photo -->
+      <div *ngIf="!previewPhotoUrl" 
+          class="default-avatar flex align-items-center justify-content-center bg-primary border-circle w-8rem h-8rem overflow-hidden">
+        <i class="pi pi-user text-6xl text-white"></i>
+      </div>
+      
+      <!-- Upload button -->
+      <div>
+        <input 
+          type="file" 
+          id="photo" 
+          accept="image/*" 
+          style="display:none" 
+          (change)="onPhotoSelected($event)" 
+          #fileInput>
+          
+        <button 
+          type="button" 
+          pButton 
+          icon="pi pi-upload" 
+          label="Upload Photo" 
+          class="p-button-outlined" 
+          (click)="fileInput.click()">
+        </button>
+        <small class="block mt-2 text-600">Max file size: 5MB. Allowed formats: JPG, PNG, GIF</small>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Name Field -->
+  <div class="field w-100 d-flex flex-column align-items-center">
+    <label for="name">Name*</label>
+    <div class="d-flex align-items-center w-50">
+      <i class="pi pi-user mr-2 text-2xl"></i>
+      <input
+        id="name"
+        type="text"
+        class="form-control flex-grow-1"
+        formControlName="name"
+        placeholder="Enter customer name"
+        [class.is-invalid]="isFieldInvalid('name')"
+      />
+    </div>
+    <small *ngIf="isFieldInvalid('name')" class="p-error">
+      {{ getErrorMessage('name') }}
+    </small>
+  </div>
+
+  <!-- Email Field -->
+  <div class="field w-100 d-flex flex-column align-items-center">
+    <label for="email">Email*</label>
+    <div class="d-flex align-items-center w-50">
+      <i class="pi pi-envelope mr-2 text-2xl"></i>
+      <input
+        id="email"
+        type="email"
+        class="form-control flex-grow-1"
+        formControlName="email"
+        placeholder="Enter email address"
+        [class.is-invalid]="isFieldInvalid('email')"
+      />
+    </div>
+    <small *ngIf="isFieldInvalid('email')" class="p-error">
+      {{ getErrorMessage('email') }}
+    </small>
+  </div>
+
+  <!-- Phone Number Field -->
+  <div class="field w-100 d-flex flex-column align-items-center">
+    <label for="phoneNumber">Phone Number</label>
+    <div class="d-flex align-items-center w-50">
+      <i class="pi pi-phone mr-2 text-2xl"></i>
+      <input
+        id="phoneNumber"
+        type="text"
+        class="form-control flex-grow-1"
+        formControlName="phoneNumber"
+        placeholder="Enter phone number"
+        [class.is-invalid]="isFieldInvalid('phoneNumber')"
+      />
+    </div>
+    <small *ngIf="isFieldInvalid('phoneNumber')" class="p-error">
+      {{ getErrorMessage('phoneNumber') }}
+    </small>
+  </div>
+
+  <!-- Address Field -->
+  <div class="field w-100 d-flex flex-column align-items-center">
+    <label for="address">Address</label>
+    <div class="d-flex align-items-center w-50">
+      <i class="pi pi-map-marker mr-2 text-2xl"></i>
+      <textarea
+        id="address"
+        pInputTextarea
+        formControlName="address"
+        rows="3"
+        placeholder="Enter address"
+        class="form-control flex-grow-1"
+        [class.is-invalid]="isFieldInvalid('address')"
+      ></textarea>
+    </div>
+    <small *ngIf="isFieldInvalid('address')" class="p-error">
+      {{ getErrorMessage('address') }}
+    </small>
+  </div>
+
+  <!-- Buttons section -->
+  <div class="d-flex justify-content-end gap-2 mt-4 pr-4 w-100">
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-outlined"
+      (click)="onCancel()"
+      [disabled]="loading"
+    ></button>
+
+    <button
+      pButton
+      pRipple
+      type="submit"
+      label="Save"
+      icon="pi pi-save"
+      [loading]="loading"
+      [disabled]="customerForm.invalid || loading"
+    ></button>
+  </div>
+</form>

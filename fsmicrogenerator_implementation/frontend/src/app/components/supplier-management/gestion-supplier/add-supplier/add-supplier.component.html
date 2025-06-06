@@ -1,0 +1,307 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"SupplierManagement"'
+    [component]='"supplier"'
+    [operation]="'add/edit'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true" (onChange)="checkAccess($event)">
+    <p-tabPanel
+      [header]="'code_9' | translate | titlecase"
+      [selected]="selectedTab == 0"
+    >
+    <div class="form-grid-container">
+      <div class="form-grid grid-cols-3">
+        <div class="input-container column-span-1 row-span-3">
+          <label class="dropzone-label">
+            {{ "code_49" |translate | titlecase}}
+          </label>
+          <div class="upload-container">
+            <div class="card-body dropzone-custom p-0 mx-auto">
+              <div
+                class="dropzone dropzone-primary d-flex"
+                [dropzone]="logoDropZoneConfig"
+                [ngStyle]="{
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundImage : selectedLogo ? '' : 'url('+(form.get('logo')?.value | genericPipe :[{name:'file',serviceName:'supplierManagement'}])+')' }"
+                (error)="onUploadLogoError($event)"
+                (success)="onUploadLogoSuccess($event)"
+                (removedFile)="onDeleteLogoSuccess($event)"
+              >
+                <div
+                  class="dz-message needsclick m-auto text-danger"
+                  *ngIf="form.get('logo')?.value"
+                  style="max-height: 200px"
+                  (click)="form.get('logo')?.setValue(null)"
+                >
+                  <i class="bi bi-trash-fill" style="font-size: 40px"></i>
+                  <h4 class="mb-0 f-w-600">
+                    {{ "code_1508" | translate | titlecase }}
+                  </h4>
+                </div>
+                <div
+                  class="dz-message needsclick m-auto"
+                  style="max-height: 200px"
+                >
+                  <i class="bi bi-cloud-arrow-up-fill"></i>
+                  <h4 class="mb-0 f-w-600">
+                    {{ "code_54" | translate | titlecase }}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-container column-span-2 row-span-3">
+          <div class="form-grid-container">
+            <div class="form-grid grid-cols-2">
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label" formGroupName="translations">
+                  <input
+                    type="text"
+                    style="width: 100%"
+                    [ngClass]="form.get('translations.name')?.invalid && (form.get('translations.name')?.touched || form.get('translations.name')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                    id="id-3543"
+                    formControlName="name"
+                    pInputText
+                  />
+
+                  <label
+                    [ngClass]=" form.get('translations.name')?.invalid && (form.get('translations.name')?.touched || form.get('translations.name')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_18391" |translate | titlecase}} <span class="text-danger">*</span>
+                  </label>
+
+                  <ng-container
+                    *ngIf="form.get('translations.name')?.invalid && (form.get('translations.name')?.touched || form.get('translations.name')?.dirty)"
+                  >
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('translations.name')?.errors?.['required'] "
+                    >
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <input
+                    type="text"
+                    style="width: 100%"
+                    [ngClass]="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                    id="id-8898"
+                    formControlName="email"
+                    pInputText
+                  />
+
+                  <label
+                    [ngClass]=" form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_45" |translate | titlecase}} <span class="text-danger">*</span>
+                  </label>
+
+                <ng-container
+                  *ngIf="
+                    form.get('email')?.invalid &&
+                    (form.get('email')?.touched || form.get('email')?.dirty)
+                  "
+                >
+                  <span
+                    class="error-span"
+                    *ngIf="form.get('email')?.errors?.['required'] ;else emailEmail"
+                  >
+                    {{ "code_29" | translate | titlecase }}
+                  </span>
+                  <ng-template #emailEmail>
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('email')?.errors?.['email'] ;else dupplicated "
+                    >
+                      {{ "code_53" | translate | titlecase }}
+                    </span>
+                  </ng-template>
+                  <ng-template #dupplicated>
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('email')?.errors?.['edup'] "
+                    >
+                      {{ "code_4444" | translate | titlecase }}
+                    </span>
+                  </ng-template>
+                </ng-container>
+                </span>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <p-floatLabel>
+                  <p-inputMask
+                      mask="(+999)9-99-99-99-99"
+                      formControlName="officePhoneNumber"
+                      id="officePhoneNumber_input"
+                      [style]="{width: '100%'}"
+                      [ngClass]="form.get('officePhoneNumber')?.invalid && (form.get('officePhoneNumber')?.touched || form.get('officePhoneNumber')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                      />
+                  <label for="officePhoneNumber_input"  [ngClass]=" form.get('officePhoneNumber')?.invalid && (form.get('officePhoneNumber')?.touched || form.get('officePhoneNumber')?.dirty) ? 'text-danger' : ''"
+                  >{{ "code_18427" |translate | titlecase}} <span class="text-danger">*</span></label>
+                  <ng-container
+                  *ngIf="
+                    form.get('officePhoneNumber')?.invalid &&
+                    (form.get('officePhoneNumber')?.touched || form.get('officePhoneNumber')?.dirty)
+                  "
+                >
+                  <span
+                    class="error-span"
+                    *ngIf="form.get('officePhoneNumber')?.errors?.['required'] ;else dupplicated"
+                  >
+                    {{ "code_29" | translate | titlecase }}
+                  </span>
+
+                  <ng-template #dupplicated>
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('officePhoneNumber')?.errors?.['odup'] "
+                    >
+                      {{ "code_4444" | translate | titlecase }}
+                    </span>
+                  </ng-template>
+                </ng-container>
+              </p-floatLabel>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <div class="input-switch-container">
+                  <label
+                    [ngClass]=" form.get('isActif')?.invalid && (form.get('isActif')?.touched || form.get('isActif')?.dirty) ? 'text-danger' : ''"
+                    style="cursor: pointer"
+                    for="isActif"
+                  >
+                    {{ "code_18428" |translate | titlecase}}
+                  </label>
+
+                  <p-inputSwitch
+                    inputId="isActif"
+                    formControlName="isActif"
+                  ></p-inputSwitch>
+                </div>
+              </div>
+
+              <div class="input-container column-span-2 row-span-1">
+                <span class="p-float-label" formGroupName="translations">
+                  <textarea
+                    style="max-width: 100%; width: 100%"
+                    inputId="id-3412"
+                    [rows]="5"
+                    [cols]="30"
+                    [ngClass]=" form.get('translations.address')?.invalid && (form.get('translations.address')?.touched || form.get('translations.address')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                    formControlName="address"
+                    pInputTextarea
+                  ></textarea>
+
+                  <label
+                    [ngClass]=" form.get('translations.address')?.invalid && (form.get('translations.address')?.touched || form.get('translations.address')?.dirty) ? 'text-danger' : ''"
+                  >
+                    {{ "code_18424" |translate | titlecase}} <span class="text-danger">*</span>
+                  </label>
+
+                  <ng-container
+                    *ngIf="form.get('translations.address')?.invalid && (form.get('translations.address')?.touched || form.get('translations.address')?.dirty)"
+                  >
+                    <span
+                      class="error-span"
+                      *ngIf="form.get('translations.address')?.errors?.['required'] "
+                    >
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </p-tabPanel>
+
+    <p-tabPanel [header]="'product' | translate | titlecase" [disabled]="!id" >
+      <app-sub-product
+        *ngIf="id"
+        [destination]="'supplier'"
+        [relation]="'OneToMany'"
+        [data]="form.get('products')?.value"
+        [form]="$any(form).get('products')"
+        [supplierId]="id"
+        [independentComponent]="false"
+        [mode]="'add/edit'"
+      >
+      </app-sub-product>
+    </p-tabPanel>
+
+    <p-tabPanel
+      [header]="'code_18432' | translate | titlecase"
+      [disabled]="!id"
+    >
+      <app-sub-transaction
+        *ngIf="id"
+        [destination]="'supplier'"
+        [relation]="'OneToMany'"
+        [products]="form.get('products')?.value"
+        [data]="form.get('purchases')?.value"
+        [form]="$any(form).get('purchases')"
+        [supplierId]="id"
+        [independentComponent]="false"
+        [mode]="'add/edit'"
+      >
+      </app-sub-transaction>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_4145' | translate | titlecase"
+        (click)="addData()"
+      ></button>
+      <button
+        *ngIf="!this.independentComponent"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+        (click)="finish()"
+      ></button>
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        [label]="'code_2994' | translate | titlecase"
+        (click)="nextTab()"
+      ></button>
+    </div>
+  </p-tabView>
+</form>

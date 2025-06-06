@@ -1,0 +1,82 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"TransactionManagement"'
+    [component]='"transactionLine"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <div class="form-grid-container">
+    <div class="form-grid grid-cols-2">
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-9423"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'product.translations.name'"
+            pInputText
+          />
+
+          <label> {{ "code_18393" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-inputNumber
+            [ngStyle]="{width:'100%'}"
+            inputId="id-3355"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'quantity'"
+          ></p-inputNumber>
+
+          <label> {{ "code_18418" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-inputNumber
+            [ngStyle]="{width:'100%'}"
+            inputId="id-4253"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'price'"
+          ></p-inputNumber>
+
+          <label> {{ "code_18445" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-8020"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'currency.currency'"
+            pInputText
+          />
+
+          <label> {{ "code_18446" |translate | titlecase}} </label>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="button"
+      [label]="'code_547' | translate | titlecase"
+      (click)="goBack()"
+    ></button>
+  </div>
+
+
+</div>

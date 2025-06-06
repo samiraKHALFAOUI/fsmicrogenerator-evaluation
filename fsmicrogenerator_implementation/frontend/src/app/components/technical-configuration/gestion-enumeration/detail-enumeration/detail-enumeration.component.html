@@ -1,0 +1,87 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"TechnicalConfiguration"'
+    [component]='"enumeration"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <div class="form-grid-container">
+    <div class="form-grid grid-cols-4">
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-1780"
+            [disabled]="true"
+            [ngModel]="data?.code"
+            pInputText
+          />
+
+          <label> {{ "code_559" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-2605"
+            [disabled]="true"
+            [ngModel]="data?.translations?.valeur"
+            pInputText
+          />
+
+          <label> {{ "code_564" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <textarea
+            style="max-width: 100%; width: 100%"
+            inputId="id-418"
+            [rows]="5"
+            [cols]="30"
+            [disabled]="true"
+            [ngModel]="data?.translations?.commentaire"
+            pInputTextarea
+          ></textarea>
+
+          <label> {{ "code_775" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-6493"
+            [disabled]="true"
+            [ngModel]="data?.etatValidation"
+            pInputText
+          />
+
+          <label> {{ "code_25" |translate | titlecase}} </label>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="submit"
+      [label]="'code_547' | translate | titlecase"
+class="termine"
+      (click)="goBack()"
+    ></button>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="product-header">
+    <button class="btn btn-secondary" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Back to Products
+    </button>
+  </div>
+
+  <div class="product-content" *ngIf="product">
+    <div class="product-image">
+      <img [src]="product.image" [alt]="product.name">
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="description">{{ product.description }}</p>
+
+      <div class="product-meta">
+        <div class="meta-item">
+          <span class="meta-label">Price</span>
+          <span class="meta-value">{{ product.salePrice }} {{ product.currency | uppercase }}</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">{{ product.category.name }}</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Stock Status</span>
+          <span class="stock-status" [ngClass]="{'in-stock': product.status === 'available', 'out-of-stock': product.status !== 'available'}">
+            {{ product.stockQuantity }} {{ product.unit }} {{ product.status | titlecase }}
+          </span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Last Updated</span>
+          <span class="meta-value">{{ product.updatedAt | date:'medium' }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Supplier</span>
+          <span class="meta-value">{{ product.supplier?.name || 'No supplier assigned' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="!product">
+    <p>Loading product details...</p>
+  </div>
+</div>

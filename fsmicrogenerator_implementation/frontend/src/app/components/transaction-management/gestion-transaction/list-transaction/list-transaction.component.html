@@ -1,0 +1,14 @@
+<div class="sub-component-header pb-3">
+  <app-dynamic-table
+    [data]="data"
+    [cols]="headers"
+    [captionConfig]="captionConfig"
+    (onDelete)="changeState($event)"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    (onAddClick)="onAddClick()"
+    [prohibitDeletion]='["transactionLines"]'
+    [serviceName]="'transactionManagement'"
+    [componentName]="componentName"
+  ></app-dynamic-table>
+</div>

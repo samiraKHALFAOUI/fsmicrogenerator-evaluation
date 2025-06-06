@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Add Product FormData with Get  Delete" enabled="true">
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="jwt" elementType="Argument">
+            <stringProp name="Argument.name">jwt</stringProp>
+            <stringProp name="Argument.value">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWI4ZmMwY2NmMWI4Y2QyNGM4MTRlZTkiLCJpYXQiOjE3NDgwMTU3MjIsImV4cCI6MTc0ODAzMDEyMn0.RkJLtiZc9lekKrDXMj3Wm_g-uUe5v0sJ9W6fxxG4IiA</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="lang" elementType="Argument">
+            <stringProp name="Argument.name">lang</stringProp>
+            <stringProp name="Argument.value">en</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Test 250 Users - Add/Get/Delete" enabled="true">
+        <stringProp name="ThreadGroup.num_threads">250</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">60</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController">
+          <stringProp name="LoopController.loops">2</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <!-- POST -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Add Product" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="reference" elementType="HTTPArgument">
+                <stringProp name="Argument.name">reference</stringProp>
+                <stringProp name="Argument.value">REF-${__RandomString(6,ABCDEF123456,)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="category" elementType="HTTPArgument">
+                <stringProp name="Argument.name">category</stringProp>
+                <stringProp name="Argument.value">${__RandomString(24,abcdef0123456789,)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="image" elementType="HTTPArgument">
+                <stringProp name="Argument.name">image</stringProp>
+                <stringProp name="Argument.value">image.png</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="translations" elementType="HTTPArgument">
+                <stringProp name="Argument.name">translations</stringProp>
+                <stringProp name="Argument.value">{"language":"fr","name":"Product ${__RandomString(4,abcd,)}","description":"Sample description"}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="salePrice" elementType="HTTPArgument">
+                <stringProp name="Argument.name">salePrice</stringProp>
+                <stringProp name="Argument.value">99.99</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="currency" elementType="HTTPArgument">
+                <stringProp name="Argument.name">currency</stringProp>
+                <stringProp name="Argument.value">${__RandomString(24,abcdef0123456789,)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="stockQuantity" elementType="HTTPArgument">
+                <stringProp name="Argument.name">stockQuantity</stringProp>
+                <stringProp name="Argument.value">0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="unit" elementType="HTTPArgument">
+                <stringProp name="Argument.name">unit</stringProp>
+                <stringProp name="Argument.value">${__RandomString(24,abcdef0123456789,)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="status" elementType="HTTPArgument">
+                <stringProp name="Argument.name">status</stringProp>
+                <stringProp name="Argument.value">code_18398</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="supplier" elementType="HTTPArgument">
+                <stringProp name="Argument.name">supplier</stringProp>
+                <stringProp name="Argument.value">${__RandomString(24,abcdef0123456789,)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">4000</stringProp>
+          <stringProp name="HTTPSampler.path">/api/productManagementService/products</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract productId">
+            <stringProp name="JSONPostProcessor.referenceNames">productId</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$._id</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+          </JSONPostProcessor>
+        </hashTree>
+
+        <!-- GET -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get All Products" enabled="true">
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">4000</stringProp>
+          <stringProp name="HTTPSampler.path">/api/productManagementService/products</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree />
+
+        <!-- DELETE -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete Product" enabled="true">
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">4000</stringProp>
+          <stringProp name="HTTPSampler.path">/api/productManagementService/products/${productId}</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree />
+
+        <!-- Header -->
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Custom Headers" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="jwt" elementType="Header">
+              <stringProp name="Header.name">jwt</stringProp>
+              <stringProp name="Header.value">${jwt}</stringProp>
+            </elementProp>
+            <elementProp name="lang" elementType="Header">
+              <stringProp name="Header.name">lang</stringProp>
+              <stringProp name="Header.value">${lang}</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree />
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

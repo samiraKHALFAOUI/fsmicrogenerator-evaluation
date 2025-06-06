@@ -1,0 +1,177 @@
+<div class="supplier-container">
+  <p-toast></p-toast>
+  
+  <div class="card-container">
+    <p-card styleClass="supplier-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h2>{{ isEditMode ? 'Edit Supplier' : (isViewMode ? 'View Supplier' : 'New Supplier') }}</h2>
+        </div>
+      </ng-template>
+      
+      <!-- Edit/Create Form -->
+      <form (ngSubmit)="saveSupplier()" *ngIf="!isViewMode" class="supplier-form">
+        <div class="form-grid">
+          <div class="form-col">
+            <div class="form-group">
+              <label for="logo">Logo</label>
+              <div class="logo-upload-container">
+                <p-fileUpload 
+                  #fileUpload
+                  mode="basic" 
+                  name="logo" 
+                  accept="image/*" 
+                  [maxFileSize]="5000000"
+                  (onSelect)="onUpload($event)"
+                  chooseLabel="Upload Logo"
+                  [auto]="false">
+                </p-fileUpload>
+                <div class="logo-preview" *ngIf="logoPreview">
+                  <img [src]="logoPreview" alt="Logo Preview">
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="name">Name <span class="required">*</span></label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                <input pInputText id="name" [(ngModel)]="supplier.name" name="name" required placeholder="Enter supplier name">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                <input pInputText id="email" type="email" [(ngModel)]="supplier.email" name="email" required placeholder="Enter email address">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-col">
+            <div class="form-group">
+              <label for="officePhoneNumber">Office Phone Number <span class="required">*</span></label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-phone"></i></span>
+                <input pInputText id="officePhoneNumber" [(ngModel)]="supplier.officePhoneNumber" name="officePhoneNumber" required placeholder="Enter phone number">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="address">Address <span class="required">*</span></label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-map-marker"></i></span>
+                <textarea pInputTextarea id="address" [(ngModel)]="supplier.address" name="address" required rows="4" placeholder="Enter full address"></textarea>
+              </div>
+            </div>
+            
+            <div class="form-group status-group">
+              <label for="isAct">Status</label>
+              <div class="status-toggle">
+                <span class="status-label">{{ supplier.isAct ? 'Active' : 'Inactive' }}</span>
+                <p-inputSwitch id="isAct" [(ngModel)]="supplier.isAct" name="isAct"></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-outlined p-button-secondary" routerLink="/suppliers"></button>
+          <button pButton type="submit" label="Save" icon="pi pi-check" class="p-button-success"></button>
+        </div>
+      </form>
+      
+      <!-- View Mode -->
+      <div *ngIf="isViewMode" class="supplier-details">
+        <div class="details-grid">
+          <div class="details-col">
+            <div class="detail-group" *ngIf="supplier.logo">
+              <h3>Logo</h3>
+              <div class="logo-container">
+                <img [src]="supplier.logo" alt="Supplier Logo">
+              </div>
+            </div>
+            
+            <div class="detail-group">
+              <h3>Name</h3>
+              <p>{{supplier.name}}</p>
+            </div>
+            
+            <div class="detail-group">
+              <h3>Email</h3>
+              <p>
+                <a href="mailto:{{supplier.email}}">
+                  <i class="pi pi-envelope"></i> {{supplier.email}}
+                </a>
+              </p>
+            </div>
+          </div>
+          
+          <div class="details-col">
+            <div class="detail-group">
+              <h3>Office Phone Number</h3>
+              <p>
+                <a href="tel:{{supplier.officePhoneNumber}}">
+                  <i class="pi pi-phone"></i> {{supplier.officePhoneNumber}}
+                </a>
+              </p>
+            </div>
+            
+            <div class="detail-group">
+              <h3>Address</h3>
+              <p>{{supplier.address}}</p>
+            </div>
+            
+            <div class="detail-group">
+              <h3>Status</h3>
+              <p-tag [severity]="supplier.isAct ? 'success' : 'danger'">
+                {{supplier.isAct ? 'Active' : 'Inactive'}}
+              </p-tag>
+            </div>
+          </div>
+        </div>
+        
+        <!-- <div class="products-section" *ngIf="supplier.products && supplier.products.length > 0">
+          <h3>Products</h3>
+          <p-table [value]="supplier.products" styleClass="p-datatable-sm" [paginator]="supplier.products.length > 5" [rows]="5" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Reference</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr>
+                <td>{{product.reference}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.salePrice | currency}}</td>
+                <td>
+                  <p-progressBar [value]="getStockPercentage(product)" [showValue]="false" [style]="{'height': '8px'}"></p-progressBar>
+                  <span class="stock-value">{{product.stockQuantity}}</span>
+                </td>
+                <td>
+                  <p-tag [severity]="product.status === 'AVAILABLE' ? 'success' : 'warning'">
+                    {{product.status}}
+                  </p-tag>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5" class="text-center">No products found</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div> -->
+        
+        <div class="form-actions">
+          <button pButton type="button" label="Back to Suppliers" icon="pi pi-arrow-left" class="p-button-outlined" routerLink="/suppliers"></button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

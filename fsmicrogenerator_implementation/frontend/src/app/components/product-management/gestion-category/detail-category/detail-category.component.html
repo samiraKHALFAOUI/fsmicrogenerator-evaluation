@@ -1,0 +1,130 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"ProductManagement"'
+    [component]='"category"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <label class="dropzone-label">
+              {{ "code_2605" |translate | titlecase}}
+            </label>
+            <div class="upload-container">
+              <div class="card-body dropzone-custom p-0 mx-auto">
+                <div class="dropzone dropzone-primary d-flex">
+                  <div class="dz-message needsclick m-auto">
+                    <div *ngIf=" data?.icon">
+                      <img
+                        [lazyLoad]="data?.icon | genericPipe : [{name:'file',serviceName :'productManagement'}]"
+                        [defaultImage]="data?.icon| genericPipe : [{name:'file',serviceName :'productManagement' }]"
+                        class="img-fluid rounded-circle"
+                        style="max-width: 190px; max-height: 250px"
+                        id="image"
+                        alt=""
+                        title=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-8011"
+                [disabled]="true"
+                [ngModel]="data | readDataTable : 'translations.name'"
+                pInputText
+              />
+
+              <label> {{ "code_18391" |translate | titlecase}} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-4277"
+                [disabled]="true"
+                [ngModel]="data | readDataTable : 'parentCategory'"
+                pInputText
+              />
+
+              <label> {{ "code_18406" |translate | titlecase}} </label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <p-tabPanel [header]="'code_18407' | translate | titlecase">
+      <app-sub-category
+        [destination]="'category'"
+        [relation]="'OneToMany'"
+        [data]="(data | readDataTable : 'subCategories') || []"
+        [independentComponent]="false"
+        [mode]="'detail'"
+      >
+      </app-sub-category>
+    </p-tabPanel>
+
+    <p-tabPanel [header]="'code_18392' | translate | titlecase" *ngIf="data?.products?.length">
+      <app-sub-product
+        [destination]="'category'"
+        [relation]="'OneToMany'"
+        [data]="(data | readDataTable : 'products') || []"
+        [independentComponent]="false"
+        [mode]="'detail'"
+      >
+      </app-sub-product>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="submit"
+        [label]="'code_547' | translate | titlecase"
+        (click)="goBack()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        (click)="nextTab()"
+        [label]="'code_2994' | translate | titlecase"
+      ></button>
+    </div>
+  </p-tabView>
+</div>

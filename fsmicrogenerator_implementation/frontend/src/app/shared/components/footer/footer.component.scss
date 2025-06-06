@@ -1,0 +1,25 @@
+footer {
+  width: 100%;
+  padding-top: 10px;
+  color: #ccc
+}
+
+/*.copyright {
+  padding: 18px 0;
+  margin-top: 55px;
+  background-color: #202020;
+}*/
+
+.copyright span,
+.copyright a {
+  color: #878787;
+  -webkit-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+/*.copyright a:hover {
+  color: #007bff;
+}*/
+
+

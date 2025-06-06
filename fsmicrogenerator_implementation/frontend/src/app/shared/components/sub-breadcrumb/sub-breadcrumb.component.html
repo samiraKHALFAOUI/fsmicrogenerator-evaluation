@@ -1,0 +1,27 @@
+
+<div class="breadcrumb-container">
+  <h1 class="page-title">
+    {{ title | translate | titlecase }}
+  </h1>
+  <div class="breadcrumb" *ngIf="breadcrumbs?.length">
+    <ul class="breadcrumb-list">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/']">
+          <i class="bi bi-house"></i>
+        </a>
+      </li>
+      <li class="breadcrumb-item" *ngFor="let br of breadcrumbs; let i = index">
+        <ng-container *ngIf="i != breadcrumbs.length - 1; else elseBlock">
+          <a style="cursor: pointer; color: blue" (click)="close(i)">
+            {{ br.espace | translate }}
+          </a>
+        </ng-container>
+        <ng-template #elseBlock>
+          <a>
+            {{ br.espace | translate }}
+          </a>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</div>

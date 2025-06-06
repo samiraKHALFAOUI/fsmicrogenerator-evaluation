@@ -1,0 +1,13 @@
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: slack-notify
+    receivers:
+      - uid: slack-notify
+        type: slack
+        settings:
+          url: "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXX"
+          username: "Grafana Alert"
+          icon_emoji: ":rotating_light:"
+          recipient: "#grafana-alerts"

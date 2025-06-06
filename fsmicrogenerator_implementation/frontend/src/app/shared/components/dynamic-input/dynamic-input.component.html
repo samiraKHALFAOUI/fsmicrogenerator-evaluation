@@ -1,0 +1,1359 @@
+<ng-container *ngIf="mode == 'ecriture'; else lecture">
+  <ng-container
+    *ngIf="
+      ['simpleDropDown', 'code_355', 'code_356'].includes(natureInfo);
+      else range
+    "
+  >
+    <ng-container *ngIf="valeurs.length" [ngSwitch]="true">
+      <span [class]="displayType == 'simple' ? '' : 'p-float-label'">
+        <ng-container *ngIf="displayType == 'simple'">
+          <label
+            [ngClass]="
+              control.invalid && (control.touched || control.dirty)
+                ? 'text-danger'
+                : ''
+            "
+            class="mb-3"
+          >
+            {{ label | translate | titlecase }}
+          </label>
+        </ng-container>
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_355' && displayType == 'simple'"
+        >
+          <div class="flex flex-column gap-3">
+            <div *ngFor="let item of valeurs" class="field-checkbox">
+              <p-radioButton
+                [name]="name"
+                [inputId]="item._id"
+                [value]="item"
+                [formControl]="control"
+              ></p-radioButton>
+              <label
+                [for]="item._id"
+                class="ml-2 country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                {{ item.label }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container
+          *ngSwitchCase="
+            natureInfo == 'simpleDropDown' && displayType == 'custom'
+          "
+        >
+
+          <p-dropdown
+            [options]="valeurs"
+            [formControl]="control"
+            [filter]="true"
+            [showClear]="true"
+            [appendTo]="'body'"
+            [autoDisplayFirst]="false"
+            [formControl]="control"
+            [style]="{ width: '100%' }"
+            [ngClass]="
+              control.invalid && (control.touched || control.dirty)
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
+            inputId="simpleDropDown"
+          >
+          </p-dropdown>
+        </ng-container>
+
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_355' && displayType == 'custom'"
+        >
+          <p-dropdown
+            [options]="valeurs"
+            [formControl]="control"
+            [filter]="true"
+            filterBy="label"
+            [showClear]="true"
+            [appendTo]="'body'"
+            [autoDisplayFirst]="false"
+            [formControl]="control"
+            [style]="{ width: '100%' }"
+            [dataKey]="'_id'"
+            [ngClass]="
+              control.invalid && (control.touched || control.dirty)
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
+            [placeholder]="label | translate"
+            inputId="labelInputId"
+            [autoDisplayFirst]="false"
+          >
+            <ng-template let-item pTemplate="item">
+              <div
+                class="country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                <div>{{ item?.label }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </ng-container>
+
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_356' && displayType == 'simple'"
+        >
+          <div class="flex flex-column gap-3">
+            <div *ngFor="let item of valeurs" class="field-checkbox">
+              <p-checkbox
+                [inputId]="item._id"
+                [value]="item"
+                [formControl]="control"
+              ></p-checkbox>
+
+              <label
+                [for]="item._id"
+                class="ml-2 country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                {{ item.label }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_356' && displayType == 'custom'"
+        >
+          <p-multiSelect
+            [options]="valeurs"
+            [formControl]="control"
+            [filter]="true"
+            filterBy="label"
+            [showClear]="true"
+            [appendTo]="'body'"
+            [formControl]="control"
+            [style]="{ width: '100%' }"
+            [dataKey]="'_id'"
+            display="chip"
+            [ngClass]="
+              control.invalid && (control.touched || control.dirty)
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
+            [placeholder]="'code_4146' | translate"
+            inputId="labelInputId"
+          >
+
+            <ng-template let-item pTemplate="item">
+              <div
+                class="country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                <div>{{ item?.label }}</div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+        </ng-container>
+
+        <ng-container *ngIf="displayType == 'custom'">
+          <label
+            for="labelInputId"
+            [ngClass]="
+              control.invalid && (control.touched || control.dirty)
+                ? 'text-danger'
+                : ''
+            "
+          >
+            {{ label | translate | titlecase }}
+          </label>
+        </ng-container>
+        <ng-container
+          *ngIf="control?.invalid && (control?.touched || control?.dirty)"
+          [ngSwitch]="true"
+        >
+          <span
+            class="error-span"
+            *ngSwitchCase="!!control?.errors?.['required']"
+          >
+            {{ "code_29" | translate | titlecase }}
+          </span>
+          <span class="error-span" *ngSwitchCase="!!control?.errors?.['min']">
+            {{ "code_200" | translate | titlecase }}
+            <ng-container [ngSwitch]="typeInput">
+              <span
+                *ngSwitchCase="'code_1307'"
+                >{{control.errors?.['min'].min | date :'dd/MM/yyyy'}}</span
+              >
+              <span
+                *ngSwitchCase="'code_12356'"
+                >{{control.errors?.['min'].min | date :'HH:mm:ss'}}</span
+              >
+              <span
+                *ngSwitchCase="'code_1319'"
+                >{{control.errors?.['min'].min | date :'dd/MM/yyyy HH:mm:ss'}}</span
+              >
+              <span *ngSwitchDefault>{{control.errors?.['min'].min }}</span>
+            </ng-container>
+          </span>
+          <span class="error-span" *ngSwitchCase="!!control?.errors?.['max']">
+            {{ "code_1650" | translate | titlecase }}
+            <ng-container [ngSwitch]="typeInput">
+              <span
+                *ngSwitchCase="'code_1307'"
+                >{{control.errors?.['max'].max | date :'dd/MM/yyyy'}}</span
+              >
+              <span
+                *ngSwitchCase="'code_12356'"
+                >{{control.errors?.['max'].max | date :'HH:mm:ss'}}</span
+              >
+              <span
+                *ngSwitchCase="'code_1319'"
+                >{{control.errors?.['max'].max | date :'dd/MM/yyyy HH:mm:ss'}}</span
+              >
+              <span *ngSwitchDefault>{{control.errors?.['max'].max }}</span>
+            </ng-container>
+          </span>
+          <span
+            class="error-span"
+            *ngSwitchCase="!!control?.errors?.['minLength']"
+          >
+            {{ "minLength" | translate | titlecase }}
+          </span>
+          <span
+            class="error-span"
+            *ngSwitchCase="!!control?.errors?.['maxLength']"
+          >
+            {{ "maxLength" | translate | titlecase }}
+          </span>
+          <span class="error-span" *ngSwitchCase="!!control?.errors?.['email']">
+            {{ "code_53" | translate | titlecase }}
+          </span>
+          <span
+            class="error-span"
+            *ngSwitchCase="!!control?.errors?.['pattern']"
+          >
+            {{ "code_4932" | translate | titlecase }}
+          </span>
+          <span class="error-span" *ngSwitchCase="!!control?.errors?.['dup']">
+            {{ "code_1158" | translate | titlecase }}
+          </span>
+          <span
+            class="error-span"
+            *ngSwitchCase="!!control?.errors?.['invalidValueMin']"
+          >
+            {{ "code_12795" | translate | titlecase }}
+          </span>
+          <span
+            class="error-span"
+            *ngSwitchCase="!!control?.errors?.['invalidValueMax']"
+          >
+            {{ "code_12794" | translate | titlecase }}
+          </span>
+          <span class="error-span" *ngSwitchDefault>
+            {{ control.errors | json }}
+          </span>
+        </ng-container>
+      </span>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #range>
+    <ng-container *ngIf="isRange; else others">
+      <ng-container *ngIf="displayType == 'simple'; else custom">
+        <div class="mb-1" style="display: flex; justify-content: space-between">
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[0]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="valeurMin"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%', height: '85%' }"
+            ></p-inputNumber>
+            <label for=""> valeur minimal</label>
+          </span>
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[1]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="rangeValue[0]"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%', height: '85%' }"
+            ></p-inputNumber>
+            <label for=""> valeur maximal</label>
+          </span>
+        </div>
+        <p-slider
+          [formControl]="control"
+          [range]="true"
+          class="w-full"
+          (onChange)="onRangeChange($event)"
+        ></p-slider>
+      </ng-container>
+      <ng-template #custom>
+        <div style="display: flex; justify-content: space-between">
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[0]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="valeurMin"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%' }"
+            ></p-inputNumber>
+            <label for=""> valeur minimal</label>
+          </span>
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[1]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="rangeValue[0]"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%' }"
+            ></p-inputNumber>
+            <label for=""> valeur maximal</label>
+          </span>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #others>
+      <ng-container *ngIf="typeInput" [ngSwitch]="typeInput">
+        <!-- boolean  -->
+
+        <div class="input-switch-container" *ngSwitchCase="'code_1308'">
+          <label
+            [ngClass]="
+              control.invalid && (control.touched || control.dirty)
+                ? 'text-danger'
+                : ''
+            "
+            style="cursor: pointer"
+            for="id-9614"
+          >
+            {{ label | translate | titlecase }}
+          </label>
+
+          <p-inputSwitch
+            inputId="id-9614"
+            [formControl]="control"
+          ></p-inputSwitch>
+        </div>
+
+        <div *ngSwitchCase="'icon'" class="p-buttonset">
+          <button
+            pButton
+            *ngIf="control.value"
+            type="button"
+            disabled="true"
+            [icon]="control.value"
+          ></button>
+
+          <button
+            pButton
+            type="button"
+            [loading]="loading"
+            [label]="(control.value ? label : 'code_2614') | translate"
+            (click)="getIcons()"
+          ></button>
+
+          <button
+            pButton
+            *ngIf="control.value"
+            type="button"
+            icon="pi pi-times"
+            severity="danger"
+            (click)="control.setValue(null)"
+          ></button>
+        </div>
+
+        <div *ngSwitchCase="'flag'" class="p-buttonset">
+          <button
+            pButton
+            *ngIf="control.value"
+            type="button"
+            disabled="true"
+            [icon]="control.value"
+            size="large"
+          ></button>
+
+          <button
+            pButton
+            type="button"
+            [loading]="loading"
+            [label]="label | translate"
+            (click)="getFlags()"
+            size="large"
+          ></button>
+
+          <button
+            pButton
+            *ngIf="control.value"
+            type="button"
+            icon="pi pi-times"
+            severity="danger"
+            (click)="control.setValue(null)"
+            size="large"
+          ></button>
+        </div>
+
+        <ng-container *ngSwitchDefault>
+          <ng-container [ngSwitch]="typeInput">
+            <span class="p-float-label">
+              <!-- chips  -->
+              <p-chips
+                *ngSwitchCase="'chips'"
+                id="id-3996"
+                [disabled]="true"
+                [formControl]="control"
+                [style]="{ width: '100%' }"
+                separator=","
+              >
+                <ng-template let-item pTemplate="item">
+                  <span>{{ item | translate }}</span>
+                </ng-template>
+              </p-chips>
+
+              <!-- list icon  -->
+              <p-dropdown
+                *ngSwitchCase="'icon'"
+                #iconsDropdown
+                [formControl]="control"
+                class="p-inputtext-sm"
+                optionValue="title"
+                optionLabel="title"
+                filterBy="title"
+                [options]="iconOptions"
+                [style]="{ width: '100%' }"
+                [autoDisplayFirst]="false"
+                [resetFilterOnHide]="true"
+                [showClear]="true"
+                [filter]="true"
+                [appendTo]="'body'"
+                [ngClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+                [lazy]="true"
+                (onShow)="onIconsDropdownPanelShow($event)"
+                (onHide)="onIconsDropdownPanelHide()"
+                (onChange)="onIconsDropdownChange($event)"
+                (onFilter)="onIconsDropdownFilter($event)"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div
+                    *ngIf="control?.value"
+                    class="d-flex justify-content-space-between align-items-center"
+                  >
+                    <i class="{{ control.value }}"></i>
+                    <div>&nbsp;{{ control.value }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div
+                    class="d-flex justify-content-space-between align-items-center"
+                  >
+                    <i class="{{ item.title }}"></i>
+                    <div>&nbsp;{{ item.title }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <!-- string  -->
+              <input
+                *ngSwitchCase="'code_1305'"
+                type="text"
+                style="width: 100%"
+                [ngClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-dirty ng-invalid'
+                    : ''
+                "
+                id="id-2733"
+                [formControl]="control"
+                pInputText
+              />
+
+              <!-- text  -->
+
+              <textarea
+                *ngSwitchCase="'code_2477'"
+                style="max-width: 100%; width: 100%"
+                inputId="id-9613"
+                [rows]="5"
+                [cols]="30"
+                [ngClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-dirty ng-invalid'
+                    : ''
+                "
+                [formControl]="control"
+                pInputTextarea
+              ></textarea>
+
+              <!-- integer  -->
+
+              <p-inputNumber
+                *ngSwitchCase="'code_2475'"
+                [ngStyle]="{ width: '100%' }"
+                inputId="id-7781"
+                [showButtons]="true"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="0"
+                [min]="0"
+                [allowEmpty]="true"
+                [inputStyleClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+                [min]="valeurMin"
+                [max]="valeurMax"
+                [formControl]="control"
+              ></p-inputNumber>
+
+              <!-- float   -->
+
+              <p-inputNumber
+                *ngSwitchCase="'code_2476'"
+                [ngStyle]="{ width: '100%' }"
+                inputId="id-7781"
+                [showButtons]="true"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="2"
+                [step]="0.01"
+                [allowEmpty]="true"
+                [inputStyleClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+                [min]="valeurMin"
+                [max]="valeurMax"
+                [formControl]="control"
+              ></p-inputNumber>
+
+              <!-- date  -->
+              <p-calendar
+                *ngSwitchCase="'code_1307'"
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+                inputId="id-9153"
+                [selectionMode]="'single'"
+                [inputStyleClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+                [dateFormat]="'dd/mm/yy'"
+                [icon]="'pi pi-calendar'"
+                [dataType]="'date'"
+                [autoZIndex]="true"
+                [hideOnDateTimeSelect]="true"
+                [showSeconds]="true"
+                [numberOfMonths]="1"
+                [view]="'date'"
+                [formControl]="control"
+                [minDate]="valeurMin"
+                [maxDate]="valeurMax"
+              ></p-calendar>
+              <!-- date time  -->
+              <p-calendar
+                *ngSwitchCase="'code_1319'"
+                [showClear]="true"
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+                inputId="id-9153"
+                [selectionMode]="'single'"
+                [inputStyleClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+                [dateFormat]="'dd/mm/yy'"
+                [icon]="'pi pi-calendar'"
+                [dataType]="'date'"
+                [autoZIndex]="true"
+                [hideOnDateTimeSelect]="true"
+                [showSeconds]="true"
+                [numberOfMonths]="1"
+                [view]="'date'"
+                hourFormat="24"
+                [showTime]="true"
+                [formControl]="control"
+                [minDate]="valeurMin"
+                [maxDate]="valeurMax"
+              ></p-calendar>
+              <!-- default == time -->
+              <p-calendar
+                *ngSwitchDefault
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+                inputId="id-9154"
+                [inputStyleClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+                [dataType]="'date'"
+                [autoZIndex]="true"
+                [showSeconds]="true"
+                [showTime]="true"
+                [timeOnly]="true"
+                [dateFormat]="'HH:mm:ss'"
+                hourFormat="24"
+                [formControl]="control"
+                (onSelect)="onDateChange($event)"
+                (onInput)="onDateChange($event)"
+              ></p-calendar>
+
+              <label
+                [ngClass]="
+                  control.invalid && (control.touched || control.dirty)
+                    ? 'text-danger'
+                    : ''
+                "
+              >
+                {{ label | translate | titlecase }} <span class="text-danger">*</span></label>
+
+              <ng-container
+                *ngIf="control?.invalid && (control?.touched || control?.dirty)"
+                [ngSwitch]="true"
+              >
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['required']"
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['min']"
+                >
+                  {{ "code_200" | translate | titlecase }}
+                  <ng-container [ngSwitch]="typeInput">
+                    <span
+                      *ngSwitchCase="'code_1307'"
+                      >{{control.errors?.['min'].min | date :'dd/MM/yyyy'}}</span
+                    >
+                    <span
+                      *ngSwitchCase="'code_12356'"
+                      >{{control.errors?.['min'].min | date :'HH:mm:ss'}}</span
+                    >
+                    <span
+                      *ngSwitchCase="'code_1319'"
+                      >{{control.errors?.['min'].min | date :'dd/MM/yyyy HH:mm:ss'}}</span
+                    >
+                    <span
+                      *ngSwitchDefault
+                      >{{control.errors?.['min'].min }}</span
+                    >
+                  </ng-container>
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['max']"
+                >
+                  {{ "code_1650" | translate | titlecase }}
+                  <ng-container [ngSwitch]="typeInput">
+                    <span
+                      *ngSwitchCase="'code_1307'"
+                      >{{control.errors?.['max'].max | date :'dd/MM/yyyy'}}</span
+                    >
+                    <span
+                      *ngSwitchCase="'code_12356'"
+                      >{{control.errors?.['max'].max | date :'HH:mm:ss'}}</span
+                    >
+                    <span
+                      *ngSwitchCase="'code_1319'"
+                      >{{control.errors?.['max'].max | date :'dd/MM/yyyy HH:mm:ss'}}</span
+                    >
+                    <span
+                      *ngSwitchDefault
+                      >{{control.errors?.['max'].max }}</span
+                    >
+                  </ng-container>
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['minLength']"
+                >
+                  {{ "minLength" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['maxLength']"
+                >
+                  {{ "maxLength" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['email']"
+                >
+                  {{ "code_53" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['pattern']"
+                >
+                  {{ "code_4932" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['dup']"
+                >
+                  {{ "code_1158" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['invalidValueMin']"
+                >
+                  {{ "code_12795" | translate | titlecase }}
+                </span>
+                <span
+                  class="error-span"
+                  *ngSwitchCase="!!control?.errors?.['invalidValueMax']"
+                >
+                  {{ "code_12794" | translate | titlecase }}
+                </span>
+                <span class="error-span" *ngSwitchDefault>
+                  {{ control.errors | json }}
+                </span>
+              </ng-container>
+            </span>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-template>
+  </ng-template>
+</ng-container>
+<ng-template #lecture>
+  <ng-container
+    *ngIf="['code_355', 'code_356'].includes(natureInfo); else range"
+  >
+    <ng-container
+      *ngIf="natureInfo == 'code_355' && displayType == 'custom'; else elseB"
+    >
+      <span class="p-input-icon-left p-float-label w-full">
+        <i>
+          <div
+            class="country-item country-item-value d-flex justify-content-space-between align-items-center"
+          >
+            <i
+              *ngIf="data.icone; else image"
+              class="me-2 text-2xl"
+              [class]="data.icone"
+            ></i>
+            <ng-template #image>
+              <img
+                *ngIf="data.image"
+                class="flag me-2"
+                src="{{
+                  data.image | genericPipe : [{ name: 'file', serviceName }]
+                }}"
+              />
+            </ng-template>
+          </div>
+        </i>
+
+        <input
+          type="text"
+          pInputText
+          [disabled]="true"
+          inputId="labelInputId"
+          [ngModel]="data.label | translate"
+          [style]="{ width: '100%' }"
+        />
+        <label> {{ label | translate | titlecase }} </label>
+      </span>
+    </ng-container>
+    <ng-template #elseB [ngSwitch]="true">
+      <span
+        [class]="
+          displayType == 'simple' ||
+          (natureInfo == 'code_355' && displayType == 'custom')
+            ? ''
+            : 'p-float-label'
+        "
+      >
+        <ng-container
+          *ngIf="
+            displayType == 'simple' ||
+            (natureInfo == 'code_355' && displayType == 'custom')
+          "
+        >
+          <label class="mb-3">
+            {{ label | translate | titlecase }}
+          </label></ng-container
+        >
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_355' && displayType == 'simple'"
+        >
+          <div class="flex flex-column gap-3">
+            <div *ngFor="let item of valeurs" class="field-checkbox">
+              <p-radioButton
+                [inputId]="item._id"
+                [value]="item"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-radioButton>
+              <label
+                [for]="item._id"
+                class="ml-2 country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                {{ item.label }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_356' && displayType == 'simple'"
+        >
+          <div class="flex flex-column gap-3">
+            <div *ngFor="let item of valeurs" class="field-checkbox">
+              <p-checkbox
+                [inputId]="item._id"
+                [value]="item"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-checkbox>
+
+              <label
+                [for]="item._id"
+                class="ml-2 country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                {{ item.label }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container
+          *ngSwitchCase="natureInfo == 'code_356' && displayType == 'custom'"
+        >
+          <p-chips
+            inputId="labelInputId"
+            [disabled]="true"
+            [(ngModel)]="data"
+            [ngStyle]="{ width: '100%' }"
+          >
+            <ng-template let-item pTemplate="item">
+              <div
+                class="country-item d-flex justify-content-space-between align-items-center"
+              >
+                <i
+                  *ngIf="item?.icone; else image"
+                  class="me-2 text-2xl"
+                  [class]="item?.icone"
+                ></i>
+                <ng-template #image>
+                  <img
+                    *ngIf="item?.image"
+                    class="flag me-2"
+                    style="width: 30px"
+                    src="{{
+                      item?.image
+                        | genericPipe : [{ name: 'file', serviceName }]
+                    }}"
+                  />
+                </ng-template>
+                <div>{{ item?.label }}</div>
+              </div>
+            </ng-template>
+          </p-chips>
+        </ng-container>
+
+        <ng-container
+          *ngIf="displayType == 'custom' && natureInfo != 'code_355'"
+        >
+          <label for="labelInputId">
+            {{ label | translate | titlecase }}
+          </label>
+        </ng-container>
+      </span>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #range>
+    <ng-container *ngIf="isRange; else others">
+      <ng-container *ngIf="displayType == 'simple'; else custom">
+        <div class="mb-1" style="display: flex; justify-content: space-between">
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[0]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="valeurMin"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%', height: '85%' }"
+            ></p-inputNumber>
+            <label for=""> valeur minimal</label>
+          </span>
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[1]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="rangeValue[0]"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%', height: '85%' }"
+            ></p-inputNumber>
+            <label for=""> valeur maximal</label>
+          </span>
+        </div>
+        <p-slider
+          [disabled]="true"
+          [ngModel]="data | translate"
+          [range]="true"
+          class="w-full"
+          (onChange)="onRangeChange($event)"
+        ></p-slider>
+      </ng-container>
+      <ng-template #custom>
+        <div style="display: flex; justify-content: space-between">
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[0]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="valeurMin"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%' }"
+            ></p-inputNumber>
+            <label for=""> valeur minimal</label>
+          </span>
+          <span class="p-float-label">
+            <p-inputNumber
+              [(ngModel)]="rangeValue[1]"
+              [showButtons]="true"
+              [max]="valeurMax"
+              [min]="rangeValue[0]"
+              (ngModelChange)="updateRange()"
+              [style]="{ width: '90%' }"
+            ></p-inputNumber>
+            <label for=""> valeur maximal</label>
+          </span>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #others>
+      <ng-container *ngIf="typeInput" [ngSwitch]="typeInput">
+        <!-- boolean  -->
+
+        <div class="input-switch-container" *ngSwitchCase="'code_1308'">
+          <label style="cursor: pointer" for="id-9614">
+            {{ label | translate | titlecase }}
+          </label>
+
+          <p-inputSwitch
+            inputId="id-9614"
+            [disabled]="true"
+            [ngModel]="data | translate"
+          ></p-inputSwitch>
+        </div>
+
+        <p-button
+          *ngSwitchCase="'icon'"
+          [loading]="loading"
+          [label]="label | translate"
+          [icon]="data"
+          [disabled]="true"
+        ></p-button>
+        <p-button
+          *ngSwitchCase="'flag'"
+          [loading]="loading"
+          [label]="label | translate"
+          [icon]="data"
+          [disabled]="true"
+        ></p-button>
+
+        <ng-container *ngSwitchDefault>
+          <ng-container [ngSwitch]="typeInput">
+            <span class="p-float-label">
+              <!-- string  -->
+              <input
+                *ngSwitchCase="'code_1305'"
+                type="text"
+                style="width: 100%"
+                id="id-2733"
+                [disabled]="true"
+                [ngModel]="data | translate"
+                pInputText
+              />
+
+              <!-- text  -->
+
+              <textarea
+                *ngSwitchCase="'code_2477'"
+                style="max-width: 100%; width: 100%"
+                inputId="id-9613"
+                [rows]="5"
+                [cols]="30"
+                [disabled]="true"
+                [ngModel]="data | translate"
+                pInputTextarea
+              ></textarea>
+
+              <!-- integer  -->
+
+              <p-inputNumber
+                *ngSwitchCase="'code_2475'"
+                [ngStyle]="{ width: '100%' }"
+                inputId="id-7781"
+                [showButtons]="true"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="0"
+                [allowEmpty]="true"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-inputNumber>
+
+              <!-- float   -->
+
+              <p-inputNumber
+                *ngSwitchCase="'code_2476'"
+                [ngStyle]="{ width: '100%' }"
+                inputId="id-7781"
+                [showButtons]="true"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="2"
+                [step]="0.01"
+                [allowEmpty]="true"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-inputNumber>
+
+              <!-- date  -->
+              <p-calendar
+                *ngSwitchCase="'code_1307'"
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+                inputId="id-9153"
+                [selectionMode]="'single'"
+                [dateFormat]="'dd/mm/yy'"
+                [icon]="'pi pi-calendar'"
+                [dataType]="'date'"
+                [autoZIndex]="true"
+                [hideOnDateTimeSelect]="true"
+                [showSeconds]="true"
+                [numberOfMonths]="1"
+                [view]="'date'"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-calendar>
+              <!-- date time  -->
+              <p-calendar
+                *ngSwitchCase="'code_1319'"
+                [showClear]="true"
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+                inputId="id-9153"
+                [selectionMode]="'single'"
+                [dateFormat]="'dd/mm/yy'"
+                [icon]="'pi pi-calendar'"
+                [dataType]="'date'"
+                [autoZIndex]="true"
+                [hideOnDateTimeSelect]="true"
+                [showSeconds]="true"
+                [numberOfMonths]="1"
+                [view]="'date'"
+                hourFormat="24"
+                [showTime]="true"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-calendar>
+              <!-- default == time -->
+              <p-calendar
+                *ngSwitchDefault
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+                inputId="id-9154"
+                [dataType]="'date'"
+                [autoZIndex]="true"
+                [showSeconds]="true"
+                [showTime]="true"
+                [timeOnly]="true"
+                [dateFormat]="'HH:mm:ss'"
+                hourFormat="24"
+                [disabled]="true"
+                [ngModel]="data | translate"
+              ></p-calendar>
+
+              <label>
+                {{ label | translate | titlecase }}
+              </label>
+            </span>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-template>
+  </ng-template>
+</ng-template>
+
+<p-dialog
+  #iconDialog
+  [(visible)]="showIcons"
+  [appendTo]="'body'"
+  [style]="{ width: '90vw', heigth: '100hv' }"
+  (click)="iconDialog.moveOnTop()"
+  [baseZIndex]="2147483647"
+>
+  <ng-template pTemplate="headless">
+    <div
+      class="flex flex-column px-8 py-5 gap-4"
+      style="
+        border-radius: 12px;
+        background-image: radial-gradient(
+          circle at left top,
+          var(--primary-200),
+          var(--primary-500)
+        );
+      "
+    >
+      <svg
+        width="33"
+        height="35"
+        viewBox="0 0 33 35"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="block mx-auto"
+      >
+        <path
+          d="M15.1934 0V0V0L0.0391235 5.38288L2.35052 25.3417L15.1934 32.427V32.427V32.427L28.0364 25.3417L30.3478 5.38288L15.1934 0Z"
+          fill="var(--primary-color)"
+        />
+        <mask
+          id="mask0_1_36"
+          style="mask-type: luminance"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="31"
+          height="33"
+        >
+          <path
+            d="M15.1934 0V0V0L0.0391235 5.38288L2.35052 25.3417L15.1934 32.427V32.427V32.427L28.0364 25.3417L30.3478 5.38288L15.1934 0Z"
+            fill="var(--primary-color-text)"
+          />
+        </mask>
+        <g mask="url(#mask0_1_36)">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M15.1935 0V3.5994V3.58318V20.0075V20.0075V32.427V32.427L28.0364 25.3417L30.3478 5.38288L15.1935 0Z"
+            fill="var(--primary-color)"
+          />
+        </g>
+        <path
+          d="M19.6399 15.3776L18.1861 15.0547L19.3169 16.6695V21.6755L23.1938 18.4458V12.9554L21.4169 13.6013L19.6399 15.3776Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M10.5936 15.3776L12.0474 15.0547L10.9166 16.6695V21.6755L7.03966 18.4458V12.9554L8.81661 13.6013L10.5936 15.3776Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M11.3853 16.9726L12.6739 15.0309L13.4793 15.5163H16.7008L17.5061 15.0309L18.7947 16.9726V24.254L17.8283 25.7103L16.7008 26.843H13.4793L12.3518 25.7103L11.3853 24.254V16.9726Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M19.3168 24.7437L21.4168 22.6444V20.5451L19.3168 22.3214V24.7437Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M10.9166 24.7437L8.81662 22.6444V20.5451L10.9166 22.3214V24.7437Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M13.0167 5.68861L11.7244 8.7568L13.8244 14.8932H14.7936V5.68861H13.0167ZM15.4397 5.68861V14.8932H16.5706L18.5091 8.7568L17.2167 5.68861H15.4397Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M13.8244 14.8932L6.87813 12.3094L5.90888 8.27235L11.8859 8.7568L13.9859 14.8932H13.8244Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M16.5706 14.8932L23.5169 12.3094L24.4861 8.27235L18.3476 8.7568L16.4091 14.8932H16.5706Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M18.8321 8.27235L22.2245 7.94938L19.9629 5.68861H17.7013L18.8321 8.27235Z"
+          fill="var(--primary-color-text)"
+        />
+        <path
+          d="M11.4013 8.27235L8.00893 7.94938L10.2705 5.68861H12.5321L11.4013 8.27235Z"
+          fill="var(--primary-color-text)"
+        />
+      </svg>
+
+      <div class="inline-flex flex-column gap-2">
+        <div class="col-md-12 px-3 py-3">
+          <span class="p-float-label p-input-icon-left" style="width: 100%">
+            <i class="pi pi-search"></i>
+            <input
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="filterIconLabel"
+              id="id-2733"
+              (ngModelChange)="onFilterChange($event)"
+              pInputText
+            />
+            <label>
+              {{ "code_13230" | translate | titlecase }}
+            </label>
+          </span>
+        </div>
+      </div>
+      <div
+        class="inline-flex flex-column gap-2 card py-4"
+        style="height: 50vh; overflow-y: auto"
+      >
+        <div class="grid text-center">
+          <ng-container *ngIf="this.typeInput == 'icon'; else flag">
+            <div
+              class="col-12 md:col-2 mb-5 iconItem"
+              *ngFor="let icon of iconsToDisplay"
+              (click)="selectedIcon = icon.title"
+              [ngClass]="{ selected: selectedIcon === icon.title }"
+            >
+              <i class="mb-3 text-2xl" [class]="icon.title"></i>
+              <div>{{ icon.title }}</div>
+            </div>
+          </ng-container>
+          <ng-template #flag>
+            <div
+              class="col-12 md:col-3 mb-5 iconItem"
+              *ngFor="let icon of iconsToDisplay"
+              (click)="selectedIcon = icon.value"
+              [ngClass]="{ selected: selectedIcon === icon.value }"
+              style="font-size: x-large"
+            >
+              <i class="mb-3" [class]="icon.value" style="font-size: 7rem"></i>
+              <div>{{ icon.label }}</div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="flex align-items-center justify-content-end gap-2">
+        <button
+          pButton
+          pRipple
+          [label]="'code_4145' | translate | titlecase"
+          icon="pi pi-check"
+          styleClass=" text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10 "
+          class="p-button-success"
+          (click)="saveSelectedIcon()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          [label]="'code_4551' | translate | titlecase"
+          icon="pi pi-times"
+          styleClass=" text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
+          class="p-button-secondary"
+          (click)="showIcons = false"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

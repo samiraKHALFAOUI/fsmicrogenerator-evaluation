@@ -1,0 +1,68 @@
+<div class="sub-component-header pb-3">
+  <button
+    *ngIf="!['detail','translate'].includes(mode)"
+    type="button"
+    [label]="'code_4146' | translate | titlecase"
+    (click)="openListDialog()"
+    pButton
+  ></button>
+</div>
+<ng-container *ngIf="relation.includes('ToMany') ;else relationToOne">
+  <app-dynamic-table
+    [cols]="listPrincipaleHeaders"
+    [captionConfig]="listPrincipaleCaptionConfig"
+    (onDelete)="changeState($event)"
+    (onAddClick)="onAddClick()"
+    (onTranslateClick)="onTranslateClick($event)"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    (onCloneClick)="onCloneClick($event)"
+    [data]="data"
+    [prohibitDeletion]="['inventoryMovements']"
+    [serviceName]="'productManagement'"
+    [componentName]="'product'"
+  >
+  </app-dynamic-table>
+</ng-container>
+<ng-template #relationToOne>
+  <ng-container [ngSwitch]="mode">
+    <app-add-product
+      *ngSwitchCase="'add/edit'"
+      [current]="currentProduct"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+      [categoryId]="categoryId"
+      (onAddItem)="onAddItem($event)"
+      [supplierId]="supplierId"
+    >
+    </app-add-product>
+
+    <app-clone-product
+      *ngSwitchCase="'clone'"
+      [current]="currentProduct"
+      [independentComponent]="false"
+      [relation]="relation"
+      [categoryId]="categoryId"
+      [supplierId]="supplierId"
+    >
+    </app-clone-product>
+    <app-translate-product
+      *ngSwitchCase="'translate'"
+      [current]="currentProduct"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+    >
+    </app-translate-product>
+
+    <app-detail-product
+      *ngSwitchCase="'detail'"
+      [current]="currentProduct"
+      [independentComponent]="false"
+      [relation]="relation"
+      (onDetailFinish)="onDetailFinish()"
+    >
+    </app-detail-product>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,39 @@
+
+<ng-container *ngIf="relation.includes('ToMany') ;else relationToOne">
+  <app-dynamic-table
+    [cols]="listPrincipaleHeaders"
+    [captionConfig]="listPrincipaleCaptionConfig"
+    (onDelete)="changeState($event)"
+    (onAddClick)="onAddClick()"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    [data]="data"
+    [prohibitDeletion]="['inventoryMovement']"
+    [serviceName]="'transactionManagement'"
+    [componentName]="'transactionLine'"
+  >
+  </app-dynamic-table>
+</ng-container>
+<ng-template #relationToOne>
+  <ng-container [ngSwitch]="mode">
+    <app-add-transaction-line
+      *ngSwitchCase="'add/edit'"
+      [current]="currentTransactionLine"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+      [transactionId]="transactionId"
+      (onAddItem)="onAddItem($event)"
+    >
+    </app-add-transaction-line>
+
+    <app-detail-transaction-line
+      *ngSwitchCase="'detail'"
+      [current]="currentTransactionLine"
+      [independentComponent]="false"
+      [relation]="relation"
+      (onDetailFinish)="onDetailFinish()"
+    >
+    </app-detail-transaction-line>
+  </ng-container>
+</ng-template>

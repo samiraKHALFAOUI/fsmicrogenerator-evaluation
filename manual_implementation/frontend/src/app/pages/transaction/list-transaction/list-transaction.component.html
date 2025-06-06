@@ -1,0 +1,183 @@
+<div class="container">
+  <header class="page-header slide-in">
+    <h1>Order Management</h1>
+    <p>View and manage customer orders</p>
+  </header>
+
+  <div class="filters-bar fade-in">
+    <div class="filter-group">
+      <label for="status-filter">Status</label>
+      <select
+        id="status-filter"
+        [(ngModel)]="statusFilter"
+        (change)="applyFilters()"
+      >
+        <option value="all">All Statuses</option>
+        <option value="new">New</option>
+        <option value="processing">Processing</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="date-filter">Date Range</label>
+      <select
+        id="date-filter"
+        [(ngModel)]="dateFilter"
+        (change)="applyFilters()"
+      >
+        <option value="all">All Time</option>
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+    </div>
+
+    <div class="search-container">
+      <label for="date-filter">Filter</label>
+
+      <input
+        type="text"
+        placeholder="Search orders..."
+        [(ngModel)]="searchQuery"
+        (input)="applyFilters()"
+        class="search-input"
+      />
+    </div>
+  </div>
+  <div class="">
+    <button class="btn btn-primary" (click)="navigateToAdd()">
+      Add Transaction
+    </button>
+  </div>
+  <div class="orders-list fade-in">
+    <div class="table-responsive">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order reference</th>
+            <th>type</th>
+
+            <th>Date</th>
+
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders" class="order-row">
+            <td>{{ order.reference }}</td>
+            <td>{{ order.type }}</td>
+
+            <td>{{ order.date | date : "medium" }}</td>
+            <td>
+              <span
+                class="status-badge"
+                [ngClass]="getStatusClass(order.status)"
+              >
+                {{ order.status }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button
+                class="action-btn view"
+                title="View order details"
+                (click)="navigateToDetail(order)"
+              >
+                <span class="action-icon">👁️</span>
+              </button>
+              <button
+                class="action-btn update"
+                title="Update status"
+                (click)="navigateToEdit(order._id)"
+              >
+                <span class="action-icon">📝</span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0">
+            <td colspan="6" class="empty-state">No orders found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="selectedOrder" class="modal-overlay fade-in">
+    <div class="modal-content slide-in">
+      <div class="modal-header">
+        <h2>Reference - #{{ selectedOrder.reference }}</h2>
+        <button class="close-btn" (click)="selectedOrder = null">×</button>
+      </div>
+
+      <div class="order-details">
+        <div class="detail-row" *ngIf="selectedOrder.customer">
+          <span class="detail-label">Customer:</span>
+          <span class="detail-value">{{ selectedOrder.customer?.name }}</span>
+        </div>
+
+        <div class="detail-row" *ngIf="selectedOrder.supplier">
+          <span class="detail-label">Supplier:</span>
+          <span class="detail-value">{{ selectedOrder.supplier?.name }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Date:</span>
+          <span class="detail-value">{{
+            selectedOrder.date | date : "medium"
+          }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Type:</span>
+          <span class="detail-value">{{ selectedOrder.type }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Saved By:</span>
+          <span class="detail-value">{{ selectedOrder.savedBy }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Status:</span>
+          <span
+            class="status-badge"
+            [ngClass]="getStatusClass(selectedOrder.status)"
+          >
+            {{ selectedOrder.status }}
+          </span>
+        </div>
+
+        <h4>Ligne Transaction :</h4>
+        <div class="row">
+          <div
+            *ngFor="let item of selectedOrder.transactionLigne"
+            class="col-md-6"
+          >
+            <div class="card">
+              <div class="detail-row">
+                <span class="detail-label">Product:</span>
+                <span class="detail-value">{{ item.product?.name }}</span>
+              </div>
+
+              <div class="detail-row">
+                <span class="detail-label">Quantity:</span>
+                <span class="detail-value">{{ item.quantity }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Price:</span>
+                <span class="detail-value">{{ item.price }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Currency:</span>
+                <span class="detail-value">{{ item.currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="sub-component-header pb-3">
+  <button
+    *ngIf="!['detail','translate'].includes(mode)"
+    type="button"
+    [label]="'code_4146' | translate | titlecase"
+class="choisir"
+    (click)="openListDialog()"
+    pButton
+  ></button>
+</div>
+<ng-container *ngIf="relation.includes('ToMany') ;else relationToOne">
+  <app-dynamic-table
+    [cols]="listPrincipaleHeaders"
+    [captionConfig]="listPrincipaleCaptionConfig"
+    (onDelete)="changeState($event)"
+    (onAddClick)="onAddClick()"
+    (onTranslateClick)="onTranslateClick($event)"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    [data]="data"
+    [prohibitDeletion]='["menuAssocies"]'
+    [serviceName]="'technicalConfiguration'"
+    [componentName]="'menu'"
+  >
+  </app-dynamic-table>
+</ng-container>
+<ng-template #relationToOne>
+  <ng-container [ngSwitch]="mode">
+    <app-add-menu
+      *ngSwitchCase="'add/edit'"
+      [current]="currentMenu"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+      [menuParentId]="menuParentId"
+      [pagesId]="pagesId"
+      (onAddItem)="onAddItem($event)"
+    >
+    </app-add-menu>
+
+    <app-translate-menu
+      *ngSwitchCase="'translate'"
+      [current]="currentMenu"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+    >
+    </app-translate-menu>
+
+    <app-detail-menu
+      *ngSwitchCase="'detail'"
+      [current]="currentMenu"
+      [independentComponent]="false"
+      [relation]="relation"
+      (onDetailFinish)="onDetailFinish()"
+    >
+    </app-detail-menu>
+  </ng-container>
+</ng-template>

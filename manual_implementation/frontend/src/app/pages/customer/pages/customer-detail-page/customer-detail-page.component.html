@@ -1,0 +1,24 @@
+<div class="container">
+  <header class="page-header slide-in">
+    <h1>Customer Management</h1>
+    <p>View and manage Customers</p>
+  </header>
+
+  <div class="card w-full max-w-4xl p-6">
+    <div class="flex justify-content-between align-items-center mb-4">
+      <h1 class="m-0">Customer Details</h1>
+      <div class="flex gap-2">
+        <button 
+          pButton 
+          pRipple 
+          label="Back" 
+          icon="pi pi-arrow-left" 
+          class="p-button-outlined"
+          (click)="backToList()">
+        </button>
+      </div>
+    </div>
+    
+    <app-customer-detail [customer]="customer"></app-customer-detail>
+  </div>
+</div>

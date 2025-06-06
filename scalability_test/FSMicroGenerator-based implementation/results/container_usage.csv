@@ -1,0 +1,17 @@
+container,avg_cpu_pct,avg_mem_MB
+mongo,8.02,162.81
+inventorymanagementsystem-accountmanagementservice,0.93,66.29
+rabbitmq,14.63,173.59
+inventorymanagementsystem-apigateway,22.38,101.08
+inventorymanagementsystem-suppliermanagementservice,6.91,76.77
+redis,1.47,14.36
+inventorymanagementsystem-customermanagementservice,0.86,64.85
+inventorymanagementsystem-productmanagementservice,67.50,155.09
+prometheus,0.27,34.53
+inventorymanagementsystem-technicalconfigurationservice,0.88,70.02
+grafana,0.17,82.63
+inventorymanagementsystem-taxonomymanagementservice,5.07,75.07
+inventorymanagementsystem-inventorymanagementservice,0.86,64.52
+inventorymanagementsystem-currencymanagementservice,5.08,74.95
+inventorymanagementsystem-frontend,0.00,10.09
+inventorymanagementsystem-transactionmanagementservice,1.09,65.15

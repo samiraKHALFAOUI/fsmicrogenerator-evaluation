@@ -1,0 +1,84 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"ProductManagement"'
+    [component]='"product"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2 ">
+
+    <div class="inventory-card mb-3" *ngIf="data">
+      <div class="product-image">
+        <img
+            [lazyLoad]="data.image | genericPipe : [{name:'file',serviceName :'productManagement'}]"
+            [defaultImage]="data.image| genericPipe : [{name:'file',serviceName :'productManagement' }]"
+            id="image"
+            alt="product"
+            title=""
+        />
+
+      </div>
+      <div class="inventory-details">
+        <h2>{{data | readDataTable : 'translations.name'}}</h2>
+        <div class="inventory-field">
+          <div class="label">{{ "code_2665" |translate | titlecase}} :</div>
+          <div class="value">{{data.reference}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_18390" |translate | titlecase}} :</div>
+          <div class="value">{{data.category| readDataTable : 'translations.name'}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_18394" |translate | titlecase}} :</div>
+          <div class="value">{{data.salePrice }} {{data.currency | readDataTable : 'currency.symbolCurrency'}}</div>
+        </div>
+
+        <div class="inventory-field">
+          <div class="label">{{ "code_18396" |translate | titlecase}} :</div>
+          <div class="value">{{data.stockQuantity }} {{ data.unit | readDataTable : 'translations.designation'}}</div>
+        </div>
+        <div class="inventory-field">
+          <div class="label">{{ "code_8706" |translate | titlecase}} :</div>
+          <div class="value">{{data.status | translate}}</div>
+        </div>
+        <div class="inventory-field d-flex align-items-center">
+          <div class="label">{{ "code_18426" |translate | titlecase}} :</div>
+          <div class="value" class="d-flex align-items-center">
+            <p-avatar
+            [image]="data.supplier.logo | genericPipe : [{name:'file',serviceName :'supplierManagement'}]"
+            styleClass="mr-2"
+            size="xlarge"
+            shape="circle" />
+            {{data.supplier | readDataTable :'translations.name'}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p-panel [header]="'code_18480' |translate |titlecase">
+      <app-sub-inventory
+          [destination]="'product'"
+          [relation]="'OneToMany'"
+          [data]="data?.inventoryMovements || []"
+          [independentComponent]="false"
+          [mode]="'detail'"
+        >
+        </app-sub-inventory>
+    </p-panel>
+
+
+<div class="form-footer">
+  <button
+    pButton
+    class="p-button-sm p-button-success submit-button"
+    iconPos="right"
+    icon="pi pi-save"
+    type="button"
+    [label]="'code_547' | translate | titlecase"
+    (click)="goBack()"
+  ></button>
+</div>
+</div>
+

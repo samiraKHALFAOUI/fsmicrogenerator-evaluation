@@ -1,0 +1,11 @@
+apiVersion: 1
+
+policies:
+  - orgId: 1
+    receiver: slack-notify
+    matchers: []
+    group_by: ['grafana_folder']
+    group_wait: 2m
+    group_interval: 10m
+    repeat_interval: 6h
+    continue: false

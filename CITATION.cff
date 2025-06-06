@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+title: "FSMicroGenerator Evaluation Toolkit: Reproducible Comparison of Generated and Manual Microservices"
+authors:
+  - family-names: Khalfaoui
+    given-names: Samira
+    orcid: https://orcid.org/0009-0004-7615-7108
+  - family-names: Khalfaoui
+    given-names: Hafida
+    orcid: https://orcid.org/0000-0002-9408-1301
+  - family-names: Azmani
+    given-names: Abdellah
+    orcid: https://orcid.org/0000-0003-4975-3807
+version: 1.0.0
+date-released: 2025-06-06
+repository-code: https://github.com/samiraKHALFAOUI/fsmicrogenerator-evaluation
+doi: 
+license: Apache-2.0

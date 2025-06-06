@@ -1,0 +1,57 @@
+<div class="sub-component-header pb-3">
+  <button
+    *ngIf="!['detail','translate'].includes(mode)"
+    type="button"
+    [label]="'code_4146' | translate | titlecase"
+class="choisir"
+    (click)="openListDialog()"
+    pButton
+  ></button>
+</div>
+<ng-container *ngIf="relation.includes('ToMany') ;else relationToOne">
+  <app-dynamic-table
+    [cols]="listPrincipaleHeaders"
+    [captionConfig]="listPrincipaleCaptionConfig"
+    (onDelete)="changeState($event)"
+    (onAddClick)="onAddClick()"
+    (onTranslateClick)="onTranslateClick($event)"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    [data]="data"
+    [prohibitDeletion]="[]"
+    [serviceName]="'technicalConfiguration'"
+    [componentName]="'enumeration'"
+  >
+  </app-dynamic-table>
+</ng-container>
+<ng-template #relationToOne>
+  <ng-container [ngSwitch]="mode">
+    <app-add-enumeration
+      *ngSwitchCase="'add/edit'"
+      [current]="currentEnumeration"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+      (onAddItem)="onAddItem($event)"
+    >
+    </app-add-enumeration>
+
+    <app-translate-enumeration
+      *ngSwitchCase="'translate'"
+      [current]="currentEnumeration"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+    >
+    </app-translate-enumeration>
+
+    <app-detail-enumeration
+      *ngSwitchCase="'detail'"
+      [current]="currentEnumeration"
+      [independentComponent]="false"
+      [relation]="relation"
+      (onDetailFinish)="onDetailFinish()"
+    >
+    </app-detail-enumeration>
+  </ng-container>
+</ng-template>

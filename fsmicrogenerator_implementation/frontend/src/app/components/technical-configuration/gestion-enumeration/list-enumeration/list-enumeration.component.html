@@ -1,0 +1,288 @@
+<div class="sub-component-header pb-3">
+  <app-dynamic-table
+    [data]="data"
+    [cols]="headers"
+    [captionConfig]="captionConfig"
+    (onDelete)="changeState($event)"
+    (onTranslateClick)="onTranslateClick($event)"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    (onAddClick)="onAddClick()"
+    [prohibitDeletion]="[]"
+    [serviceName]="'technicalConfiguration'"
+    [componentName]="'enumeration'"
+  ></app-dynamic-table>
+</div>
+<ng-container *ngIf="showLoading">
+  <app-loading></app-loading>
+</ng-container>
+
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [transitionOptions]="'250ms'"
+  [modal]="true"
+  [style]="{ width: '100%', maxWidth: '80%' }"
+>
+  <ng-template pTemplate="header">
+    <div
+      class="d-flex align-items-center justify-content-space-between"
+      style="color: red"
+    >
+      <i class="pi pi-filter me-3" style="font-size: 2rem"></i>
+      <span class="p-dialog-title">{{
+        "code_12953" | translate | titlecase
+      }}</span>
+    </div>
+  </ng-template>
+
+  <p-panel [toggleable]="true"[expandIcon]="'pi pi-angle-double-up'"[collapseIcon]="'pi pi-angle-double-down'">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold" >{{ "code_17623" | translate | titlecase }}</span >
+      </div>
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <button *ngIf="unusedValuesToDelete.length"
+        class="p-panel-header-icon p-link mr-2 p-button-danger"
+        (click)="deleteUnusedValues()"
+      >
+        <span class="pi pi-trash"></span>
+      </button>
+    </ng-template>
+
+      <div class="field-checkbox" *ngFor="let item of unused"> <p-checkbox [(ngModel)]="unusedValuesToDelete" [label]="item+': '+(item|translate)"  [value]="item" ></p-checkbox>  </div>
+
+  </p-panel>
+
+  <p-panel [toggleable]="true"[expandIcon]="'pi pi-angle-double-up'"[collapseIcon]="'pi pi-angle-double-down'">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold" >{{ "code_17622" | translate | titlecase }}</span >
+      </div>
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <button
+        class="p-panel-header-icon p-link mr-2 p-button-success"
+        (click)="addMissingValues()"
+      >
+        <span class="pi pi-plus"></span>
+      </button>
+    </ng-template>
+
+    <ul>
+      <li *ngFor="let item of missing">{{item|translate }}  </li>
+    </ul>
+  </p-panel>
+
+
+
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      [label]="'code_547'|translate "
+      pButton
+      autofocus
+      (click)="displayDialog = false"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+
+<p-dialog
+  [(visible)]="displayAddMissingValues"
+  [transitionOptions]="'250ms'"
+  [modal]="true"
+  [style]="{ width: '100%', maxWidth: '80%' }"
+>
+  <ng-template pTemplate="header">
+    <div
+      class="d-flex align-items-center justify-content-space-between"
+      style="color: green"
+    >
+      <i class="pi pi-save me-3" style="font-size: 2rem"></i>
+      <span class="p-dialog-title">{{
+        "code_17621" | translate | titlecase
+      }}</span>
+    </div>
+  </ng-template>
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <p-accordion class="w-full" [activeIndex]="0"  formArrayName="items">
+      <p-accordionTab *ngFor="let item of items?.controls; let itemIndex = index" [formGroupName]="itemIndex">
+        <ng-template pTemplate="header">
+          <span class="flex align-items-center gap-2 w-full">
+            <span class="font-bold" >{{ item.get('code')?.value | translate | titlecase }}</span >
+            <button
+              pButton
+              [pTooltip]="'delete this input' | translate | titlecase"
+              tooltipPosition="top"
+              class="p-button-sm p-button-danger delete-translation-button p-panel-header-icon p-link ml-auto mr-2"
+              icon="pi pi-times"
+              (click)="removeItem(itemIndex)"
+              type="button"
+          ></button>
+            </span>
+        </ng-template>
+
+        <div class="form dynamic-form px-3 py-2" >
+          <div class="form-grid-container" formArrayName="translations">
+            <ng-container *ngFor="let translation of getTranslations(itemIndex)?.controls;let i = index">
+              <div class="translation-container">
+                <button
+                  pButton
+                  [pTooltip]="'delete this input' | translate | titlecase"
+                  tooltipPosition="top"
+                  class="p-button-sm p-button-danger delete-translation-button"
+                  icon="pi pi-times"
+                  (click)="removeTranslation(itemIndex , i)"
+                  type="button"
+                ></button>
+                <div class="form-grid grid-cols-3 mb-3 formArray" [formGroupName]="i">
+                  <div class="input-container column-span-1 row-span-1">
+                    <span class="p-float-label">
+                      <p-dropdown
+                        [style]="{width:'100%'}"
+                        [appendTo]="'body'"
+                        inputId="id-5726"
+                        [options]="optionLanguage"
+                        [optionDisabled]="'disabled'"
+                        [scrollHeight]="'200px'"
+                        [filter]="true"
+                        [filterMatchMode]="'contains'"
+                        filterBy="name"
+                        [emptyMessage]="'No records found.'"
+                        [emptyFilterMessage]="'No results found.'"
+                        [maxlength]="100000"
+                        [dropdownIcon]="'pi pi-chevron-down'"
+                        [overlayOptions]="{autoZIndex :true}"
+                        [tooltipPosition]="'top'"
+                        [ngClass]="translation.get('language')?.invalid && (translation.get('language')?.touched || translation.get('language')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                        [autoDisplayFirst]="false"
+                        dataKey="code"
+                        formControlName="language"
+                      >
+                      <ng-template pTemplate="selectedItem">
+                        <div class="d-flex" *ngIf="translation.get('language')?.value">
+                          <i
+                            [class]="translation.get('language')?.value.flag"
+                            class="me-2"
+                          ></i>
+                          <div>{{translation.get('language')?.value | readDataTable : 'translations.value'}}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-language pTemplate="item">
+                        <div class="d-flex">
+                          <i [class]="language.flag" class="me-2"></i>
+                          <div>{{language | readDataTable : 'translations.value'}}</div>
+                        </div>
+                      </ng-template>
+                      </p-dropdown>
+                      <label
+                        [ngClass]=" translation.get('language')?.invalid && (translation.get('language')?.touched || translation.get('language')?.dirty) ? 'text-danger' : ''"
+                      >
+                        {{ "code_181" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+                      <ng-container
+                        *ngIf="translation.get('language')?.invalid && (translation.get('language')?.touched || translation.get('language')?.dirty)"
+                      >
+                        <span
+                          class="error-span"
+                          *ngIf="translation.get('language')?.errors?.['required'] "
+                        >
+                          {{ "code_29" | translate | titlecase }}
+                        </span>
+                      </ng-container>
+                    </span>
+                  </div>
+
+                  <div class="input-container column-span-1 row-span-1">
+                    <span class="p-float-label">
+                      <input
+                        type="text"
+                        style="width: 100%"
+                        [ngClass]="translation.get('valeur')?.invalid && (translation.get('valeur')?.touched || translation.get('valeur')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                        id="id-2605"
+                        formControlName="valeur"
+                        pInputText
+                      />
+
+                      <label
+                        [ngClass]=" translation.get('valeur')?.invalid && (translation.get('valeur')?.touched || translation.get('valeur')?.dirty) ? 'text-danger' : ''"
+                      >
+                        {{ "code_564" |translate | titlecase}} <span class="text-danger">*</span></label>
+
+                      <ng-container
+                        *ngIf="translation.get('valeur')?.invalid && (translation.get('valeur')?.touched || translation.get('valeur')?.dirty)"
+                      >
+                        <span
+                          class="error-span"
+                          *ngIf="translation.get('valeur')?.errors?.['required'] "
+                        >
+                          {{ "code_29" | translate | titlecase }}
+                        </span>
+                      </ng-container>
+                    </span>
+                  </div>
+
+                  <div class="input-container column-span-1 row-span-1">
+                    <span class="p-float-label">
+                      <textarea
+                        style="max-width: 100%; width: 100%"
+                        inputId="id-418"
+                        [rows]="2"
+                        [cols]="30"
+                        [ngClass]=" translation.get('commentaire')?.invalid && (translation.get('commentaire')?.touched || translation.get('commentaire')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                        formControlName="commentaire"
+                        pInputTextarea
+                      ></textarea>
+
+                      <label
+                        [ngClass]=" translation.get('commentaire')?.invalid && (translation.get('commentaire')?.touched || translation.get('commentaire')?.dirty) ? 'text-danger' : ''"
+                      >
+                        {{ "code_775" |translate | titlecase}}
+                      </label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+          </div>
+
+        </div>
+
+
+      </p-accordionTab>
+    </p-accordion>
+
+  </form>
+
+
+
+
+
+  <ng-template pTemplate="footer">
+
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="button"
+      [label]="'code_4145' | translate | titlecase"
+      (click)="onSubmit()"
+    ></button>
+
+    <button
+      pButton
+      class="next-tab-button"
+      iconPos="right"
+      type="button"
+      [label]="'code_547' | translate | titlecase"
+class="termine"
+      (click)="displayAddMissingValues =false"
+    ></button>
+  </div>
+  </ng-template>
+</p-dialog>

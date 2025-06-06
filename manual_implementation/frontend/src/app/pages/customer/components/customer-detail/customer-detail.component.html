@@ -1,0 +1,62 @@
+<div class="" *ngIf="customer">
+  <div class="grid">
+    <div class="col-12 md:col-4 flex justify-content-center">
+      <!-- Photo present -->
+      <div *ngIf="customer.photo" class="photo-container relative w-9rem h-9rem border-circle overflow-hidden shadow-2">
+        <img 
+          [src]="customer.photo | imageUrl" 
+          alt="Customer photo" 
+          class="w-full h-full object-cover border-circle" />
+      </div>
+    
+      <!-- Default avatar if no photo -->
+      <div *ngIf="!customer.photo" 
+           class="default-avatar flex align-items-center justify-content-center bg-primary border-circle w-9rem h-9rem overflow-hidden shadow-2">
+        <span class="text-white text-5xl">{{ customer.name.charAt(0).toUpperCase() }}</span>
+      </div>
+    </div>    
+    
+    <div class="col-12 md:col-8">
+      <div class="field">
+        <label>Name</label>
+        <p class="text-xl font-semibold">{{customer.name}}</p>
+      </div>
+      
+      <div class="field">
+        <label>Email</label>
+        <p>
+          <i class="pi pi-envelope mr-2"></i>
+          <a [href]="'mailto:' + customer.email">{{customer.email}}</a>
+        </p>
+      </div>
+      
+      <div class="field" *ngIf="customer.phoneNumber">
+        <label>Phone Number</label>
+        <p>
+          <i class="pi pi-phone mr-2"></i>
+          {{customer.phoneNumber}}
+        </p>
+      </div>
+      
+      <div class="field" *ngIf="customer.address">
+        <label>Address</label>
+        <p>
+          <i class="pi pi-map-marker mr-2"></i>
+          {{customer.address}}
+        </p>
+      </div>
+      
+      <div class="field" *ngIf="customer.createdAt">
+        <label>Created</label>
+        <p>
+          <i class="pi pi-calendar mr-2"></i>
+          {{customer.createdAt | date: 'medium'}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<div class="" *ngIf="!customer">
+  <p>No customer data available</p>
+</div>

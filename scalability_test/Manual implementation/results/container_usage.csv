@@ -1,0 +1,10 @@
+container,avg_cpu_pct,avg_mem_MB
+manual_inventory-customer_management_service-1,0.03,60.07
+manual_inventory-product_management-1,6.95,67.56
+manual_inventory-gateway-1,6.24,84.48
+manual_inventory-transactions-1,0.01,52.72
+manual_inventory-rabbitmq-1,1.54,145.19
+mongodb,2.13,95.58
+manual_inventory-supplier_service-1,2.34,64.58
+manual_inventory-frontend-1,0.00,4.44
+manual_inventory-inventory-1,0.00,67.37

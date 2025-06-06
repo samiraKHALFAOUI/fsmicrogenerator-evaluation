@@ -1,0 +1,33 @@
+<div class="sidebar" [ngClass]="showSidebar ? 'open' : 'sidebar-closed'" (mouseenter)="sidebarHovered = true"
+  (mouseleave)="sidebarHovered = false">
+  <ul class="main-options">
+    <ng-container *ngFor="let item of sidebarNavItems">
+      <li *ngIf="!showSidebar">
+        <button class="option-icon">
+          <i [ngClass]="item.icon"></i>
+        </button>
+      </li>
+    </ng-container>
+    <ul *ngIf="showSidebar" class="custom-menu">
+      <ng-container *ngTemplateOutlet="menuTemplate; context: { items: sidebarNavItems }"></ng-container>
+    </ul>
+
+    <ng-template #menuTemplate let-items="items">
+      <li *ngFor="let item of items" [ngClass]="{'active': isActive(item), 'expanded': item.expanded}">
+        <div (click)="toggleItem(item, items)">
+          <i *ngIf="item.icon" [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+          <i *ngIf="item.items" class="expand-icon pi"
+            [ngClass]="item.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
+        </div>
+
+        <ul *ngIf="item.items" class="submenu">
+          <ng-container *ngTemplateOutlet="menuTemplate; context: { items: item.items }"></ng-container>
+        </ul>
+      </li>
+    </ng-template>
+
+  </ul>
+
+
+</div>

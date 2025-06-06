@@ -1,0 +1,143 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"AccountManagement"'
+    [component]='"group"'
+    [operation]="'clone'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-dropdown
+                [style]="{width:'100%'}"
+                [appendTo]="'body'"
+                inputId="id-7119"
+                [options]="optionsEtatUtilisation"
+                [optionDisabled]="'disabled'"
+                [scrollHeight]="'200px'"
+                [filterMatchMode]="'contains'"
+                [emptyMessage]="'No records found.'"
+                [emptyFilterMessage]="'No results found.'"
+                [maxlength]="100000"
+                [dropdownIcon]="'pi pi-chevron-down'"
+                [overlayOptions]="{autoZIndex:true}"
+                [tooltipPosition]="'top'"
+                [ngClass]="form.get('etatUtilisation')?.invalid && (form.get('etatUtilisation')?.touched || form.get('etatUtilisation')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+                [autoDisplayFirst]="false"
+                formControlName="etatUtilisation"
+              ></p-dropdown>
+
+              <label
+                [ngClass]="form.get('etatUtilisation')?.invalid && (form.get('etatUtilisation')?.touched || form.get('etatUtilisation')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_577" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('etatUtilisation')?.invalid && (form.get('etatUtilisation')?.touched || form.get('etatUtilisation')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('etatUtilisation')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label" formGroupName="translations">
+              <input
+                type="text"
+                style="width: 100%"
+                [ngClass]="form.get('translations.designation')?.invalid && (form.get('translations.designation')?.touched || form.get('translations.designation')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+                id="id-4962"
+                formControlName="designation"
+                pInputText
+              />
+
+              <label
+                [ngClass]=" form.get('translations.designation')?.invalid && (form.get('translations.designation')?.touched || form.get('translations.designation')?.dirty) ? 'text-danger' : ''"
+              >
+                {{ "code_39" |translate | titlecase}}
+              </label>
+
+              <ng-container
+                *ngIf="form.get('translations.designation')?.invalid && (form.get('translations.designation')?.touched || form.get('translations.designation')?.dirty)"
+              >
+                <span
+                  class="error-span"
+                  *ngIf="form.get('translations.designation')?.errors?.['required'] "
+                >
+                  {{ "code_29" | translate | titlecase }}
+                </span>
+              </ng-container>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <p-tabPanel
+      [header]="'code_2138' | translate | titlecase"
+      [disabled]="!newID"
+    >
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4"></div>
+      </div>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!newID"
+        pButton
+        class="p-button-sm p-button-success prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        *ngIf="!newID"
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_4145' | translate | titlecase"
+        (click)="cloneData()"
+      ></button>
+
+      <button
+        *ngIf="newID && !relation?.includes('ToOne')"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+        (click)="finish()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!newID"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        [label]="'code_2994' | translate | titlecase"
+        (click)="nextTab()"
+      ></button>
+    </div>
+  </p-tabView>
+</form>

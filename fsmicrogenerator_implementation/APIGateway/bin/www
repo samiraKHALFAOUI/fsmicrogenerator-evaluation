@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+
+
+
+const app = require("../app");
+const http = require("http");
+const logger = require("../middlewares/winston.middleware");
+const { generatePrometheusTargets } = require("../helpers/prometheus.helpers");
+
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(process.env.PORT || "4000");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+/**
+ * Start server and attach events.
+ */
+server.listen(port, async () => {
+  logger.info(`API Gateway running on port ${port} in ${process.env.NODE_ENV} mode`);
+  await generatePrometheusTargets([])
+});
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+  if (isNaN(port)) return val;        // Named pipe
+  if (port >= 0) return port;         // Port number
+  return false;
+}
+
+/**
+ * Handle server "error" event.
+ */
+function onError(error) {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
+
+  switch (error.code) {
+    case "EACCES":
+      logger.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      logger.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Handle server "listening" event.
+ */
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+  logger.info(`Server is listening on ${bind}`);
+}

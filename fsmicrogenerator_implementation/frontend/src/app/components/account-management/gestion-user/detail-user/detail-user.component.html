@@ -1,0 +1,243 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"AccountManagement"'
+    [component]='"user"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <div class="form-grid-container">
+    <div class="form-grid grid-cols-4">
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-9476"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'reference'"
+            pInputText
+          />
+
+          <label> {{ "code_4545" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-2096"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'pseudo'"
+            pInputText
+          />
+
+          <label> {{ "code_196" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-603"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'email'"
+            pInputText
+          />
+
+          <label> {{ "code_45" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-7885"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'pwCrypte'"
+            pInputText
+          />
+
+          <label> {{ "code_197" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-6795"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'salutation'"
+            pInputText
+          />
+
+          <label> {{ "code_10538" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-416"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'translations.nom'"
+            pInputText
+          />
+
+          <label> {{ "code_2263" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-4111"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'translations.prenom'"
+            pInputText
+          />
+
+          <label> {{ "code_40" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'fonction.translations.designation'"
+            pInputText
+          />
+
+          <label> {{ "code_42" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <label class="dropzone-label">
+          {{ "code_46" |translate | titlecase}}
+        </label>
+        <div class="upload-container">
+          <div class="card-body dropzone-custom p-0 mx-auto">
+            <div class="dropzone dropzone-primary d-flex">
+              <div class="dz-message needsclick m-auto">
+                <div *ngIf=" data?.photo">
+                  <img
+                    [lazyLoad]="data?.photo | genericPipe : [{name:'file',serviceName :'accountManagement'}]"
+                    [defaultImage]="data?.photo| genericPipe : [{name:'file',serviceName :'accountManagement' }]"
+                    class="img-fluid rounded-circle"
+                    style="max-width: 190px; max-height: 250px"
+                    id="image"
+                    alt=""
+                    title=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-1600"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'telephone'"
+            pInputText
+          />
+
+          <label> {{ "code_44" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-9527"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'fixe'"
+            pInputText
+          />
+
+          <label> {{ "code_352" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-inputNumber
+            [ngStyle]="{width:'100%'}"
+            inputId="id-5768"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'nbreConnection'"
+          ></p-inputNumber>
+
+          <label> {{ "code_10550" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-calendar
+            [style]="{width:'100%'}"
+            inputId="id-4554"
+            [dateFormat]="'dd/mm/yy'"
+            [autoZIndex]="true"
+            [view]="'date'"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'dateDerniereConnexion'"
+          ></p-calendar>
+
+          <label> {{ "code_10551" |translate | titlecase}} </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            id="id-3319"
+            [disabled]="true"
+            [ngModel]="data | readDataTable : 'etatCompte'"
+            pInputText
+          />
+
+          <label> {{ "code_10557" |translate | titlecase}} </label>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <button
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="submit"
+      [label]="'code_547' | translate | titlecase"
+      (click)="goBack()"
+    ></button>
+  </div>
+</div>

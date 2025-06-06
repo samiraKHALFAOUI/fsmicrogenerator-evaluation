@@ -1,0 +1,139 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"CurrencyManagement"'
+    [component]='"exchangeRate"'
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-calendar
+                [style]="{width:'100%'}"
+                inputId="id-6439"
+                [dateFormat]="'dd/mm/yy'"
+                [showTime]="true"
+                [autoZIndex]="true"
+                [view]="'date'"
+                [disabled]="true"
+                [ngModel]="data?.date"
+              ></p-calendar>
+
+              <label> {{ "code_1307" |translate | titlecase}} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngStyle]="{width:'100%'}"
+                inputId="id-9555"
+                [disabled]="true"
+                [ngModel]="data?.valeurAchat"
+              ></p-inputNumber>
+
+              <label> {{ "code_13162" |translate | titlecase}} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <p-inputNumber
+                [ngStyle]="{width:'100%'}"
+                inputId="id-3136"
+                [disabled]="true"
+                [ngModel]="data?.valeurVente"
+              ></p-inputNumber>
+
+              <label> {{ "code_13163" |translate | titlecase}} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <div class="position-relative">
+              <label> {{ "code_4316" |translate | titlecase}} </label>
+
+              <p-inputSwitch
+                inputId="id-9609"
+                [disabled]="true"
+                [ngModel]="data?.actif"
+              ></p-inputSwitch>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-5941"
+                [disabled]="true"
+                [ngModel]="data | readDataTable : 'refCurrencyBase.currency'"
+                pInputText
+              />
+
+              <label> {{ "code_2047" |translate | titlecase}} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-5941"
+                [disabled]="true"
+                [ngModel]="data | readDataTable : 'refCurrencyEtrangere.currency'"
+                pInputText
+              />
+
+              <label> {{ "code_2047" |translate | titlecase}} </label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="submit"
+        [label]="'code_547' | translate | titlecase"
+class="termine"
+        (click)="goBack()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        (click)="nextTab()"
+        [label]="'code_2994' | translate | titlecase"
+      ></button>
+    </div>
+  </p-tabView>
+</div>

@@ -1,0 +1,90 @@
+apiVersion: 1
+
+groups:
+  - name: system-alerts
+    folder: Infrastructure
+    interval: 1m
+    rules:
+      - uid: high-memory
+        title: High Memory Usage
+        condition: A
+        for: 1m
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 300
+              to: 0
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              expr: sum(process_resident_memory_bytes)
+              instant: false
+              interval: ""
+              intervalFactor: 1
+              legendFormat: ""
+              refId: A
+              hide: false
+              format: time_series
+        reduce:
+          refId: A
+          type: last
+        evaluator:
+          type: gt
+          params:
+            - 1000000000
+        annotations:
+          summary: "🚨 *[Memory Alert]* High usage detected"
+          description: |
+            *System:* Inventory Management  
+            *Issue:* Total memory usage > 1GB 🚧  
+            *Current Value:* `{{$values.A}}`  
+            _Take action: check for memory leaks or high traffic spikes._
+        labels:
+          severity: critical
+        notifications:
+          - uid: slack-notify
+
+      - uid: service-down
+        title: Microservice Down
+        condition: B
+        for: 30s
+        data:
+          - refId: B
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 60
+              to: 0
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              expr: min by(job) (up{job=~".*"})
+              instant: false
+              interval: ""
+              intervalFactor: 1
+              legendFormat: ""
+              refId: B
+              hide: false
+              format: time_series
+        reduce:
+          refId: B
+          type: last
+        evaluator:
+          type: lt
+          params:
+            - 1
+        annotations:
+          summary: "🔴 *[Service Down]* Microservice is unreachable"
+          description: |
+            *Status:* ❌ `up = 0` detected  
+            *Affected Job:* `{{$labels.job}}`  
+            *Duration:* > 30s  
+            _Please investigate the service container or endpoint._
+        labels:
+          severity: high
+        notifications:
+          - uid: slack-notify

@@ -1,0 +1,15 @@
+Node.js
+node_modules/
+npm-debug.log
+
+Angular
+dist/
+.angular/
+
+IDE/Editor specific files
+.vscode/
+.idea/
+.log
+OS-specific files
+.DS_Store
+Thumbs.db

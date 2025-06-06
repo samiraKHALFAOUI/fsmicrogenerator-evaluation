@@ -1,0 +1,21 @@
+{
+  "name": "inventory",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "author": "Dev D",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "amqplib": "^0.10.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "inventory": "file:",
+    "mongoose": "^8.14.0",
+    "nodemon": "^3.1.10",
+    "uuid": "^11.1.0"
+  }
+}

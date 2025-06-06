@@ -1,0 +1,483 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"AccountManagement"'
+    [component]='"user"'
+    [operation]="'clone'"
+    [edit]="id ? true : false"
+  ></app-sub-breadcrumb>
+</ng-container>
+<form class="form dynamic-form px-3 py-2" [formGroup]="form">
+  <div class="form-grid-container">
+    <div class="form-grid grid-cols-4">
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('reference')?.invalid && (form.get('reference')?.touched || form.get('reference')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-9476"
+            formControlName="reference"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('reference')?.invalid && (form.get('reference')?.touched || form.get('reference')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_4545" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('reference')?.invalid && (form.get('reference')?.touched || form.get('reference')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('reference')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('pseudo')?.invalid && (form.get('pseudo')?.touched || form.get('pseudo')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-2096"
+            formControlName="pseudo"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('pseudo')?.invalid && (form.get('pseudo')?.touched || form.get('pseudo')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_196" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('pseudo')?.invalid && (form.get('pseudo')?.touched || form.get('pseudo')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('pseudo')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-603"
+            formControlName="email"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_45" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('email')?.errors?.['required'] ;else emailEmail"
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+            <ng-template #emailEmail>
+              <span
+                class="error-span"
+                *ngIf="form.get('email')?.errors?.['email'] "
+              >
+                {{ "code_53" | translate | titlecase }}
+              </span>
+            </ng-template>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('pwCrypte')?.invalid && (form.get('pwCrypte')?.touched || form.get('pwCrypte')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-7885"
+            formControlName="pwCrypte"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('pwCrypte')?.invalid && (form.get('pwCrypte')?.touched || form.get('pwCrypte')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_197" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('pwCrypte')?.invalid && (form.get('pwCrypte')?.touched || form.get('pwCrypte')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('pwCrypte')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-dropdown
+            [style]="{width:'100%'}"
+            [appendTo]="'body'"
+            inputId="id-6795"
+            [options]="optionsSalutation"
+            [optionDisabled]="'disabled'"
+            [scrollHeight]="'200px'"
+            [filterMatchMode]="'contains'"
+            [emptyMessage]="'No records found.'"
+            [emptyFilterMessage]="'No results found.'"
+            [maxlength]="100000"
+            [dropdownIcon]="'pi pi-chevron-down'"
+            [overlayOptions]="{autoZIndex:true}"
+            [tooltipPosition]="'top'"
+            [ngClass]="form.get('salutation')?.invalid && (form.get('salutation')?.touched || form.get('salutation')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+            [autoDisplayFirst]="false"
+            formControlName="salutation"
+          ></p-dropdown>
+
+          <label
+            [ngClass]="form.get('salutation')?.invalid && (form.get('salutation')?.touched || form.get('salutation')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_10538" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('salutation')?.invalid && (form.get('salutation')?.touched || form.get('salutation')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('salutation')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label" formGroupName="translations">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('translations.nom')?.invalid && (form.get('translations.nom')?.touched || form.get('translations.nom')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-416"
+            formControlName="nom"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('translations.nom')?.invalid && (form.get('translations.nom')?.touched || form.get('translations.nom')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_2263" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('translations.nom')?.invalid && (form.get('translations.nom')?.touched || form.get('translations.nom')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('translations.nom')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label" formGroupName="translations">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('translations.prenom')?.invalid && (form.get('translations.prenom')?.touched || form.get('translations.prenom')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-4111"
+            formControlName="prenom"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('translations.prenom')?.invalid && (form.get('translations.prenom')?.touched || form.get('translations.prenom')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_40" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('translations.prenom')?.invalid && (form.get('translations.prenom')?.touched || form.get('translations.prenom')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('translations.prenom')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <app-taxonomy-input
+        [label]="'code_42'"
+        [domain]="domains['fonction']"
+        [selectionMode]="'single'"
+        [scrollHeight]="'400px'"
+        [emptyMessage]="'No results found.'"
+        [control]="$any(form.get('fonction'))"
+        [taxonomie]="domains?.['fonction']?.taxonomies "
+        [taxonomieType]="'single'"
+      ></app-taxonomy-input>
+
+      <div class="input-container column-span-1 row-span-1">
+        <label class="dropzone-label">
+          {{ "code_46" |translate | titlecase}}
+        </label>
+        <div class="upload-container">
+          <div class="card-body dropzone-custom p-0 mx-auto">
+            <div
+              class="dropzone dropzone-primary d-flex"
+              [dropzone]="photoDropZoneConfig"
+              [ngStyle]="{
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundImage: selectedPhoto ? '' : 'url('+(form.get('photo')?.value | genericPipe :[{name:'file',serviceName:'accountManagement'}])+')' }"
+              (error)="onUploadPhotoError($event)"
+              (success)="onUploadPhotoSuccess($event)"
+              (removedFile)="onDeletePhotoSuccess($event)"
+            >
+              <div
+                class="dz-message needsclick m-auto text-danger"
+                *ngIf="form.get('photo')?.value"
+                style="max-height: 200px"
+                (click)="form.get('photo')?.setValue(null)"
+              >
+                <i class="bi bi-trash-fill" style="font-size: 40px"></i>
+                <h4 class="mb-0 f-w-600">
+                  {{ "code_1508" | translate | titlecase }}
+                </h4>
+              </div>
+              <div
+                class="dz-message needsclick m-auto"
+                style="max-height: 200px"
+              >
+                <i class="bi bi-cloud-arrow-up-fill"></i>
+                <h4 class="mb-0 f-w-600">
+                  {{ "code_46" | translate | titlecase }}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('telephone')?.invalid && (form.get('telephone')?.touched || form.get('telephone')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-1600"
+            formControlName="telephone"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('telephone')?.invalid && (form.get('telephone')?.touched || form.get('telephone')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_44" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('telephone')?.invalid && (form.get('telephone')?.touched || form.get('telephone')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('telephone')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <input
+            type="text"
+            style="width: 100%"
+            [ngClass]="form.get('fixe')?.invalid && (form.get('fixe')?.touched || form.get('fixe')?.dirty) ? 'ng-dirty ng-invalid' : ''"
+            id="id-9527"
+            formControlName="fixe"
+            pInputText
+          />
+
+          <label
+            [ngClass]=" form.get('fixe')?.invalid && (form.get('fixe')?.touched || form.get('fixe')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_352" |translate | titlecase}}
+          </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-inputNumber
+            [ngStyle]="{width:'100%'}"
+            inputId="id-5768"
+            [showButtons]="true"
+            [buttonLayout]="'stacked'"
+            [incrementButtonIcon]="'pi pi-chevron-up'"
+            [decrementButtonIcon]="'pi pi-chevron-down'"
+
+            [minFractionDigits]="1"
+            [maxFractionDigits]="2"
+            [min]="-100000000000000000000"
+            [max]="100000000000000000000"
+            [step]="1"
+            [allowEmpty]="true"
+            [inputStyleClass]="
+      form.get('nbreConnection')?.invalid && (form.get('nbreConnection')?.touched || form.get('nbreConnection')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+      "
+            [size]="10"
+            [maxlength]="100"
+            formControlName="nbreConnection"
+          ></p-inputNumber>
+
+          <label
+            [ngClass]=" form.get('nbreConnection')?.invalid && (form.get('nbreConnection')?.touched || form.get('nbreConnection')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_10550" |translate | titlecase}}
+          </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-calendar
+            [style]="{width:'100%'}"
+            [appendTo]="'body'"
+            inputId="id-4554"
+            [defaultDate]="defaultDateDateDerniereConnexion"
+            [selectionMode]="'single'"
+            [inputStyleClass]="
+      form.get('dateDerniereConnexion')?.invalid && (form.get('dateDerniereConnexion')?.touched || form.get('dateDerniereConnexion')?.dirty) ? 'ng-invalid ng-dirty' : ''
+
+      "
+            [dateFormat]="'dd/mm/yy'"
+            [showOtherMonths]="true"
+            [showOnFocus]="true"
+            [icon]="'pi pi-calendar'"
+            [shortYearCutoff]="'+10'"
+            [minDate]="minDateDateDerniereConnexion"
+            [maxDate]="maxDateDateDerniereConnexion"
+            [hourFormat]="'24'"
+            [timeSeparator]="':'"
+            [dataType]="'date'"
+            [stepHour]="1"
+            [stepMinute]="1"
+            [stepSecond]="1"
+            [maxDateCount]="1000"
+            [autoZIndex]="true"
+            [hideOnDateTimeSelect]="true"
+            [numberOfMonths]="1"
+            [view]="'date'"
+            [multipleSeparator]="','"
+            [rangeSeparator]="'-'"
+            formControlName="dateDerniereConnexion"
+          ></p-calendar>
+
+          <label
+            [ngClass]=" form.get('dateDerniereConnexion')?.invalid && (form.get('dateDerniereConnexion')?.touched || form.get('dateDerniereConnexion')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_10551" |translate | titlecase}}
+          </label>
+        </span>
+      </div>
+
+      <div class="input-container column-span-1 row-span-1">
+        <span class="p-float-label">
+          <p-dropdown
+            [style]="{width:'100%'}"
+            [appendTo]="'body'"
+            inputId="id-3319"
+            [options]="optionsEtatCompte"
+            [optionDisabled]="'disabled'"
+            [scrollHeight]="'200px'"
+            [filterMatchMode]="'contains'"
+            [emptyMessage]="'No records found.'"
+            [emptyFilterMessage]="'No results found.'"
+            [maxlength]="100000"
+            [dropdownIcon]="'pi pi-chevron-down'"
+            [overlayOptions]="{autoZIndex:true}"
+            [tooltipPosition]="'top'"
+            [ngClass]="form.get('etatCompte')?.invalid && (form.get('etatCompte')?.touched || form.get('etatCompte')?.dirty) ? 'ng-invalid ng-dirty' : ''"
+            [autoDisplayFirst]="false"
+            formControlName="etatCompte"
+          ></p-dropdown>
+
+          <label
+            [ngClass]="form.get('etatCompte')?.invalid && (form.get('etatCompte')?.touched || form.get('etatCompte')?.dirty) ? 'text-danger' : ''"
+          >
+            {{ "code_10557" |translate | titlecase}}
+          </label>
+
+          <ng-container
+            *ngIf="form.get('etatCompte')?.invalid && (form.get('etatCompte')?.touched || form.get('etatCompte')?.dirty)"
+          >
+            <span
+              class="error-span"
+              *ngIf="form.get('etatCompte')?.errors?.['required'] "
+            >
+              {{ "code_29" | translate | titlecase }}
+            </span>
+          </ng-container>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <button
+      *ngIf="!newID"
+      pButton
+      class="p-button-sm p-button-success submit-button"
+      iconPos="right"
+      icon="pi pi-save"
+      type="button"
+      [label]="'code_4145' | translate | titlecase"
+      (click)="cloneData()"
+    ></button>
+
+    <button
+      *ngIf="newID && !relation?.includes('ToOne')"
+      pButton
+      class="p-button-sm p-button-success next-tab-button"
+      iconPos="right"
+      type="button"
+      [label]="'code_547' | translate | titlecase"
+      (click)="finish()"
+    ></button>
+  </div>
+</form>

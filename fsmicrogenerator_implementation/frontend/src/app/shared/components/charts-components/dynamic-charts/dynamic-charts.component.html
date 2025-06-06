@@ -1,0 +1,33 @@
+  <ng-container *ngIf="!(type=='bar' && stacking)">
+    <div id="button-row">
+      <button class="line-chart" (click)="updateChartType('line')"><i class="fa fa-line-chart"></i></button>
+      <button class="column-chart" (click)="updateChartType('column')"><i class="fa fa-bar-chart"></i></button>
+      <button class="area-chart" (click)="updateChartType('area')"><i class="fa fa-area-chart"></i></button>
+      <button class="pie-chart" (click)="updateChartType('pie')"><i class="fa fa-pie-chart"></i></button>
+    </div>
+  </ng-container>
+<ng-container *ngIf="constructorType">
+  <div class="dynamicChart">
+    <ng-container *ngIf="constructorType == 'stockChart';else chart">
+      <highcharts-chart
+        [Highcharts]="HighStock"
+        [options]="chartStockOptions"
+        [constructorType]="'stockChart'"
+        [(update)]="update"
+        [callbackFunction]="callback"
+        style="width: 100%; height: 400px; display: block;">
+      </highcharts-chart>
+    </ng-container>
+    <ng-template #chart>
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [options]="chartOptions"
+        [(update)]="update"
+        [callbackFunction]="callback"
+        style="width: 100%; height: 400px; display: block;">
+      </highcharts-chart>
+    </ng-template>
+  </div>
+</ng-container>
+
+

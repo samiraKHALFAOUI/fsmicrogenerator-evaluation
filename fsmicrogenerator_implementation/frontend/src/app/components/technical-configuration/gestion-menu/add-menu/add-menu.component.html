@@ -1,0 +1,547 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb [module]="'ElementProjet'"
+  [component]="'menu'"
+  [operation]="'add/edit'"
+    [edit]="id ? true : false"></app-sub-breadcrumb>
+</ng-container>
+
+
+<ng-container *ngIf="independentComponent">
+  <ng-container *ngTemplateOutlet="addForm"></ng-container>
+</ng-container>
+
+<ng-template #addForm>
+  <form class="form dynamic-form px-3 py-2" [formGroup]="form">
+    <div class="form-grid-container">
+      <div class="form-grid grid-cols-1">
+        <p-panel [header]="'code_17624'|translate|titlecase" [toggleable]="true">
+          <div class="form-grid-container">
+            <div class="form-grid grid-cols-2">
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-dropdown [style]="{ width: '100%' }"
+                    [appendTo]="'body'" inputId="id-4719"
+                    [options]="optionsEtatDePublication"
+                    [optionDisabled]="'disabled'"
+                    [scrollHeight]="'200px'"
+                    [filterMatchMode]="'contains'"
+                    [emptyMessage]="'No records found.'"
+                    [emptyFilterMessage]="'No results found.'"
+                    [maxlength]="100000"
+                    [dropdownIcon]="'pi pi-chevron-down'"
+                    [overlayOptions]="{ autoZIndex: true }"
+                    [tooltipPosition]="'top'"
+                    [ngClass]=" form.get('etatDePublication')?.invalid &&  (form.get('etatDePublication')?.touched || form.get('etatDePublication')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                    [autoDisplayFirst]="false"
+                    formControlName="etatDePublication">
+                  </p-dropdown>
+
+                  <label [ngClass]=" form.get('etatDePublication')?.invalid &&  (form.get('etatDePublication')?.touched || form.get('etatDePublication')?.dirty) ? 'text-danger': '' ">
+                    {{ "code_22" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                  <ng-container *ngIf="form.get('etatDePublication')?.invalid && (form.get('etatDePublication')?.touched || form.get('etatDePublication')?.dirty) ">
+                    <span class="error-span" *ngIf="form.get('etatDePublication')?.errors?.['required'] ">
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label" formGroupName="translations">
+                  <input
+                    type="text"
+                    style="width: 100%"
+                    [ngClass]="form.get('translations.titre')?.invalid && (form.get('translations.titre')?.touched || form.get('translations.titre')?.dirty) ? 'ng-dirty ng-invalid': '' "
+                    id="id-2974"
+                    formControlName="titre"
+                    pInputText />
+
+                  <label [ngClass]="form.get('translations.titre')?.invalid && (form.get('translations.titre')?.touched || form.get('translations.titre')?.dirty) ? 'text-danger': '' ">
+                    {{ "code_33" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                  <ng-container *ngIf="form.get('translations.titre')?.invalid && (form.get('translations.titre')?.touched || form.get('translations.titre')?.dirty) ">
+                    <span class="error-span" *ngIf="form.get('translations.titre')?.errors?.['required'] ">
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+
+              <div class="field-checkbox">
+                <p-checkbox formControlName="planPrincipale"
+                [binary]="true" inputId="planPrincipale"
+                  (onChange)="onPlanPrincipalChange($event)"></p-checkbox>
+
+                <label for="planPrincipale">
+                  {{ "code_13881" | translate | titlecase }}
+                </label>
+              </div>
+
+
+              <ng-container *ngIf="!form.get('planPrincipale')?.value">
+                <div class="field">
+                  <span class="p-float-label">
+                    <p-treeSelect [scrollHeight]="'200px'"
+                      [options]="parentOptions"
+                      [metaKeySelection]="false"
+                      [selectionMode]="'single'"
+                      [emptyMessage]="'No records found.'"
+                      [filter]="true"
+                      [filterBy]="'label'"
+                      [filterMode]="'lenient'"
+                      [style]="{ width: '100%' }"
+                      [appendTo]="'body'"
+                      [metaKeySelection]="false" inputId="id-6148"
+                      [showClear]="true"
+                      [ngClass]="form.get('menuParent')?.invalid && (form.get('menuParent')?.touched || form.get('menuParent')?.dirty) ? 'ng-invalid ng-dirty': '' " formControlName="menuParent" (onNodeSelect)="onMenuParentChange($event)"></p-treeSelect>
+
+                    <label>{{ "code_13903" | translate | titlecase }}</label>
+                  </span>
+
+                  <span *ngIf="form.get('menuParent')?.errors?.['required'] && (
+                                form.get('menuParent')?.dirty ||
+                                form.get('menuParent')?.touched
+
+                              )" class="text-danger">
+                    {{ "code_29" | translate | titlecase }}
+                  </span>
+                </div>
+              </ng-container>
+
+              <div class="input-container column-span-1 row-span-1">
+                <app-dynamic-input [typeInput]="'icon'"
+                [control]="$any(form.get('icon'))"
+                [label]="'code_2605'">
+                </app-dynamic-input>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-inputNumber
+                    [ngStyle]="{ width: '100%' }"
+                    inputId="id-3704"
+                    [showButtons]="true"
+                    [buttonLayout]="'stacked'"
+                    [incrementButtonIcon]="'pi pi-chevron-up'"
+                    [decrementButtonIcon]="'pi pi-chevron-down'"
+                    [min]="1"
+                    [max]="100000000000000000000"
+                    [step]="1"
+                    [inputStyleClass]="form.get('ordre')?.invalid && (form.get('ordre')?.touched || form.get('ordre')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                    [size]="10"
+                    [maxlength]="100" formControlName="ordre"></p-inputNumber>
+
+                  <label [ngClass]="form.get('ordre')?.invalid && (form.get('ordre')?.touched || form.get('ordre')?.dirty) ? 'text-danger': '' ">
+                    {{ "code_570" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                  <ng-container *ngIf="form.get('ordre')?.invalid && (form.get('ordre')?.touched || form.get('ordre')?.dirty) ">
+                    <span class="error-span" *ngIf="form.get('ordre')?.errors?.['required'] ">
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+
+              <div class="input-container column-span-1 row-span-1">
+                <span class="p-float-label">
+                  <p-inputNumber [ngStyle]="{ width: '100%' }" inputId="id-7563"
+                    [showButtons]="true"
+                    [buttonLayout]="'stacked'"
+                    [incrementButtonIcon]="'pi pi-chevron-up'"
+                    [decrementButtonIcon]="'pi pi-chevron-down'"
+                    [min]="1"
+                    [max]="100000000000000000000"
+                    [step]="1"
+                    [inputStyleClass]="form.get('priorite')?.invalid && (form.get('priorite')?.touched || form.get('priorite')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                    [size]="10"
+                    [maxlength]="100" formControlName="priorite"></p-inputNumber>
+
+                  <label [ngClass]="form.get('priorite')?.invalid && (form.get('priorite')?.touched || form.get('priorite')?.dirty) ? 'text-danger': '' ">
+                    {{ "code_11514" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                  <ng-container *ngIf="form.get('priorite')?.invalid && (form.get('priorite')?.touched || form.get('priorite')?.dirty) ">
+                    <span class="error-span" *ngIf="form.get('priorite')?.errors?.['required'] ">
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+            </div>
+          </div>
+        </p-panel>
+
+        <p-panel [header]="'code_17641'| translate|titlecase" [toggleable]=true>
+            <div class="form-grid-container">
+              <div class="form-grid grid-cols-4">
+                <div class="field-checkbox">
+                  <p-checkbox formControlName="megaMenu"
+                  [binary]="true" inputId="mega"></p-checkbox>
+
+                  <label for="mega">{{ "code_13882" | translate | titlecase }}</label>
+                </div>
+                <ng-container class="field" *ngIf="!form.get('megaMenu')?.value && taxonomies"
+                  formArrayName="taxonomies">
+                  <div *ngFor="let taxonomie of taxonomies?.controls; index as i" class="field">
+                    <span class="p-float-label">
+                      <p-dropdown [formControl]="$any(taxonomies).controls[i]" class="p-inputtext-sm" styleClass=""
+                        [options]="taxonomiesOptions[i]" filterBy="espace"
+                        [style]="{ width: '100%' }"
+                        [optionLabel]="'espace'"
+                        [autoDisplayFirst]="false"
+                        [filter]="true" dataKey="_id"
+                        [appendTo]="'body'"
+                        [ngClass]="     taxonomie?.invalid && taxonomie?.touched  ? 'ng-invalid ng-dirty':'' " (onChange)="getOptions($event, i)">
+
+                      </p-dropdown>
+                      <label>{{ "taxonomie" + i | translate | titlecase }}</label>
+                    </span>
+                    <ng-container *ngIf="taxonomie?.invalid && taxonomie?.touched">
+                      <span *ngIf="taxonomie?.errors?.['required']" class="text-danger">
+                        {{ "code_29" | translate | titlecase }}
+                      </span>
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+        </p-panel>
+
+
+          <p-panel [header]="'code_17638'| translate|titlecase"  [toggleable]=true>
+            <div class="form-grid-container">
+              <div class="form-grid grid-cols-4">
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <p-dropdown [style]="{ width: '100%' }"
+                    [appendTo]="'body'" inputId="id-294"
+                      [options]="optionsTypeActivation"
+                      [optionDisabled]="'disabled'"
+                      [scrollHeight]="'200px'"
+                      [filterMatchMode]="'contains'"
+                      [emptyMessage]="'No records found.'"
+                      [emptyFilterMessage]="'No results found.'"
+                      [maxlength]="100000"
+                      [dropdownIcon]="'pi pi-chevron-down'"
+                      [overlayOptions]="{ autoZIndex: true }"
+                      [tooltipPosition]="'top'"
+                      [ngClass]="form.get('typeActivation')?.invalid && (form.get('typeActivation')?.touched || form.get('typeActivation')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                  [autoDisplayFirst]="false" formControlName="typeActivation"></p-dropdown>
+
+                    <label [ngClass]="form.get('typeActivation')?.invalid && (form.get('typeActivation')?.touched || form.get('typeActivation')?.dirty) ? 'text-danger': '' ">
+                      {{ "code_13886" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                    <ng-container *ngIf="form.get('typeActivation')?.invalid && (form.get('typeActivation')?.touched || form.get('typeActivation')?.dirty) ">
+                      <span class="error-span" *ngIf="form.get('typeActivation')?.errors?.['required'] ">
+                        {{ "code_29" | translate | titlecase }}
+                      </span>
+                    </ng-container>
+                  </span>
+                </div>
+              <ng-container *ngIf="form.get('typeActivation')?.value == 'code_1962' ">
+                <div class="input-container column-span-1 row-span-1">
+                  <p-panel [toggleable]="true"
+                  [expandIcon]="'pi pi-angle-double-up'"
+                    [collapseIcon]="'pi pi-angle-double-down'">
+                    <ng-template pTemplate="header">
+                      <div class="flex align-items-center gap-2">
+                        <span class="font-bold">{{ "code_17640" | translate | titlecase }}</span>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="icons">
+                      <button class="p-panel-header-icon p-link mr-2 p-button-success" (click)="addPeriodeActivation()">
+                        <span class="pi pi-plus"></span>
+                      </button>
+                    </ng-template>
+
+
+                    <div class="form-grid-container" formArrayName="periodeActivation">
+                      <ng-container *ngFor="let periodeActivationItem of getPeriodeActivation().controls; index as periodeActivationIndex ">
+                        <div class="translation-container">
+                          <button
+                            type="button"
+                            class="p-button-sm p-button-danger delete-translation-button"
+                            icon="pi pi-trash"
+                            (click)="deletePeriodeActivation(periodeActivationIndex)"
+                            pButton>
+                          </button>
+                          <div class="form-grid grid-cols-2 mb-3 formArray"  [formGroupName]="periodeActivationIndex">
+                            <div class="input-container column-span-1 row-span-1">
+                              <span class="p-float-label">
+                                <p-calendar [style]="{ width: '100%' }"
+                                [appendTo]="'body'" inputId="id-4688"
+                                  [defaultDate]="defaultDateDateDebut"
+                                  [selectionMode]="'single'"
+                                  [inputStyleClass]="periodeActivationItem.get('dateDebut')?.invalid && (periodeActivationItem.get('dateDebut')?.touched || periodeActivationItem.get('dateDebut')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                                  [dateFormat]="'dd/mm/yy'"
+                                  [showOtherMonths]="true"
+                                  [showOnFocus]="true"
+                                  [icon]="'pi pi-calendar'"
+                                  [shortYearCutoff]="'+10'"
+                                  [minDate]="periodeActivationIndex != 0 ? getPeriodeActivation().value[periodeActivationIndex - 1]?.dateFin: minDateDateFin "
+                                  [maxDate]="getPeriodeActivation().value[periodeActivationIndex]?.dateFin "
+                                  [hourFormat]="'24'"
+                                  [timeSeparator]="':'"
+                                  [dataType]="'date'"
+                                  [stepHour]="1"
+                                  [stepMinute]="1"
+                                  [stepSecond]="1"
+                                  [maxDateCount]="1000"
+                                  [autoZIndex]="true"
+                                  [hideOnDateTimeSelect]="true"
+                                  [numberOfMonths]="1"
+                                  [view]="'date'"
+                                  [multipleSeparator]="','"
+                                  [rangeSeparator]="'-'"
+                                  formControlName="dateDebut"
+                                  (ngModelChange)="onChangeDateDebut(periodeActivationIndex)">
+                                </p-calendar>
+
+                                <label [ngClass]="periodeActivationItem.get('dateDebut')?.invalid && (periodeActivationItem.get('dateDebut')?.touched ||periodeActivationItem.get('dateDebut')?.dirty) ? 'text-danger': '' ">
+                                  {{ "code_87" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                                <ng-container *ngIf="periodeActivationItem.get('dateDebut')?.invalid && (periodeActivationItem.get('dateDebut')?.touched || periodeActivationItem.get('dateDebut')?.dirty) ">
+                                  <span class="error-span"
+                                    *ngIf="periodeActivationItem.get('dateDebut')?.errors?.['required'] ">
+                                    {{ "code_29" | translate | titlecase }}
+                                  </span>
+                                </ng-container>
+                              </span>
+                            </div>
+
+                            <div class="input-container column-span-1 row-span-1">
+                              <span class="p-float-label">
+                                <p-calendar [style]="{ width: '100%' }"
+                                [appendTo]="'body'" inputId="id-6458"
+                                  [defaultDate]="defaultDateDateFin"
+                                  [selectionMode]="'single'"
+                                  [inputStyleClass]=" periodeActivationItem.get('dateFin')?.invalid && (periodeActivationItem.get('dateFin')?.touched || periodeActivationItem.get('dateFin')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                                  [dateFormat]="'dd/mm/yy'"
+                                  [showOtherMonths]="true"
+                                  [showOnFocus]="true"
+                                  [icon]="'pi pi-calendar'"
+                                  [shortYearCutoff]="'+10'"
+                                  [minDate]="getPeriodeActivation().value[periodeActivationIndex]?.dateDebut != null ? getPeriodeActivation().value[periodeActivationIndex]?.dateDebut: periodeActivationIndex > 0 ? getPeriodeActivation().value[periodeActivationIndex - 1]?.dateFin: null "
+                                  [hourFormat]="'24'"
+                                  [timeSeparator]="':'"
+                                  [dataType]="'date'"
+                                  [stepHour]="1"
+                                  [stepMinute]="1"
+                                  [stepSecond]="1"
+                                  [maxDateCount]="1000"
+                                  [autoZIndex]="true"
+                                  [hideOnDateTimeSelect]="true"
+                                  [numberOfMonths]="1"
+                                  [view]="'date'"
+                                  [multipleSeparator]="','"
+                                  [rangeSeparator]="'-'" formControlName="dateFin"
+                                  (ngModelChange)="onChangeDateFin(periodeActivationIndex)"></p-calendar>
+
+                                <label [ngClass]="periodeActivationItem.get('dateFin')?.invalid && (periodeActivationItem.get('dateFin')?.touched || periodeActivationItem.get('dateFin')?.dirty) ? 'text-danger': '' ">
+                                  {{ "code_88" | translate | titlecase }}
+                                </label>
+                              </span>
+                            </div>
+
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </p-panel>
+                </div>
+              </ng-container>
+                <div class="input-container column-span-1 row-span-1"
+                  *ngIf="this.form.get('typeActivation')?.value == 'code_1963'">
+                  <span class="p-float-label">
+                    <p-dropdown [style]="{ width: '100%' }"
+                    [appendTo]="'body'" inputId="id-6796"
+                    [optionDisabled]="'disabled'"
+                      [scrollHeight]="'200px'"
+                      [filterMatchMode]="'contains'"
+                      [emptyMessage]="'No records found.'"
+                      [emptyFilterMessage]="'No results found.'"
+                      [maxlength]="100000"
+                      [dropdownIcon]="'pi pi-chevron-down'"
+                      [overlayOptions]="{ autoZIndex: true }"
+                      [tooltipPosition]="'top'"
+                      [ngClass]="form.get('periodiciteActivation')?.invalid && (form.get('periodiciteActivation')?.touched || form.get('periodiciteActivation')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                            [autoDisplayFirst]="false" formControlName="periodiciteActivation"></p-dropdown>
+
+                    <label [ngClass]="form.get('periodiciteActivation')?.invalid && (form.get('periodiciteActivation')?.touched || form.get('periodiciteActivation')?.dirty) ? 'text-danger': '' ">
+                      {{ "code_13889" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                    <ng-container *ngIf="form.get('periodiciteActivation')?.invalid && (form.get('periodiciteActivation')?.touched || form.get('periodiciteActivation')?.dirty) ">
+                      <span class="error-span" *ngIf="form.get('periodiciteActivation')?.errors?.['required'] ">
+                        {{ "code_29" | translate | titlecase }}
+                      </span>
+                    </ng-container>
+                  </span>
+                </div>
+
+                <ng-container *ngIf="['list','detail'].includes(typeComponent) ">
+
+                  <div class="field-checkbox">
+                    <p-checkbox formControlName="showAll"
+                    [binary]="true" inputId="showAll" ></p-checkbox>
+
+                    <label for="showAll">
+                      {{ "code_17644" | translate | titlecase }}
+                    </label>
+                  </div>
+                <ng-container *ngIf="!form.get('showAll')?.value">
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <p-inputNumber [ngStyle]="{ width: '100%' }" inputId="id-5076" [showButtons]="true"
+                      [buttonLayout]="'stacked'" [incrementButtonIcon]="'pi pi-chevron-up'"
+                      [decrementButtonIcon]="'pi pi-chevron-down'" [min]="0" [max]="100000000000000000000" [step]="1"
+                      [allowEmpty]="true" [inputStyleClass]="
+                        form.get('nbrElement')?.invalid &&
+                        (form.get('nbrElement')?.touched ||
+                          form.get('nbrElement')?.dirty)
+                          ? 'ng-invalid ng-dirty'
+                          : ''
+                      " [size]="10" [maxlength]="100" formControlName="nbrElement"></p-inputNumber>
+
+                    <label [ngClass]="
+                        form.get('nbrElement')?.invalid &&
+                        (form.get('nbrElement')?.touched ||
+                          form.get('nbrElement')?.dirty)
+                          ? 'text-danger'
+                          : ''
+                      ">
+                      {{ "code_13894" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                    <ng-container *ngIf="
+                        form.get('nbrElement')?.invalid &&
+                        (form.get('nbrElement')?.touched ||
+                          form.get('nbrElement')?.dirty)
+                      ">
+                      <span class="error-span" *ngIf="form.get('nbrElement')?.errors?.['required'] ">
+                        {{ "code_29" | translate | titlecase }}
+                      </span>
+                    </ng-container>
+                  </span>
+                </div>
+              </ng-container>
+                <ng-container *ngIf="form.get('nbrElement')?.value||form.get('showAll')?.value  ">
+                  <div class="input-container column-span-1 row-span-1">
+                    <span class="p-float-label">
+                      <p-dropdown [style]="{ width: '100%' }"
+                      [appendTo]="'body'" inputId="id-5572"
+                        [options]="optionsTypeAffichage"
+                        [optionDisabled]="'disabled'"
+                        [scrollHeight]="'200px'"
+                        [filterMatchMode]="'contains'"
+                        [emptyMessage]="'No records found.'"
+                        [emptyFilterMessage]="'No results found.'"
+                        [maxlength]="100000"
+                        [dropdownIcon]="'pi pi-chevron-down'"
+                        [overlayOptions]="{ autoZIndex: true }"
+                        [tooltipPosition]="'top'"
+                        [ngClass]="form.get('typeAffichage')?.invalid && (form.get('typeAffichage')?.touched || form.get('typeAffichage')?.dirty) ? 'ng-invalid ng-dirty': '' "
+                        [autoDisplayFirst]="false" formControlName="typeAffichage"></p-dropdown>
+
+                      <label [ngClass]="form.get('typeAffichage')?.invalid && (form.get('typeAffichage')?.touched || form.get('typeAffichage')?.dirty) ? 'text-danger': '' ">
+                        {{ "code_13892" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                      <ng-container *ngIf="form.get('typeAffichage')?.invalid && (form.get('typeAffichage')?.touched || form.get('typeAffichage')?.dirty) ">
+                        <span class="error-span" *ngIf="form.get('typeAffichage')?.errors?.['required'] ">
+                          {{ "code_29" | translate | titlecase }}
+                        </span>
+                      </ng-container>
+                    </span>
+                  </div>
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <p-dropdown [style]="{ width: '100%' }" [appendTo]="'body'" inputId="id-7100"
+                      [options]="optionsTypeSelect" [optionDisabled]="'disabled'" [scrollHeight]="'200px'"
+                      [filterMatchMode]="'contains'" [emptyMessage]="'No records found.'"
+                      [emptyFilterMessage]="'No results found.'" [maxlength]="100000"
+                      [dropdownIcon]="'pi pi-chevron-down'" [overlayOptions]="{ autoZIndex: true }"
+                      [tooltipPosition]="'top'" [ngClass]="form.get('typeSelect')?.invalid &&(form.get('typeSelect')?.touched ||form.get('typeSelect')?.dirty)? 'ng-invalid ng-dirty': ''" [autoDisplayFirst]="false" formControlName="typeSelect"></p-dropdown>
+
+                    <label [ngClass]="
+                    form.get('typeSelect')?.invalid &&
+                    (form.get('typeSelect')?.touched ||
+                      form.get('typeSelect')?.dirty)
+                      ? 'text-danger'
+                      : ''
+                  ">
+                      {{ "code_13896" | translate | titlecase }} <span class="text-danger">*</span></label>
+
+                    <ng-container *ngIf="
+                    form.get('typeSelect')?.invalid &&
+                    (form.get('typeSelect')?.touched ||
+                      form.get('typeSelect')?.dirty)
+                  ">
+                      <span class="error-span" *ngIf="form.get('typeSelect')?.errors?.['required'] ">
+                        {{ "code_29" | translate | titlecase }}
+                      </span>
+                    </ng-container>
+                  </span>
+                </div>
+            <ng-container *ngIf="form.get('typeSelect')?.value=='code_13900'  ">
+              <div class="input-container column-span-1 row-span-1" >
+                <span class="p-float-label">
+                  <p-multiSelect [style]="{ width: '100%' }"
+                  [appendTo]="'body'" inputId="id-4988"
+                  [optionDisabled]="'disabled'"
+                    [filter]="true"
+                    [filterMatchMode]="'contains'"
+                    [scrollHeight]="'200px'"
+                    [emptyMessage]="'No records found.'"
+                    [emptyFilterMessage]="'No results found'"
+                    [overlayOptions]="{ autoZIndex: true }"
+                    [displaySelectedLabel]="true"
+                    [dropdownIcon]="'pi pi-chevron-down'"
+                    [itemSize]="10"
+                    [maxSelectedLabels]="3"
+                    [selectedItemsLabel]="'ellipsis'"
+                    [selectionLimit]="20"
+                    [showHeader]="true"
+                    [showToggleAll]="true"
+                    [tooltipPosition]="'top'" formControlName="elementAffiche"
+                    [options]="optionsElementAffiche"
+                    [optionLabel]="'translations.titre'"
+                    [dataKey]="'_id'"
+                    [selectionLimit]="form.get('nbrElement')?.value || null  "
+                    ></p-multiSelect>
+
+                  <label [ngClass]="form.get('elementAffiche')?.invalid && (form.get('elementAffiche')?.touched || form.get('elementAffiche')?.dirty) ? 'text-danger': '' ">
+                    {{ "code_13890" | translate | titlecase }} <span class="text-danger">*</span></label>
+                  <ng-container *ngIf="form.get('elementAffiche')?.invalid && (form.get('elementAffiche')?.touched || form.get('elementAffiche')?.dirty) ">
+                    <span class="error-span" *ngIf="form.get('elementAffiche')?.errors?.['required'] ">
+                      {{ "code_29" | translate | titlecase }}
+                    </span>
+                  </ng-container>
+                </span>
+              </div>
+            </ng-container>
+            </ng-container>
+            </ng-container>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button *ngIf="selectedTab > 0"
+        [disabled]="!id" pButton class="prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon" type="button" (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"></button>
+
+      <button pButton class="p-button-sm p-button-success submit-button" iconPos="right" icon="pi pi-save" type="button"
+        [label]="'code_4145' | translate | titlecase" (click)="addData()"></button>
+
+      <button pButton class="p-button-sm p-button-success submit-button" iconPos="right" icon="pi pi-times"
+        type="button"
+        [label]="'cancel' | translate | titlecase" (click)="resetForm()"></button>
+
+      <button *ngIf="!this.independentComponent && !relation?.includes('ToOne')" pButton
+        class="next-tab-button" iconPos="right" type="button"
+        [label]="'code_547' | translate | titlecase"
+class="termine" (click)="finish()"></button>
+    </div>
+  </form>
+</ng-template>

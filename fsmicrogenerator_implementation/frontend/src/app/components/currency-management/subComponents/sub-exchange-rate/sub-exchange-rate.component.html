@@ -1,0 +1,49 @@
+
+<ng-container *ngIf="relation.includes('ToMany') ;else relationToOne">
+  <app-dynamic-table
+    [cols]="listPrincipaleHeaders"
+    [captionConfig]="listPrincipaleCaptionConfig"
+    (onDelete)="changeState($event)"
+    (onAddClick)="onAddClick()"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    (onCloneClick)="onCloneClick($event)"
+    [data]="data"
+    [prohibitDeletion]="[]"
+    [serviceName]="'currencyManagement'"
+    [componentName]="'exchangeRate'"
+  >
+  </app-dynamic-table>
+</ng-container>
+<ng-template #relationToOne>
+  <ng-container [ngSwitch]="mode">
+    <app-add-exchange-rate
+      *ngSwitchCase="'add/edit'"
+      [current]="currentExchangeRate"
+      [mode]="mode"
+      [independentComponent]="false"
+      [relation]="relation"
+      [currencyId]="currencyId"
+      (onAddItem)="onAddItem($event)"
+    >
+    </app-add-exchange-rate>
+
+    <app-clone-exchange-rate
+      *ngSwitchCase="'clone'"
+      [current]="currentExchangeRate"
+      [independentComponent]="false"
+      [relation]="relation"
+      [currencyId]="currencyId"
+    >
+    </app-clone-exchange-rate>
+
+    <app-detail-exchange-rate
+      *ngSwitchCase="'detail'"
+      [current]="currentExchangeRate"
+      [independentComponent]="false"
+      [relation]="relation"
+      (onDetailFinish)="onDetailFinish()"
+    >
+    </app-detail-exchange-rate>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,142 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]='"SupplierManagement"'
+    [component]='"supplier"'
+    [operation]="'detail'">
+  </app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase" [selected]="selectedTab == 0">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-3">
+          <div class="input-container column-span-1 row-span-3">
+            <label class="dropzone-label">
+              {{ "code_49" |translate | titlecase}}
+            </label>
+            <div class="upload-container">
+              <div class="card-body dropzone-custom p-0 mx-auto">
+                <div class="dropzone dropzone-primary d-flex">
+                  <div class="dz-message needsclick m-auto">
+                    <div *ngIf=" data?.logo">
+                      <img [lazyLoad]="data?.logo | genericPipe : [{name:'file',serviceName :'supplierManagement'}]"
+                        [defaultImage]="data?.logo| genericPipe : [{name:'file',serviceName :'supplierManagement' }]"
+                        class="img-fluid rounded-circle" style="max-width: 190px; max-height: 250px" id="image" alt=""
+                        title="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-container column-span-2 row-span-3">
+            <div class="form-grid-container">
+              <div class="form-grid grid-cols-2">
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <input type="text" style="width: 100%" id="id-3543" [disabled]="true"
+                      [ngModel]="data | readDataTable : 'translations.name'" pInputText />
+
+                    <label> {{ "code_18391" |translate | titlecase}} </label>
+                  </span>
+                </div>
+
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <input type="text" style="width: 100%" id="id-8898" [disabled]="true"
+                      [ngModel]="data | readDataTable : 'email'" pInputText />
+
+                    <label> {{ "code_45" |translate | titlecase}} </label>
+                  </span>
+                </div>
+
+                <div class="input-container column-span-1 row-span-1">
+                  <span class="p-float-label">
+                    <input type="text" style="width: 100%" id="id-4342" [disabled]="true"
+                      [ngModel]="data | readDataTable : 'officePhoneNumber'" pInputText />
+
+                    <label> {{ "code_18427" |translate | titlecase}} </label>
+                  </span>
+                </div>
+
+                <div class="input-container column-span-1 row-span-1">
+                  <div class="input-switch-container">
+                    <label> {{ "code_18428" |translate | titlecase}} </label>
+                    <p-inputSwitch
+                      inputId="isActif"
+                      [disabled]="true"
+                      [ngModel]="data | readDataTable : 'isActif'"
+                    ></p-inputSwitch>
+                  </div>
+                </div>
+
+                <div class="input-container column-span-2 row-span-1">
+                  <span class="p-float-label">
+                    <textarea type="text" style="width: 100%" id="id-3412" [rows]="5" [cols]="30" [disabled]="true"
+                      [ngModel]="data | readDataTable : 'translations.address'" pInputText></textarea>
+
+                    <label> {{ "code_18424" |translate | titlecase}} </label>
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <p-tabPanel [header]="'product' | translate | titlecase">
+      <app-sub-product
+        [destination]="'supplier'"
+        [relation]="'OneToMany'"
+        [data]="data?.products || []"
+        [independentComponent]="false"
+        [mode]="'detail'">
+      </app-sub-product>
+    </p-tabPanel>
+
+    <p-tabPanel [header]="'code_18432' | translate | titlecase">
+      <app-sub-transaction
+        [destination]="'supplier'"
+        [relation]="'OneToMany'"
+        [data]="data?.purchases || []"
+        [independentComponent]="false"
+        [mode]="'detail'">
+      </app-sub-transaction>
+    </p-tabPanel>
+
+    <div class="form-footer">
+      <button *ngIf="selectedTab > 0"
+        pButton
+        class="p-button-sm p-button-success prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase">
+      </button>
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="button"
+        [label]="'code_547' | translate | titlecase"
+        (click)="goBack()">
+      </button>
+      <button *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        pButton
+        class="p-button-sm p-button-success next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        (click)="nextTab()"
+        [label]="'code_2994' | translate | titlecase">
+      </button>
+    </div>
+  </p-tabView>
+</div>

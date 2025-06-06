@@ -1,0 +1,10 @@
+<p-slider
+p-slider
+  [range]="true"
+  [min]="min"
+  [max]="max"
+  [step]="step"
+  [animate]="true"
+  [(ngModel)]="selection"
+  (onSlideEnd)="handle($event)">
+</p-slider>

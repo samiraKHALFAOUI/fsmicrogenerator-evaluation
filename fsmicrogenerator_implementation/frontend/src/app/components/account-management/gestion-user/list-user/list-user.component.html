@@ -1,0 +1,16 @@
+<div class="sub-component-header pb-3">
+  <app-dynamic-table
+    [data]="data"
+    [cols]="headers"
+    [captionConfig]="captionConfig"
+    (onDelete)="changeState($event)"
+    (onTranslateClick)="onTranslateClick($event)"
+    (onEditClick)="onEditClick($event)"
+    (onDetailClick)="onDetailClick($event)"
+    (onCloneClick)="onCloneClick($event)"
+    (onAddClick)="onAddClick()"
+    [prohibitDeletion]="[]"
+    [serviceName]="'accountManagement'"
+    [componentName]="'user'"
+  ></app-dynamic-table>
+</div>

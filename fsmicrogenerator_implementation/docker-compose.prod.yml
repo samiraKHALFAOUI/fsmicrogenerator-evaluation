@@ -1,0 +1,313 @@
+services:
+  # 👉 API Gateway
+  inventorymanagementsystem-apigateway:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-apigateway-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-apigateway
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - prometheus
+      - grafana
+    env_file:
+      - ./APIGateway/.env
+    volumes:
+      - ./APIGateway:/app/APIGateway
+      - /app/APIGateway/node_modules
+      - ./monitoring/targets:/app/APIGateway/targets
+    networks:
+      - inventorymanagementsystem
+    
+
+  # frontend 
+  inventorymanagementsystem-frontend:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-frontend-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-frontend
+    restart: always
+    ports:
+      - "4200:80"  
+    depends_on:
+      - inventorymanagementsystem-apigateway
+    networks:
+      - inventorymanagementsystem
+    
+  # 👉 Microservices backend
+  inventorymanagementsystem-accountmanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-accountmanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-accountmanagementservice
+    restart: always
+    ports:
+      - "4001:4001"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/AccountManagementService/.env
+    volumes:
+      - ./backend/AccountManagementService:/app/AccountManagementService
+      - /app/AccountManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-currencymanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-currencymanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-currencymanagementservice
+    restart: always
+    ports:
+      - "4002:4002"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/CurrencyManagementService/.env
+    volumes:
+      - ./backend/CurrencyManagementService:/app/CurrencyManagementService
+      - /app/CurrencyManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-customermanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-customermanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-customermanagementservice
+    restart: always
+    ports:
+      - "4003:4003"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/CustomerManagementService/.env
+    volumes:
+      - ./backend/CustomerManagementService:/app/CustomerManagementService
+      - /app/CustomerManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-inventorymanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-inventorymanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-inventorymanagementservice
+    restart: always
+    ports:
+      - "4004:4004"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/InventoryManagementService/.env
+    volumes:
+      - ./backend/InventoryManagementService:/app/InventoryManagementService
+      - /app/InventoryManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-productmanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-productmanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-productmanagementservice
+    restart: always
+    ports:
+      - "4005:4005"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/ProductManagementService/.env
+    volumes:
+      - ./backend/ProductManagementService:/app/ProductManagementService
+      - /app/ProductManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-suppliermanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-suppliermanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-suppliermanagementservice
+    restart: always
+    ports:
+      - "4006:4006"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/SupplierManagementService/.env
+    volumes:
+      - ./backend/SupplierManagementService:/app/SupplierManagementService
+      - /app/SupplierManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-taxonomymanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-taxonomymanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-taxonomymanagementservice
+    restart: always
+    ports:
+      - "4007:4007"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/TaxonomyManagementService/.env
+    volumes:
+      - ./backend/TaxonomyManagementService:/app/TaxonomyManagementService
+      - /app/TaxonomyManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-technicalconfigurationservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-technicalconfigurationservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-technicalconfigurationservice
+    restart: always
+    ports:
+      - "4008:4008"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/TechnicalConfigurationService/.env
+    volumes:
+      - ./backend/TechnicalConfigurationService:/app/TechnicalConfigurationService
+      - /app/TechnicalConfigurationService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  inventorymanagementsystem-transactionmanagementservice:
+    image: ${CI_REGISTRY_IMAGE}/inventorymanagementsystem-transactionmanagementservice-image:${IMAGE_TAG}
+    container_name: inventorymanagementsystem-transactionmanagementservice
+    restart: always
+    ports:
+      - "4009:4009"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - inventorymanagementsystem-apigateway
+    env_file:
+      - ./backend/TransactionManagementService/.env
+    volumes:
+      - ./backend/TransactionManagementService:/app/TransactionManagementService
+      - /app/TransactionManagementService/node_modules
+    networks:
+      - inventorymanagementsystem
+    
+
+  # 👉 init db
+  init-db-inventorymanagementsystem:
+    image: ${CI_REGISTRY_IMAGE}/init-db-inventorymanagementsystem-image:${IMAGE_TAG}  
+    container_name: init-db-inventorymanagementsystem
+    depends_on:
+      - mongodb
+    volumes:
+      - ./utils/database:/app
+    environment:
+      HOST: "mongodb"
+      PORT: "27017"
+      RETRY_LIMIT: "3"
+      RETRY_INTERVAL: "5"
+      LOG_FILE: "/app/mongo_wait.log"
+      BASE_IMPORT_FOLDER: "/app"
+      PREFIX: "Inventory"
+    networks:
+        - inventorymanagementsystem
+  
+  # 👉 MongoDB
+  mongodb:
+    image: mongo:4.4
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - inventorymanagementsystem
+
+  # 👉 Redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - inventorymanagementsystem
+
+  # 👉 RabbitMQ
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - inventorymanagementsystem
+
+  # 👉 Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/targets:/etc/prometheus/targets
+    ports:
+      - "9090:9090"
+    networks:
+      - inventorymanagementsystem
+
+  # 👉 Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    volumes:
+      - ./monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - inventorymanagementsystem
+
+
+
+networks:
+  inventorymanagementsystem:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:
+  rabbitmq_data:
+  grafana_data:

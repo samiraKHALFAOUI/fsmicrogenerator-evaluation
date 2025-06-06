@@ -1,0 +1,434 @@
+{
+    "id": null,
+    "uid": "inventorymanagementsystem-monitoring",
+    "title": "Inventory Management System Monitoring",
+    "tags": [
+        "prometheus",
+        "nodejs"
+    ],
+    "timezone": "browser",
+    "schemaVersion": 36,
+    "version": 1,
+    "refresh": "10s",
+    "templating": {
+        "list": [
+            {
+                "name": "job",
+                "type": "query",
+                "label": "Service",
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                },
+                "query": "label_values(up, job)",
+                "refresh": 2,
+                "includeAll": true,
+                "multi": true,
+                "sort": 1,
+                "current": {
+                    "text": "All",
+                    "value": [
+                        " .* "
+                    ]
+                }
+            },
+            {
+                "name": "instance",
+                "type": "query",
+                "label": "Instance",
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                },
+                "query": "label_values(up{job=~\"$job\"}, instance)",
+                "refresh": 2,
+                "includeAll": true,
+                "multi": true,
+                "sort": 1,
+                "current": {
+                    "text": "All",
+                    "value": [
+                        " .* "
+                    ]
+                }
+            }
+        ]
+    },
+    "panels": [
+        {
+            "type": "stat",
+            "title": "Total HTTP Requests/sec",
+            "targets": [
+                {
+                    "expr": "sum(rate(http_requests_total[1m]))",
+                    "refId": "A"
+                }
+            ],
+            "id": 101,
+            "gridPos": {
+                "x": 0,
+                "y": 0,
+                "w": 6,
+                "h": 5
+            },
+            "options": {
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "reqps",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "orange",
+                                "value": 100
+                            },
+                            {
+                                "color": "red",
+                                "value": 500
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            }
+        },
+        {
+            "type": "stat",
+            "title": "Total CPU Usage/sec",
+            "targets": [
+                {
+                    "expr": "sum(rate(process_cpu_seconds_total[1m]))",
+                    "refId": "A"
+                }
+            ],
+            "id": 102,
+            "gridPos": {
+                "x": 6,
+                "y": 0,
+                "w": 6,
+                "h": 5
+            },
+            "options": {
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "orange",
+                                "value": 1
+                            },
+                            {
+                                "color": "red",
+                                "value": 2
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            }
+        },
+        {
+            "type": "stat",
+            "title": "Total Memory Usage (bytes)",
+            "targets": [
+                {
+                    "expr": "sum(process_resident_memory_bytes)",
+                    "refId": "A"
+                }
+            ],
+            "id": 103,
+            "gridPos": {
+                "x": 12,
+                "y": 0,
+                "w": 6,
+                "h": 5
+            },
+            "options": {
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "bytes",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "orange",
+                                "value": 500000000
+                            },
+                            {
+                                "color": "red",
+                                "value": 1000000000
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            }
+        },
+        {
+            "type": "stat",
+            "title": "Services Down",
+            "targets": [
+                {
+                    "expr": "count(up == 0)",
+                    "refId": "A"
+                }
+            ],
+            "id": 104,
+            "gridPos": {
+                "x": 18,
+                "y": 0,
+                "w": 3,
+                "h": 5
+            },
+            "options": {
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "orange",
+                                "value": 1
+                            },
+                            {
+                                "color": "red",
+                                "value": 3
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            }
+        },
+        {
+            "type": "stat",
+            "title": "Services Up",
+            "targets": [
+                {
+                    "expr": "count(up == 1)",
+                    "refId": "A"
+                }
+            ],
+            "id": 106,
+            "gridPos": {
+                "x": 21,
+                "y": 0,
+                "w": 3,
+                "h": 5
+            },
+            "options": {
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "red",
+                                "value": null
+                            },
+                            {
+                                "color": "orange",
+                                "value": 1
+                            },
+                            {
+                                "color": "green",
+                                "value": 3
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            }
+        },
+        {
+            "type": "graph",
+            "title": "HTTP Requests - Per Service & Total",
+            "targets": [
+                {
+                    "expr": "rate(http_requests_total{job=~\"$job\", instance=~\"$instance\"}[1m])",
+                    "legendFormat": "Per Service: {{job}} - {{instance}}",
+                    "refId": "service"
+                },
+                {
+                    "expr": "sum(rate(http_requests_total[1m]))",
+                    "legendFormat": "Total: All Services",
+                    "refId": "total"
+                }
+            ],
+            "id": 1,
+            "gridPos": {
+                "x": 0,
+                "y": 6,
+                "w": 24,
+                "h": 8
+            }
+        },
+        {
+            "type": "graph",
+            "title": "CPU Usage - Per Service & Total",
+            "targets": [
+                {
+                    "expr": "rate(process_cpu_seconds_total{job=~\"$job\", instance=~\"$instance\"}[1m])",
+                    "legendFormat": "Per Service: {{job}} - {{instance}}",
+                    "refId": "service"
+                },
+                {
+                    "expr": "sum(rate(process_cpu_seconds_total[1m]))",
+                    "legendFormat": "Total: All Services",
+                    "refId": "total"
+                }
+            ],
+            "id": 2,
+            "gridPos": {
+                "x": 0,
+                "y": 14,
+                "w": 24,
+                "h": 8
+            }
+        },
+        {
+            "type": "graph",
+            "title": "Memory Usage - Per Service & Total",
+            "targets": [
+                {
+                    "expr": "process_resident_memory_bytes{job=~\"$job\", instance=~\"$instance\"}",
+                    "legendFormat": "Per Service: {{job}} - {{instance}}",
+                    "refId": "service"
+                },
+                {
+                    "expr": "sum(process_resident_memory_bytes)",
+                    "legendFormat": "Total: All Services",
+                    "refId": "total"
+                }
+            ],
+            "id": 3,
+            "gridPos": {
+                "x": 0,
+                "y": 22,
+                "w": 24,
+                "h": 8
+            }
+        },
+        {
+            "type": "graph",
+            "title": "HTTP 5xx Errors - Per Service & Total",
+            "targets": [
+                {
+                    "expr": "rate(http_requests_total{status=~\"5..\", job=~\"$job\", instance=~\"$instance\"}[1m])",
+                    "legendFormat": "Per Service: {{job}} - {{instance}}",
+                    "refId": "service"
+                },
+                {
+                    "expr": "sum(rate(http_requests_total{status=~\"5..\"}[1m]))",
+                    "legendFormat": "Total: All Services",
+                    "refId": "total"
+                }
+            ],
+            "id": 4,
+            "gridPos": {
+                "x": 0,
+                "y": 30,
+                "w": 24,
+                "h": 8
+            }
+        },
+        {
+            "type": "graph",
+            "title": "Average Request Duration - Per Service & Total",
+            "targets": [
+                {
+                    "expr": "rate(http_request_duration_seconds_sum{job=~\"$job\", instance=~\"$instance\"}[1m]) / rate(http_request_duration_seconds_count{job=~\"$job\", instance=~\"$instance\"}[1m])",
+                    "legendFormat": "Avg Duration Per Service: {{job}} - {{instance}}",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum(rate(http_request_duration_seconds_sum[1m])) / rate(http_request_duration_seconds_count[1m])",
+                    "legendFormat": "Avg Duration Total: All Services",
+                    "refId": "B"
+                }
+            ],
+            "id": 105,
+            "gridPos": {
+                "x": 0,
+                "y": 38,
+                "w": 24,
+                "h": 8
+            }
+        }
+    ]
+}

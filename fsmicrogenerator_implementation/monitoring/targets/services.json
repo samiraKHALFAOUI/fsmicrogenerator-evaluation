@@ -1,0 +1,74 @@
+[
+  {
+    "targets": [
+      "inventorymanagementsystem-apigateway:4000"
+    ],
+    "labels": {
+      "job": "apigateway"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-technicalconfigurationservice:4008"
+    ],
+    "labels": {
+      "job": "technicalConfigurationService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-accountmanagementservice:4001"
+    ],
+    "labels": {
+      "job": "accountManagementService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-currencymanagementservice:4002"
+    ],
+    "labels": {
+      "job": "currencyManagementService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-customermanagementservice:4003"
+    ],
+    "labels": {
+      "job": "customerManagementService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-productmanagementservice:4005"
+    ],
+    "labels": {
+      "job": "productManagementService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-suppliermanagementservice:4006"
+    ],
+    "labels": {
+      "job": "supplierManagementService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-taxonomymanagementservice:4007"
+    ],
+    "labels": {
+      "job": "taxonomyManagementService_service"
+    }
+  },
+  {
+    "targets": [
+      "inventorymanagementsystem-transactionmanagementservice:4009"
+    ],
+    "labels": {
+      "job": "transactionManagementService_service"
+    }
+  }
+]

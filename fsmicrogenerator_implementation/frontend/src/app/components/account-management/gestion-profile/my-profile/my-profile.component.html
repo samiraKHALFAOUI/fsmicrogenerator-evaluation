@@ -1,0 +1,248 @@
+<ng-container *ngIf="!independentComponent && !relation">
+  <app-sub-breadcrumb
+    [module]="'AccountManagement'"
+    [component]="'user'"
+    [operation]="'detail'"
+  ></app-sub-breadcrumb>
+</ng-container>
+
+<div class="form dynamic-form px-3 py-2">
+  <p-tabView #tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel [header]="'code_9' | translate | titlecase">
+      <div class="form-grid-container">
+        <div class="form-grid grid-cols-4">
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-8144"
+                [disabled]="true"
+                [ngModel]="data?.reference"
+                pInputText
+              />
+
+              <label> {{ "code_10547" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-5047"
+                [disabled]="true"
+                [ngModel]="data?.pseudo"
+                pInputText
+              />
+
+              <label> {{ "code_196" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-8801"
+                [disabled]="true"
+                [ngModel]="data?.email"
+                pInputText
+              />
+
+              <label> {{ "code_45" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-2155"
+                [disabled]="true"
+                [ngModel]="data?.salutation || '' | translate"
+                pInputText
+              />
+
+              <label> {{ "code_10538" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-3085"
+                [disabled]="true"
+                [ngModel]="data?.translations?.nom"
+                pInputText
+              />
+
+              <label> {{ "code_2263" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-4687"
+                [disabled]="true"
+                [ngModel]="data?.translations?.prenom"
+                pInputText
+              />
+
+              <label> {{ "code_40" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                [disabled]="true"
+                [ngModel]="data?.fonction?.translations?.designation"
+                pInputText
+              />
+
+              <label> {{ "code_42" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-8569"
+                [disabled]="true"
+                [ngModel]="data?.groupe?.translations?.designation"
+                pInputText
+              />
+
+              <label> {{ "code_581" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <label class="dropzone-label">
+              {{ "code_1544" | translate | titlecase }}
+            </label>
+            <div class="upload-container">
+              <div class="card-body dropzone-custom p-0 mx-auto">
+                <div class="dropzone dropzone-primary d-flex">
+                  <div class="dz-message needsclick m-auto">
+                    <div *ngIf="data?.photo">
+                      <img
+                        [lazyLoad]="data?.photo | genericPipe :[{name:'file',serviceName : 'accountManagement'}]"
+                        [defaultImage]="data?.photo | genericPipe :[{name:'file',serviceName : 'accountManagement'}]"
+                        class="img-fluid rounded-circle"
+                        style="max-width: 190px; max-height: 250px"
+                        id="image"
+                        alt=""
+                        title=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-9684"
+                [disabled]="true"
+                [ngModel]="data?.telephone"
+                pInputText
+              />
+
+              <label> {{ "code_44" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-1691"
+                [disabled]="true"
+                [ngModel]="data?.fixe"
+                pInputText
+              />
+
+              <label> {{ "code_352" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+
+
+          <div class="input-container column-span-1 row-span-1">
+            <span class="p-float-label">
+              <input
+                type="text"
+                style="width: 100%"
+                id="id-856"
+                [disabled]="true"
+                [ngModel]="data?.etatCompte || '' | translate"
+                pInputText
+              />
+
+              <label> {{ "code_10557" | translate | titlecase }} </label>
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </p-tabPanel>
+    <div class="form-footer">
+      <button
+        *ngIf="selectedTab > 0"
+        [disabled]="!id"
+        pButton
+        class="prev-tab-button"
+        iconPos="left"
+        [icon]="prevTabIcon"
+        type="button"
+        (click)="prevTab()"
+        [label]="'code_2993' | translate | titlecase"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-sm p-button-success submit-button"
+        iconPos="right"
+        icon="pi pi-save"
+        type="submit"
+        [label]="'code_547' | translate | titlecase"
+class="termine"
+        (click)="goBack()"
+      ></button>
+
+      <button
+        *ngIf="selectedTab < (tabView.tabs?.length || 10) - 1"
+        [disabled]="!id"
+        pButton
+        class="next-tab-button"
+        iconPos="right"
+        [icon]="nextTabIcon"
+        type="button"
+        (click)="nextTab()"
+        [label]="'code_2994' | translate | titlecase"
+      ></button>
+    </div>
+  </p-tabView>
+</div>

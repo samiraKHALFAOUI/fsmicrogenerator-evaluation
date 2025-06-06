@@ -1,0 +1,279 @@
+<div class="container">
+  <form
+    [formGroup]="transactionForm"
+    (ngSubmit)="onSubmit()"
+    class="p-4 border rounded shadow-sm bg-light"
+  >
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="reference" class="form-label">Reference:</label>
+        <input
+          id="reference"
+          formControlName="reference"
+          type="text"
+          class="form-control"
+          readonly
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="date" class="form-label">Date:</label>
+        <input
+          id="date"
+          formControlName="date"
+          type="date"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="type" class="form-label">Type:</label>
+        <select
+          id="type"
+          formControlName="type"
+          class="form-select"
+          [class.is-invalid]="
+            transactionForm.get('type')?.touched &&
+            transactionForm.get('type')?.invalid
+          "
+          (change)="handleTypeChange()"
+        >
+          <option *ngFor="let type of typeOptions" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="transactionForm.get('type')?.errors?.['required']"
+        >
+          Type is required.
+        </div>
+      </div>
+
+      <div
+        class="col-md-6"
+        *ngIf="transactionForm.get('type')?.value == 'purchase'"
+      >
+        <label for="supplier" class="form-label">Supplier:</label>
+        <select
+          id="supplier"
+          formControlName="supplier"
+          class="form-select"
+          [class.is-invalid]="
+            transactionForm.get('supplier')?.touched &&
+            transactionForm.get('supplier')?.invalid
+          "
+        >
+          <option
+            *ngFor="let supplier of optionsSuppliers"
+            [value]="supplier._id"
+          >
+            {{ supplier.name }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="transactionForm.get('supplier')?.errors?.['required']"
+        >
+          supplier is required.
+        </div>
+      </div>
+
+      <div
+        class="col-md-6"
+        *ngIf="transactionForm.get('type')?.value == 'sale'"
+      >
+        <label for="customer" class="form-label">Customer:</label>
+        <select
+          id="customer"
+          formControlName="customer"
+          class="form-select"
+          [class.is-invalid]="
+            transactionForm.get('customer')?.touched &&
+            transactionForm.get('customer')?.invalid
+          "
+        >
+          <option
+            *ngFor="let customer of optionsCustomers"
+            [value]="customer._id"
+          >
+            {{ customer?.name }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="transactionForm.get('customer')?.errors?.['required']"
+        >
+          customer is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="savedBy" class="form-label">Saved By :</label>
+        <input
+          id="savedBy"
+          formControlName="savedBy"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="
+            transactionForm.get('savedBy')?.touched &&
+            transactionForm.get('savedBy')?.invalid
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="transactionForm.get('savedBy')?.errors?.['required']"
+        >
+          savedBy is required.
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="status" class="form-label">Status:</label>
+
+        <select id="status" formControlName="status" class="form-select">
+          <option *ngFor="let status of filteredStatusOptions" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div formArrayName="transactionLigne" class="mb-3">
+      <label class="form-label">Transaction Lines:</label>
+      <div
+        *ngFor="let ligne of ligneTransaction.controls; let i = index"
+        [formGroupName]="i"
+        class="border rounded p-3 mb-3"
+      >
+        <div class="row">
+          <div class="col-md-3 mb-2">
+            <label class="form-label">Product</label>
+            <select
+              formControlName="product"
+              class="form-select"
+              [class.is-invalid]="
+                ligne.get('product')?.touched && ligne.get('product')?.invalid
+              "
+              (ngModelChange)="onSelectProduct($event, i)"
+            >
+              <option [ngValue]="null" disabled>Select a product</option>
+              <!-- <option
+                *ngFor="let product of productOptions"
+                [value]="product._id"
+              >
+                {{ product.name }}
+              </option> -->
+              <option
+                *ngFor="let product of getFilteredProductOptions(i)"
+                [value]="product._id"
+              >
+                {{ product.name }}
+              </option>
+            </select>
+
+            <div
+              class="invalid-feedback"
+              *ngIf="ligne.get('product')?.errors?.['required']"
+            >
+              Product is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-2">
+            <label class="form-label">Quantity</label>
+            <input
+              type="number"
+              min="1"
+              formControlName="quantity"
+              class="form-control"
+              [class.is-invalid]="
+                ligne.get('quantity')?.touched && ligne.get('quantity')?.invalid
+              "
+              [max]="getMaxQuantite(ligne.get('product')?.value)"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="ligne.get('quantity')?.errors?.['required']"
+            >
+              Quantity is required.
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="ligne.get('quantity')?.errors?.['min']"
+            >
+              Minimum quantity is 1.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-2">
+            <label class="form-label">Price</label>
+            <input
+              type="number"
+              formControlName="price"
+              class="form-control"
+              [class.is-invalid]="
+                ligne.get('price')?.touched && ligne.get('price')?.invalid
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="ligne.get('price')?.errors?.['required']"
+            >
+              Price is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-2">
+            <label class="form-label">Currency</label>
+            <input
+              type="text"
+              formControlName="currency"
+              class="form-control"
+              [class.is-invalid]="
+                ligne.get('currency')?.touched && ligne.get('currency')?.invalid
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="ligne.get('currency')?.errors?.['required']"
+            >
+              Currency is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end mt-2">
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="removeLigneTransaction(i)"
+            *ngIf="ligneTransaction.length > 1"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="addLigneTransaction()"
+      >
+        Ajouter ligne transaction
+      </button>
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="transactionForm.invalid"
+    >
+      Enregistrer
+    </button>
+  </form>
+</div>

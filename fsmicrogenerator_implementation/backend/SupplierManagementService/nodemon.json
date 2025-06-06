@@ -1,0 +1,28 @@
+{
+  "watch": [
+    "bin",
+    "communications",
+    "config",
+    "controllers",
+    "docs",
+    "helpers",
+    "middlewares",
+    "models",
+    "routes",
+    "validations",
+    "app.js"
+  ],
+  "ignore": [
+    "node_modules",
+    ".git",
+    "*.log",
+    "*.test.js",
+    ".env",
+    ".env.dev",
+    "Dockerfile",
+    "package.json"
+  ],
+  "ext": "js,json",
+  "legacy-watch": true,
+  "verbose": true
+}
