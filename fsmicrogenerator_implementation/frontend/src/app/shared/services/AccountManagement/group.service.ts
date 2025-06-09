@@ -94,8 +94,8 @@ export class GroupService {
   //#region helpers
   checkEspace() {
     let canAccess = false;
-    let espaces = this.secureStorage.getItem("global_espace") || []
-    let user = this.secureStorage.getItem("user") || {}
+    let espaces = this.secureStorage.getItem("global_espace", true) || []
+    let user = this.secureStorage.getItem("user",true) || {}
     if (user._id && !user.groupe.superGroup) {
       let mySpaces = user.groupe?.espaces;
       const recF = (espace: any) => {

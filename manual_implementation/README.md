@@ -18,8 +18,7 @@ Make sure the following tools are installed:
    ```bash
    git clone https://github.com/samiraKHALFAOUI/fsmicrogenerator-evaluation.git
    cd fsmicrogenerator-evaluation/manual_implementation
-````
-
+   ```
 
 2. **Start services using Docker**
 
